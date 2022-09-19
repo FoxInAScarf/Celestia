@@ -34,6 +34,14 @@ public class GenCommand implements CommandExecutor {
 
         switch (args[0]) {
 
+            case "toggle":
+
+                GenManager.running = !GenManager.running;
+
+                Main.sendMessage(p, ChatColor.GREEN + "Generators have been turned " +
+                        (GenManager.running ? "on" : "off") + "!", false);
+                break;
+
             case "add":
                 addGen(args, p);
                 break;
@@ -43,6 +51,16 @@ public class GenCommand implements CommandExecutor {
                 break;
 
             case "list":
+
+                Main.sendMessage(p, ChatColor.GREEN + "These are the currently existing generators:", false);
+                for (Generator g : GenManager.gens) {
+
+                    ChatColor cc = GenManager.getFlag(g.name) != null ? ChatColor.GREEN : ChatColor.YELLOW;
+                    Main.sendMessage(p, ChatColor.GREEN + "      - " + cc + g.name + ChatColor.GREEN + ":" +
+                            " " + g.m.toString().replaceAll("_", "") + " generator",
+                            false);
+
+                }
                 break;
 
             case "flag":
@@ -50,9 +68,11 @@ public class GenCommand implements CommandExecutor {
                 switch (args[1]) {
 
                     case "add":
+                        addFlag(args, p);
                         break;
 
                     case "remove":
+                        removeFlag(args, p);
                         break;
 
                     default:
