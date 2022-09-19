@@ -1,7 +1,9 @@
 package com.celestia.veo.game.custom.gens;
 
 import com.celestia.veo.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -79,7 +81,7 @@ public class GenCommand implements CommandExecutor {
 
         // /gen add joeMama69 redstone_ore ~ ~ ~ 100
         String name = args[1];
-        if (GenManager.getFlag(name) != null) {
+        if (GenManager.getGen(name) != null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There's already a generator named '"
                     + ChatColor.RED + name + ChatColor.YELLOW + "'!", true);
@@ -91,10 +93,26 @@ public class GenCommand implements CommandExecutor {
         if (m == null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There's no such material as '"
-                    + ChatColor.RED + m.getName() + ChatColor.YELLOW + "'!", true);
+                    + ChatColor.RED + args[2] + ChatColor.YELLOW + "'!", true);
             return;
 
         }
+
+        double x, y, z;
+        if (args[3].equals("~")) x = p.getLocation().getX();
+        else x = Double.parseDouble(args[3]);
+        if (args[4].equals("~")) y = p.getLocation().getY();
+        else y = Double.parseDouble(args[4]);
+        if (args[5].equals("~")) z = p.getLocation().getZ();
+        else z = Double.parseDouble(args[5]);
+
+        int time = Integer.parseInt(args[6]);
+        GenManager.gens.add(new Generator(name, m, new Location(p.getWorld(), x, y, z), time));
+        GenManager.genFile.addLine(name + "@" + p.getWorld().getName() + "@" + x + "@" +
+                y + "@" + z + "@" + time);
+
+        // joemama69@world@1@1@1@100
+        Main.sendMessage(p, ChatColor.GREEN + "Added generator!", false);
 
     }
 
@@ -121,9 +139,42 @@ public class GenCommand implements CommandExecutor {
 
     }
 
-    public void addFlag(String[] args) {
+    public void addFlag(String[] args, Player p) {
 
+        String name = args[1];
+        if (GenManager.getGen(name) != null) {
 
+            Main.sendMessage(p, ChatColor.YELLOW + "There's already a flag attached to " +
+                    "the generator named '"
+                    + ChatColor.RED + name + ChatColor.YELLOW + "'!", true);
+            return;
+
+        }
+
+        double hx, hy, hz;
+        if (args[2].equals("~")) hx = p.getLocation().getX();
+        else hx = Double.parseDouble(args[2]);
+        if (args[3].equals("~")) hy = p.getLocation().getY();
+        else hy = Double.parseDouble(args[3]);
+        if (args[4].equals("~")) hz = p.getLocation().getZ();
+        else hz = Double.parseDouble(args[4]);
+
+        Location head = new Location(p.getWorld(), hx, hy, hz);
+
+        double px, py, pz;
+        if (args[5].equals("~")) px = p.getLocation().getX();
+        else px = Double.parseDouble(args[5]);
+        if (args[6].equals("~")) py = p.getLocation().getY();
+        else py = Double.parseDouble(args[6]);
+        if (args[7].equals("~")) pz = p.getLocation().getZ();
+        else pz = Double.parseDouble(args[7]);
+
+        Location pole = new Location(p.getWorld(), px, py, pz);
+
+        GenManager.flags.add(new Flag(name, head, pole));
+        GenManager.flagFile.addLine(name + "@" + p.getWorld() + "@" + hx + "@" + hy + "@" + hz + "@"
+                + px + "@" + py + "@" + pz + "@");
+        Main.sendMessage(p, ChatColor.GREEN + "Added flag!", false);
 
     }
 

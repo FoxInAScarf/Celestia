@@ -16,7 +16,7 @@ public class GenManager {
 
     static List<Generator> gens = new ArrayList<>();
     static List<Flag> flags = new ArrayList<>();
-    ZFile genFile, flagFile;
+    static ZFile genFile, flagFile;
 
     public void init(JavaPlugin main) {
 
