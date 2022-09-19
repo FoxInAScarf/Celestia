@@ -18,6 +18,8 @@ public class GenManager {
     static List<Flag> flags = new ArrayList<>();
     static ZFile genFile, flagFile;
 
+    static boolean running = true;
+
     public void init(JavaPlugin main) {
 
         String folder = Main.mainFolder.getAbsolutePath() + "/Gens";
@@ -50,6 +52,12 @@ public class GenManager {
             flags.add(new Flag(ls[0], head, pole));
 
         }
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> {
+
+            for (Generator g : gens) g.run();
+
+        }, 0L, 1L);
 
         Bukkit.getPluginManager().registerEvents(new GenListeners(), main);
         main.getCommand("gens").setExecutor(new GenCommand());
