@@ -22,22 +22,23 @@ public class Generator {
         this.m = m;
         this.l = l;
         this.length = length;
-        s = (ArmorStand) l.getWorld().spawnEntity(l.add(0, 2, 0), EntityType.ARMOR_STAND);
+        s = (ArmorStand) l.getWorld().spawnEntity(
+                new Location(l.getWorld(), l.getX(), l.getY() + 2, l.getZ()), EntityType.ARMOR_STAND);
         s.setInvisible(true);
         s.setMarker(true);
         s.setGravity(false);
         s.setHelmet(new ItemStack(m));
+        s.addScoreboardTag("removable");
 
-        n = (ArmorStand) l.getWorld().spawnEntity(s.getLocation().add(0, 2.2, 0), EntityType.ARMOR_STAND);
+        n = (ArmorStand) l.getWorld().spawnEntity(
+                new Location(l.getWorld(), l.getX(), l.getY() + 2.2, l.getZ()), EntityType.ARMOR_STAND);
         n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
                 + (length - time) + " seconds...");
         n.setCustomNameVisible(true);
         n.setInvisible(true);
         n.setMarker(true);
         n.setGravity(false);
-
-        GenManager.genFile.addLine(name + "@" + m.toString() + "@" + l.getWorld().getName() + "@"
-                + l.getX() + "@" + l.getY() + "@" + l.getZ() + "@" + time);
+        n.addScoreboardTag("removable");
 
     }
 
@@ -47,10 +48,18 @@ public class Generator {
         tl.setYaw(tl.getYaw() + 5);
         s.teleport(tl);
 
+        if (s.getNearbyEntities(3, 3, 3).size() < 1) {
+
+            s.setCustomName(ChatColor.GREEN + "Stand here!");
+            return;
+
+        }
+
         if (time == length) {
 
             time = 0;
-            l.getWorld().dropItem(l.add(0, 2, 0), new ItemStack(m));
+            l.getWorld().dropItemNaturally(new Location(l.getWorld(), l.getX(), l.getY() + 2, l.getZ()),
+                    new ItemStack(m));
 
         } else time++;
 

@@ -4,7 +4,10 @@ import com.celestia.veo.essentials.zct.ZCM;
 import com.celestia.veo.essentials.zpm.ZPM;
 import com.celestia.veo.essentials.zwp.ZWP;
 import com.celestia.veo.game.custom.gens.GenManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,6 +30,9 @@ public class Main extends JavaPlugin {
         mainFolder = new File(this.getDataFolder().getParentFile().getAbsolutePath()
                 + "/" + name);
         if (!mainFolder.exists()) mainFolder.mkdir();
+
+        for (World w : Bukkit.getWorlds()) for (Entity e : w.getEntities())
+            if (e.getScoreboardTags().contains("removable")) e.remove();
 
         ZPM.init(this);
         ZWP.init(this);

@@ -30,9 +30,6 @@ public class Flag {
         this.name = name;
 
         unclaim();
-        GenManager.flagFile.addLine(name + "@" + head.getWorld() + "@" + head.getX() +
-                "@" + head.getY() + "@" + head.getZ() + "@"
-                + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
 
     }
 
@@ -51,32 +48,40 @@ public class Flag {
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 3);
 
         a.remove();
-        a = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 0, 0), EntityType.ARMOR_STAND);
+        a = (ArmorStand) p.getWorld().spawnEntity(
+                new Location(head.getWorld(), head.getX(), head.getY() + 2, head.getZ()),
+                EntityType.ARMOR_STAND);
         a.setMarker(true);
         a.setInvisible(true);
         a.setGravity(false);
         a.setCustomName(ChatColor.RED + p.getName() + " has claimed this island!");
         a.setCustomNameVisible(true);
+        a.addScoreboardTag("removable");
 
-        b = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 2.2, 0),
+        b = (ArmorStand) p.getWorld().spawnEntity(
+                new Location(head.getWorld(), head.getX(), head.getY() + 2.2, head.getZ()),
                 EntityType.ARMOR_STAND);
         b.setMarker(true);
         b.setInvisible(true);
         b.setGravity(false);
         b.setCustomName(ChatColor.GREEN + "Crouch here to tear the flag down.");
         b.setCustomNameVisible(false);
+        b.addScoreboardTag("removable");
 
         ((CraftPlayer) p).getHandle().playerConnection.
                 sendPacket(new PacketPlayOutEntityDestroy(a.getEntityId()));
         ((CraftPlayer) p).getHandle().playerConnection.
                 sendPacket(new PacketPlayOutEntityDestroy(b.getEntityId()));
 
-        c = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 2, 0), EntityType.ARMOR_STAND);
+        c = (ArmorStand) p.getWorld().spawnEntity(
+                new Location(head.getWorld(), head.getX(), head.getY() + 2, head.getZ()),
+                EntityType.ARMOR_STAND);
         b.setMarker(true);
         b.setInvisible(true);
         b.setGravity(false);
         b.setCustomName(ChatColor.GREEN + "You've claimed this island!");
         b.setCustomNameVisible(false);
+        c.addScoreboardTag("removable");
 
         for (Player pl : Bukkit.getOnlinePlayers()) {
 
@@ -97,12 +102,15 @@ public class Flag {
         /*for (Player p : Bukkit.getOnlinePlayers())
             Main.sendMessage(p, ChatColor.GREEN + "The island of " + name
                     + " has been unclaimed!", false);*/
-        a = (ArmorStand) pole.getWorld().spawnEntity(pole.add(0, 0.3, 0), EntityType.ARMOR_STAND);
+        a = (ArmorStand) head.getWorld().spawnEntity(
+                new Location(head.getWorld(), head.getX(), head.getY() + 0.3, head.getZ()),
+                EntityType.ARMOR_STAND);
         a.setMarker(true);
         a.setInvisible(true);
         a.setGravity(false);
         a.setCustomName(ChatColor.GREEN + "Click here to claimed this island!");
         a.setCustomNameVisible(true);
+        a.addScoreboardTag("removable");
 
     }
 

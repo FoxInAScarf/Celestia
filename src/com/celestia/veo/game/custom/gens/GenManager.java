@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -55,7 +56,8 @@ public class GenManager {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> {
 
-            for (Generator g : gens) g.run();
+            if (running)
+                for (Generator g : gens) g.run();
 
         }, 0L, 1L);
 

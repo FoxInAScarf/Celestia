@@ -128,6 +128,8 @@ public class GenCommand implements CommandExecutor {
 
         int time = Integer.parseInt(args[6]);
         GenManager.gens.add(new Generator(name, m, new Location(p.getWorld(), x, y, z), time));
+        GenManager.genFile.addLine(name + "@" + m.toString() + "@" + p.getWorld().getName() + "@"
+                + x + "@" + y + "@" + z + "@" + time);
 
         // joemama69@world@1@1@1@100
         Main.sendMessage(p, ChatColor.GREEN + "Added generator!", false);
@@ -190,6 +192,10 @@ public class GenCommand implements CommandExecutor {
         Location pole = new Location(p.getWorld(), px, py, pz);
 
         GenManager.flags.add(new Flag(name, head, pole));
+        GenManager.flagFile.addLine(name + "@" + head.getWorld() + "@" + head.getX() +
+                "@" + head.getY() + "@" + head.getZ() + "@"
+                + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
+
         Main.sendMessage(p, ChatColor.GREEN + "Added flag!", false);
 
     }
