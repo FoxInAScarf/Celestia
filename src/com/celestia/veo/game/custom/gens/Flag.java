@@ -29,6 +29,11 @@ public class Flag {
         this.pole = pole;
         this.name = name;
 
+        unclaim();
+        GenManager.flagFile.addLine(name + "@" + head.getWorld() + "@" + head.getX() +
+                "@" + head.getY() + "@" + head.getZ() + "@"
+                + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
+
     }
 
     public void claim(Player p) {
@@ -44,14 +49,16 @@ public class Flag {
         *
         * */
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 3);
-        a = (ArmorStand) p.getWorld().spawnEntity(head, EntityType.ARMOR_STAND);
+
+        a.remove();
+        a = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 0, 0), EntityType.ARMOR_STAND);
         a.setMarker(true);
         a.setInvisible(true);
         a.setGravity(false);
         a.setCustomName(ChatColor.RED + p.getName() + " has claimed this island!");
         a.setCustomNameVisible(true);
 
-        b = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 0.2, 0),
+        b = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 2.2, 0),
                 EntityType.ARMOR_STAND);
         b.setMarker(true);
         b.setInvisible(true);
@@ -64,7 +71,7 @@ public class Flag {
         ((CraftPlayer) p).getHandle().playerConnection.
                 sendPacket(new PacketPlayOutEntityDestroy(b.getEntityId()));
 
-        c = (ArmorStand) p.getWorld().spawnEntity(head, EntityType.ARMOR_STAND);
+        c = (ArmorStand) p.getWorld().spawnEntity(head.add(0, 2, 0), EntityType.ARMOR_STAND);
         b.setMarker(true);
         b.setInvisible(true);
         b.setGravity(false);
@@ -90,6 +97,12 @@ public class Flag {
         /*for (Player p : Bukkit.getOnlinePlayers())
             Main.sendMessage(p, ChatColor.GREEN + "The island of " + name
                     + " has been unclaimed!", false);*/
+        a = (ArmorStand) pole.getWorld().spawnEntity(pole.add(0, 0.3, 0), EntityType.ARMOR_STAND);
+        a.setMarker(true);
+        a.setInvisible(true);
+        a.setGravity(false);
+        a.setCustomName(ChatColor.GREEN + "Click here to claimed this island!");
+        a.setCustomNameVisible(true);
 
     }
 
@@ -97,6 +110,9 @@ public class Flag {
 
         unclaim();
         GenManager.flags.remove(this);
+        GenManager.flagFile.removeLine(name + "@" + head.getWorld() + "@" + head.getX() +
+                "@" + head.getY() + "@" + head.getZ() + "@"
+                + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
 
     }
 

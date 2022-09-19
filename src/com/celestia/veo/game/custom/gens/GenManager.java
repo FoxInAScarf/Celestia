@@ -20,7 +20,7 @@ public class GenManager {
 
     static boolean running = true;
 
-    public void init(JavaPlugin main) {
+    public static void init(JavaPlugin main) {
 
         String folder = Main.mainFolder.getAbsolutePath() + "/Gens";
         if (!new File(folder).exists()) new File(folder).mkdir();

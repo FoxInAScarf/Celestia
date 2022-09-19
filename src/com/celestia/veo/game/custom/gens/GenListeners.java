@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class GenListeners implements Listener {
 
@@ -20,6 +21,20 @@ public class GenListeners implements Listener {
                     break;
 
                 }
+
+    }
+
+    /*
+    *
+    * TEST
+    *
+    * */
+
+    @EventHandler
+    public void bruh(PlayerMoveEvent e) {
+
+        e.getPlayer().sendMessage(e.getPlayer().getLocation()
+                .subtract(0, 1, 0).getBlock().getType() + "");
 
     }
 

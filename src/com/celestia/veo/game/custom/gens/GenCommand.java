@@ -109,7 +109,7 @@ public class GenCommand implements CommandExecutor {
 
         }
 
-        Material m = Material.getMaterial(args[2]);
+        Material m = Material.getMaterial(args[2].toUpperCase());
         if (m == null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There's no such material as '"
@@ -128,8 +128,6 @@ public class GenCommand implements CommandExecutor {
 
         int time = Integer.parseInt(args[6]);
         GenManager.gens.add(new Generator(name, m, new Location(p.getWorld(), x, y, z), time));
-        GenManager.genFile.addLine(name + "@" + p.getWorld().getName() + "@" + x + "@" +
-                y + "@" + z + "@" + time);
 
         // joemama69@world@1@1@1@100
         Main.sendMessage(p, ChatColor.GREEN + "Added generator!", false);
@@ -161,7 +159,7 @@ public class GenCommand implements CommandExecutor {
 
     public void addFlag(String[] args, Player p) {
 
-        String name = args[1];
+        String name = args[2];
         if (GenManager.getGen(name) != null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There's already a flag attached to " +
@@ -172,28 +170,26 @@ public class GenCommand implements CommandExecutor {
         }
 
         double hx, hy, hz;
-        if (args[2].equals("~")) hx = p.getLocation().getX();
-        else hx = Double.parseDouble(args[2]);
-        if (args[3].equals("~")) hy = p.getLocation().getY();
-        else hy = Double.parseDouble(args[3]);
-        if (args[4].equals("~")) hz = p.getLocation().getZ();
-        else hz = Double.parseDouble(args[4]);
+        if (args[3].equals("~")) hx = p.getLocation().getX();
+        else hx = Double.parseDouble(args[3]);
+        if (args[4].equals("~")) hy = p.getLocation().getY();
+        else hy = Double.parseDouble(args[4]);
+        if (args[5].equals("~")) hz = p.getLocation().getZ();
+        else hz = Double.parseDouble(args[5]);
 
         Location head = new Location(p.getWorld(), hx, hy, hz);
 
         double px, py, pz;
-        if (args[5].equals("~")) px = p.getLocation().getX();
-        else px = Double.parseDouble(args[5]);
-        if (args[6].equals("~")) py = p.getLocation().getY();
-        else py = Double.parseDouble(args[6]);
-        if (args[7].equals("~")) pz = p.getLocation().getZ();
-        else pz = Double.parseDouble(args[7]);
+        if (args[6].equals("~")) px = p.getLocation().getX();
+        else px = Double.parseDouble(args[6]);
+        if (args[7].equals("~")) py = p.getLocation().getY();
+        else py = Double.parseDouble(args[7]);
+        if (args[8].equals("~")) pz = p.getLocation().getZ();
+        else pz = Double.parseDouble(args[8]);
 
         Location pole = new Location(p.getWorld(), px, py, pz);
 
         GenManager.flags.add(new Flag(name, head, pole));
-        GenManager.flagFile.addLine(name + "@" + p.getWorld() + "@" + hx + "@" + hy + "@" + hz + "@"
-                + px + "@" + py + "@" + pz + "@");
         Main.sendMessage(p, ChatColor.GREEN + "Added flag!", false);
 
     }

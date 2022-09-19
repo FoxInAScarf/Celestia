@@ -18,3 +18,6 @@ commands:
   unblock:
     aliases: []
     description: ZChatManager module command.
+  gens:
+    aliases: ['generator']
+    description: Celestia command.
