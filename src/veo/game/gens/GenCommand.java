@@ -191,7 +191,7 @@ public class GenCommand implements CommandExecutor {
         Location pole = new Location(p.getWorld(), px, py, pz);
 
         GenManager.flags.add(new Flag(name, head, pole));
-        GenManager.flagFile.addLine(name + "@" + head.getWorld() + "@" + head.getX() +
+        GenManager.flagFile.addLine(name + "@" + head.getWorld().getName() + "@" + head.getX() +
                 "@" + head.getY() + "@" + head.getZ() + "@"
                 + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
 

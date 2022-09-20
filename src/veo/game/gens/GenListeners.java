@@ -1,9 +1,11 @@
 package veo.game.gens;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import veo.Main;
 
 public class GenListeners implements Listener {
 
@@ -14,7 +16,15 @@ public class GenListeners implements Listener {
             for (Flag f : GenManager.flags)
                 if (f.head.equals(e.getClickedBlock().getLocation())) {
 
-                    f.claim(e.getPlayer());
+                    if (f.owner == null) f.claim(e.getPlayer());
+                    else {
+
+                        Main.sendMessage(e.getPlayer(), ChatColor.RED + "This island has been " +
+                                "already claimed.", true);
+                        Main.sendMessage(e.getPlayer(), ChatColor.GREEN + "Unclaim it by crouching for " +
+                                ChatColor.YELLOW + "10" + ChatColor.GREEN + " seconds by it.", true);
+
+                    }
                     break;
 
                 }

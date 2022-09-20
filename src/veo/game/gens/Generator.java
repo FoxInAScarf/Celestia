@@ -37,7 +37,7 @@ public class Generator {
         n = (ArmorStand) l.getWorld().spawnEntity(
                 new Location(l.getWorld(), l.getX(), l.getY() + 4.2, l.getZ()), EntityType.ARMOR_STAND);
         n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
-                + (length - time) + " seconds...");
+                + (length - time) / 20 + " seconds...");
         n.setCustomNameVisible(true);
         n.setInvisible(true);
         n.setMarker(true);
@@ -84,8 +84,8 @@ public class Generator {
         s.remove();
         n.remove();
         GenManager.gens.remove(this);
-        GenManager.genFile.removeLine(name + "@" + m.toString() + "@" + l.getWorld() + "@"
-                + l.getX() + "@" + l.getY() + "@" + l.getZ() + "@" + time);
+        GenManager.genFile.removeLine(name + "@" + m.toString() + "@" + l.getWorld().getName() + "@"
+                + l.getX() + "@" + l.getY() + "@" + l.getZ() + "@" + length);
 
     }
 

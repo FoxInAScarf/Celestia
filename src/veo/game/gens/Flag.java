@@ -31,15 +31,7 @@ public class Flag {
         new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + 10, this.pole.getZ())
                 .getBlock().setType(Material.DARK_OAK_SLAB);
 
-        a = (ArmorStand) head.getWorld().spawnEntity(
-                new Location(head.getWorld(), this.head.getX() + 0.5, this.head.getY() + 0.3, this.head.getZ() + 0.5),
-                EntityType.ARMOR_STAND);
-        a.setMarker(true);
-        a.setInvisible(true);
-        a.setGravity(false);
-        a.setCustomName(ChatColor.GREEN + "Click here to claimed this island!");
-        a.setCustomNameVisible(true);
-        a.addScoreboardTag("removable");
+        unclaim();
 
     }
 
@@ -75,7 +67,7 @@ public class Flag {
         b.setInvisible(true);
         b.setGravity(false);
         b.setCustomName(ChatColor.GREEN + "Crouch here to tear the flag down.");
-        b.setCustomNameVisible(false);
+        b.setCustomNameVisible(true);
         b.addScoreboardTag("removable");
 
         ((CraftPlayer) p).getHandle().b.a(new PacketPlayOutEntityDestroy(a.getEntityId()));
@@ -88,7 +80,7 @@ public class Flag {
         c.setInvisible(true);
         c.setGravity(false);
         c.setCustomName(ChatColor.GREEN + "You've claimed this island!");
-        c.setCustomNameVisible(false);
+        c.setCustomNameVisible(true);
         c.addScoreboardTag("removable");
 
         for (Player pl : Bukkit.getOnlinePlayers()) {
@@ -104,9 +96,12 @@ public class Flag {
 
         owner = null;
 
-        a.remove();
-        b.remove();
-        c.remove();
+        if (a != null)
+            a.remove();
+        if (b != null)
+            b.remove();
+        if (c != null)
+            c.remove();
         /*for (Player p : Bukkit.getOnlinePlayers())
             Main.sendMessage(p, ChatColor.GREEN + "The island of " + name
                     + " has been unclaimed!", false);*/
@@ -124,11 +119,16 @@ public class Flag {
 
     public void remove() {
 
-        unclaim();
+        if (a != null)
+            a.remove();
+        if (b != null)
+            b.remove();
+        if (c != null)
+            c.remove();
         GenManager.flags.remove(this);
-        GenManager.flagFile.removeLine(name + "@" + head.getWorld() + "@" + head.getX() +
+        GenManager.flagFile.removeLine(name + "@" + head.getWorld().getName() + "@" + head.getX() +
                 "@" + head.getY() + "@" + head.getZ() + "@"
-                + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
+                + pole.getX() + "@" + pole.getY() + "@" + pole.getZ());
 
     }
 

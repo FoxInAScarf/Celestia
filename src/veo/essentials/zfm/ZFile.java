@@ -81,7 +81,7 @@ public class ZFile {
 
     public void removeLine(String line) {
 
-        lines.remove(lines.indexOf(line));
+        lines.remove(line);
         save();
 
     }
