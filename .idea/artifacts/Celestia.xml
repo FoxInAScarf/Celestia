@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/../..</output-path>
     <root id="archive" name="Celestia.jar">
       <element id="module-output" name="Celestia" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../Spigot/spigot-1.16.5.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

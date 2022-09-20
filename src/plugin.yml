@@ -3,7 +3,7 @@ author: Zraphy
 main: com.celestia.veo.Main
 version: 1.0.0
 name: Celestia
-#api-version: 1.19.2
+api-version: 1.19
 
 commands:
   zwp:
