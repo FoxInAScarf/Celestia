@@ -1,15 +1,15 @@
-package com.celestia.veo;
+package veo;
 
-import com.celestia.veo.essentials.zct.ZCM;
-import com.celestia.veo.essentials.zpm.ZPM;
-import com.celestia.veo.essentials.zwp.ZWP;
-import com.celestia.veo.game.custom.gens.GenManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import veo.essentials.zct.ZCM;
+import veo.essentials.zpm.ZPM;
+import veo.essentials.zwp.ZWP;
+import veo.game.gens.GenManager;
 
 import java.io.File;
 

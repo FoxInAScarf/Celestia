@@ -1,7 +1,5 @@
-package com.celestia.veo.game.custom.gens;
+package veo.game.gens;
 
-import com.celestia.veo.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import veo.Main;
 
 public class GenCommand implements CommandExecutor {
 

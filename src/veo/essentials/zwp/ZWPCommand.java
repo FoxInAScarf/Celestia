@@ -1,6 +1,5 @@
-package com.celestia.veo.essentials.zwp;
+package veo.essentials.zwp;
 
-import com.celestia.veo.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -8,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import veo.Main;
 
 public class ZWPCommand implements CommandExecutor {
 

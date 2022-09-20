@@ -1,9 +1,9 @@
-package com.celestia.veo.game.custom.turret;
+package veo.game.turret;
 
-import com.celestia.veo.Main;
 import com.celestia.veo.essentials.zfm.ZFile;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import veo.Main;
 
 import java.io.File;
 import java.util.ArrayList;

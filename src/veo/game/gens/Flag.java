@@ -1,12 +1,12 @@
-package com.celestia.veo.game.custom.gens;
+package veo.game.gens;
 
-import com.celestia.veo.Main;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import veo.Main;
 
 public class Flag {
 
@@ -17,18 +17,29 @@ public class Flag {
 
     public Flag(String name, Location head, Location pole) {
 
+        this.head = new Location(head.getWorld(), Math.floor(head.getX()), head.getY(),
+                Math.floor(head.getZ()));
+        this.pole = pole;
+        this.name = name;
+
         // generate blocks
 
         head.getBlock().setType(Material.RED_WOOL);
         for (int i = 0; i <= 9; i++)
-            pole.add(0, i, 0).getBlock().setType(Material.OAK_FENCE);
-        pole.add(0, 10, 0).getBlock().setType(Material.DARK_OAK_SLAB);
+            new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + i, this.pole.getZ())
+                    .getBlock().setType(Material.OAK_FENCE);
+        new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + 10, this.pole.getZ())
+                .getBlock().setType(Material.DARK_OAK_SLAB);
 
-        this.head = head;
-        this.pole = pole;
-        this.name = name;
-
-        unclaim();
+        a = (ArmorStand) head.getWorld().spawnEntity(
+                new Location(head.getWorld(), this.head.getX() + 0.5, this.head.getY() + 0.3, this.head.getZ() + 0.5),
+                EntityType.ARMOR_STAND);
+        a.setMarker(true);
+        a.setInvisible(true);
+        a.setGravity(false);
+        a.setCustomName(ChatColor.GREEN + "Click here to claimed this island!");
+        a.setCustomNameVisible(true);
+        a.addScoreboardTag("removable");
 
     }
 
@@ -48,7 +59,7 @@ public class Flag {
 
         a.remove();
         a = (ArmorStand) p.getWorld().spawnEntity(
-                new Location(head.getWorld(), head.getX(), head.getY() + 2, head.getZ()),
+                new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 2.2, head.getZ() + 0.5),
                 EntityType.ARMOR_STAND);
         a.setMarker(true);
         a.setInvisible(true);
@@ -58,7 +69,7 @@ public class Flag {
         a.addScoreboardTag("removable");
 
         b = (ArmorStand) p.getWorld().spawnEntity(
-                new Location(head.getWorld(), head.getX(), head.getY() + 2.2, head.getZ()),
+                new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 2, head.getZ() + 0.5),
                 EntityType.ARMOR_STAND);
         b.setMarker(true);
         b.setInvisible(true);
@@ -71,13 +82,13 @@ public class Flag {
         ((CraftPlayer) p).getHandle().b.a(new PacketPlayOutEntityDestroy(b.getEntityId()));
 
         c = (ArmorStand) p.getWorld().spawnEntity(
-                new Location(head.getWorld(), head.getX(), head.getY() + 2, head.getZ()),
+                new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 2, head.getZ() + 0.5),
                 EntityType.ARMOR_STAND);
-        b.setMarker(true);
-        b.setInvisible(true);
-        b.setGravity(false);
-        b.setCustomName(ChatColor.GREEN + "You've claimed this island!");
-        b.setCustomNameVisible(false);
+        c.setMarker(true);
+        c.setInvisible(true);
+        c.setGravity(false);
+        c.setCustomName(ChatColor.GREEN + "You've claimed this island!");
+        c.setCustomNameVisible(false);
         c.addScoreboardTag("removable");
 
         for (Player pl : Bukkit.getOnlinePlayers()) {
@@ -92,6 +103,7 @@ public class Flag {
     public void unclaim() {
 
         owner = null;
+
         a.remove();
         b.remove();
         c.remove();
@@ -99,7 +111,7 @@ public class Flag {
             Main.sendMessage(p, ChatColor.GREEN + "The island of " + name
                     + " has been unclaimed!", false);*/
         a = (ArmorStand) head.getWorld().spawnEntity(
-                new Location(head.getWorld(), head.getX(), head.getY() + 0.3, head.getZ()),
+                new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 0.3, head.getZ() + 0.5),
                 EntityType.ARMOR_STAND);
         a.setMarker(true);
         a.setInvisible(true);

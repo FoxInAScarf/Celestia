@@ -1,8 +1,8 @@
-package com.celestia.veo.essentials.zpm.profiles;
+package veo.essentials.zpm.profiles;
 
-import com.celestia.veo.essentials.zpm.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import veo.essentials.zpm.Profile;
 
 import java.io.File;
 import java.util.ArrayList;

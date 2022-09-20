@@ -1,9 +1,5 @@
-package com.celestia.veo.essentials.zct;
+package veo.essentials.zct;
 
-import com.celestia.veo.Main;
-import com.celestia.veo.essentials.zpm.ZPM;
-import com.celestia.veo.essentials.zpm.profiles.PlayerChatProfile;
-import com.celestia.veo.essentials.zpm.profiles.PlayerRankProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -13,6 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import veo.Main;
+import veo.essentials.zpm.ZPM;
+import veo.essentials.zpm.profiles.PlayerChatProfile;
+import veo.essentials.zpm.profiles.PlayerRankProfile;
 
 import java.io.File;
 

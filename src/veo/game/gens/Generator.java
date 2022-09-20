@@ -1,4 +1,4 @@
-package com.celestia.veo.game.custom.gens;
+package veo.game.gens;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

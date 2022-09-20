@@ -1,6 +1,6 @@
 author: Zraphy
 
-main: com.celestia.veo.Main
+main: veo.Main
 version: 1.0.0
 name: Celestia
 api-version: 1.19

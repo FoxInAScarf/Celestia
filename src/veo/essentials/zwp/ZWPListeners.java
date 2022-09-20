@@ -1,4 +1,4 @@
-package com.celestia.veo.essentials.zwp;
+package veo.essentials.zwp;
 
 import org.bukkit.Material;
 import org.bukkit.Particle;

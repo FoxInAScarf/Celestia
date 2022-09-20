@@ -1,11 +1,11 @@
-package com.celestia.veo.essentials.zwp;
+package veo.essentials.zwp;
 
-import com.celestia.veo.Main;
-import com.celestia.veo.essentials.zfm.ZFile;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
+import veo.Main;
+import veo.essentials.zfm.ZFile;
 
 import java.io.File;
 import java.util.ArrayList;

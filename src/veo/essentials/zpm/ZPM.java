@@ -1,13 +1,13 @@
-package com.celestia.veo.essentials.zpm;
+package veo.essentials.zpm;
 
-import com.celestia.veo.Main;
-import com.celestia.veo.essentials.zpm.profiles.PlayerChatProfile;
-import com.celestia.veo.essentials.zpm.profiles.PlayerGameProfile;
-import com.celestia.veo.essentials.zpm.profiles.PlayerRankProfile;
-import com.celestia.veo.essentials.zpm.profiles.PlayerSocialProfile;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import veo.Main;
+import veo.essentials.zpm.profiles.PlayerChatProfile;
+import veo.essentials.zpm.profiles.PlayerGameProfile;
+import veo.essentials.zpm.profiles.PlayerRankProfile;
+import veo.essentials.zpm.profiles.PlayerSocialProfile;
 
 import java.io.File;
 import java.util.ArrayList;

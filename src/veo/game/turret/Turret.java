@@ -1,7 +1,5 @@
-package com.celestia.veo.game.custom.turret;
+package veo.game.turret;
 
-import com.celestia.veo.Main;
-import com.celestia.veo.essentials.zfm.ZFile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;

@@ -1,13 +1,13 @@
-package com.celestia.veo.essentials.zct;
+package veo.essentials.zct;
 
-import com.celestia.veo.Main;
-import com.celestia.veo.essentials.zpm.ZPM;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import veo.Main;
+import veo.essentials.zpm.ZPM;
 
 public class ZCMCommands {
 

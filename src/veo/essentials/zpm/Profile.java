@@ -1,9 +1,9 @@
-package com.celestia.veo.essentials.zpm;
+package veo.essentials.zpm;
 
-import com.celestia.veo.essentials.zfm.ZFile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import veo.essentials.zfm.ZFile;
 
 import java.io.File;
 import java.util.UUID;
