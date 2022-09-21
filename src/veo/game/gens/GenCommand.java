@@ -154,7 +154,8 @@ public class GenCommand implements CommandExecutor {
                 }*/
 
         GenManager.getGen(args[1]).remove();
-        Main.sendMessage(p, ChatColor.GREEN + "Removed generator!", false);
+        GenManager.getFlag(args[1]).remove();
+        Main.sendMessage(p, ChatColor.GREEN + "Removed generator and it's flag!", false);
 
     }
 
@@ -166,6 +167,15 @@ public class GenCommand implements CommandExecutor {
             Main.sendMessage(p, ChatColor.YELLOW + "There's already a flag attached to " +
                     "the generator named '"
                     + ChatColor.RED + name + ChatColor.YELLOW + "'!", true);
+            return;
+
+        }
+
+        if (GenManager.getGen(name) == null) {
+
+            Main.sendMessage(p, ChatColor.YELLOW + "There's no generator named "
+                    + ChatColor.RED + name + ChatColor.YELLOW + "'! " +
+                    "You can't attach a flag to a generator which doesn't exist.", true);
             return;
 
         }

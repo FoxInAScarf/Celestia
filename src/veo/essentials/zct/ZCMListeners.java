@@ -22,6 +22,7 @@ public class ZCMListeners implements Listener {
     public void onChat(PlayerChatEvent e) {
 
         Player sender = e.getPlayer();
+        System.out.println(sender.getName() + ": " + e.getMessage()); // for logging purposes
 
         if (!ZPM.getPCP(sender).isChatEnabled) {
 

@@ -18,6 +18,7 @@ public class Main extends JavaPlugin {
     public boolean running = true;
     public static File mainFolder;
     public static final String name = "Celestia";
+    private static Main main;
 
     public void onEnable() {
 
@@ -26,6 +27,8 @@ public class Main extends JavaPlugin {
         * Display cool looking thing
         *
         * */
+
+        main = this;
 
         mainFolder = new File(this.getDataFolder().getParentFile().getAbsolutePath()
                 + "/" + name);
@@ -57,5 +60,7 @@ public class Main extends JavaPlugin {
         p.sendMessage(prefix + ChatColor.RESET + msg);
 
     }
+
+    public static Main getInstance() { return main; }
 
 }

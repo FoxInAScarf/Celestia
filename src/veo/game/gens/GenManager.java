@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenManager {
-
     static List<Generator> gens = new ArrayList<>();
     static List<Flag> flags = new ArrayList<>();
     static ZFile genFile, flagFile;

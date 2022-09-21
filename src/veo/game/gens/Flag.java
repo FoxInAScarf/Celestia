@@ -1,13 +1,21 @@
 package veo.game.gens;
 
+import net.minecraft.core.BlockPosition;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
+import net.minecraft.world.level.block.entity.TileEntity;
 import org.bukkit.*;
 import org.bukkit.block.Skull;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.EulerAngle;
 import veo.Main;
 
 import java.util.HashMap;
@@ -20,7 +28,7 @@ public class Flag {
     public OfflinePlayer owner;
     public Location head, pole;
 
-    private HashMap<String, ArmorStand> stands = new HashMap<>();
+    public HashMap<String, ArmorStand> stands = new HashMap<>();
 
     public Flag(String name, Location head, Location pole) {
 
@@ -46,17 +54,59 @@ public class Flag {
         owner = p;
         Main.sendMessage(p, ChatColor.GREEN + "You claimed the island of "
                 + name, false);
-        /*
-        *
-        *
-        * ADD CLAIM STATUE
-        *
-        *
-        * */
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 3);
 
+        head.getBlock().setType(Material.AIR);
         stands.get("clickHere").remove();
         stands.remove("clickHere", stands.get("clickHere"));
+
+        stands.put("statue", (ArmorStand) p.getWorld().spawnEntity(
+                new Location(head.getWorld(), head.getX() + 0.5, head.getY(), head.getZ() + 0.5),
+                EntityType.ARMOR_STAND));
+        stands.get("statue").setMarker(true);
+        stands.get("statue").setBasePlate(false);
+        stands.get("statue").setGravity(false);
+        stands.get("statue").addScoreboardTag("removable");
+        // give style to the lil' guy
+        {
+
+            stands.get("statue").setArms(true);
+            stands.get("statue").setHeadPose(new EulerAngle(15, 0, 0));
+            stands.get("statue").setRightArmPose(new EulerAngle(115, 335, 0));
+            stands.get("statue").setLeftArmPose(new EulerAngle(0, 0, 10));
+            stands.get("statue").setLeftLegPose(new EulerAngle(340, 0, 0));
+            ItemStack h = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta hm = (SkullMeta) h.getItemMeta();
+            hm.setOwningPlayer(owner);
+            h.setItemMeta(hm);
+            stands.get("statue").setHelmet(h);
+            ItemStack c = new ItemStack(Material.LEATHER_CHESTPLATE);
+            LeatherArmorMeta cm = (LeatherArmorMeta) c.getItemMeta();
+            cm.setColor(Color.BLACK);
+            c.setItemMeta(cm);
+            stands.get("statue").setChestplate(c);
+            ItemStack l = new ItemStack(Material.LEATHER_LEGGINGS);
+            LeatherArmorMeta lm = (LeatherArmorMeta) l.getItemMeta();
+            lm.setColor(Color.BLACK);
+            l.setItemMeta(lm);
+            stands.get("statue").setLeggings(l);
+            ItemStack b = new ItemStack(Material.LEATHER_BOOTS);
+            LeatherArmorMeta bm = (LeatherArmorMeta) b.getItemMeta();
+            bm.setColor(Color.BLACK);
+            b.setItemMeta(bm);
+            stands.get("statue").setBoots(b);
+
+        }
+        // give heading to the lil' guy
+        {
+
+            Location tl = stands.get("statue").getLocation();
+            double dx = pole.getX() - head.getX(),
+                    dz = pole.getZ() - head.getZ();
+            tl.setYaw((float) Math.toDegrees(Math.atan(dx / dz)) - 90);
+            stands.get("statue").teleport(tl);
+
+        }
 
         stands.put("hasClaimed", (ArmorStand) p.getWorld().spawnEntity(
                 new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 2.2, head.getZ() + 0.5),
@@ -120,15 +170,31 @@ public class Flag {
         stands.get("clickHere").setMarker(true);
         stands.get("clickHere").setInvisible(true);
         stands.get("clickHere").setGravity(false);
-        stands.get("clickHere").setCustomName(ChatColor.GREEN + "Click here to claimed this island!");
+        stands.get("clickHere").setCustomName(ChatColor.GREEN + "Click here to claim this island!");
         stands.get("clickHere").setCustomNameVisible(true);
         stands.get("clickHere").addScoreboardTag("removable");
 
-        head.getBlock().setType(Material.RED_WOOL);
+        /*BlockPosition hbp = new BlockPosition(head.getX(), head.getY(), head.getZ());
+        TileEntity hb = ((CraftWorld) head.getWorld()).getHandle().capturedTileEntities.get(hbp);
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.
+        hb.a();*/
+
+        // shittiest line(s) of code I've ever written in my entire life
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                    "setblock " + ((int) head.getX()) + " " + ((int) head.getY()) + " " + ((int) head.getZ()) +
+                    " minecraft:player_head[rotation=0]{SkullOwner:{" +
+                    "Id:[I;-1217896545,-1015529000,-1506369421,548850094],Properties:{textures:[{Value:" +
+                    "\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTJkZDExZGEwNDI1MmY3NmI2OTM0YmMyNjYxMmY1NGYyNjRmMzBlZWQ3NGRmODk5NDEyMDllMTkxYmViYzBhMiJ9fX0=\"}]}}}");
+
+        }, 100L);
+
 
     }
 
-    HashMap<Player, Integer> crouching = new HashMap<>();
+    private final HashMap<Player, Integer> crouching = new HashMap<>();
 
     public void run() {
 
@@ -152,13 +218,13 @@ public class Flag {
             Map.Entry<Player, Integer> e = i.next();
             if (!e.getKey().isSneaking()) {
 
-                e.getKey().sendMessage("Stopped crouching.");
+                //e.getKey().sendMessage("Stopped crouching.");
                 i.remove();
                 continue;
 
             }
 
-            if (e.getValue() >= 200) {
+            if (e.getValue() >= 160) {
 
                 e.getKey().sendMessage("DONE!");
                 crouching.clear();
@@ -167,7 +233,7 @@ public class Flag {
 
             }
 
-            e.getKey().sendTitle(getBar(((double) e.getValue()) / 200), "", 0, 2, 0);
+            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), "", 0, 2, 0);
 
         }
 
