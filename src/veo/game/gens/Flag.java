@@ -167,7 +167,7 @@ public class Flag {
 
             }
 
-            e.getKey().sendMessage(getBar(e.getValue() / 200));
+            e.getKey().sendTitle(getBar(((double) e.getValue()) / 200), "", 0, 2, 0);
 
         }
 
