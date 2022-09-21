@@ -181,6 +181,8 @@ public class Flag {
         hb.a();*/
 
         // shittiest line(s) of code I've ever written in my entire life
+        long t = 0L;
+        if (Bukkit.getOnlinePlayers().size() == 0) t = 100L;
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
 
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
@@ -189,7 +191,7 @@ public class Flag {
                     "Id:[I;-1217896545,-1015529000,-1506369421,548850094],Properties:{textures:[{Value:" +
                     "\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTJkZDExZGEwNDI1MmY3NmI2OTM0YmMyNjYxMmY1NGYyNjRmMzBlZWQ3NGRmODk5NDEyMDllMTkxYmViYzBhMiJ9fX0=\"}]}}}");
 
-        }, 100L);
+        }, t);
 
 
     }
