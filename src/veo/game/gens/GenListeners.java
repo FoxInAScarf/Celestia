@@ -12,12 +12,26 @@ public class GenListeners implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
 
+        e.getPlayer().sendMessage(Flag.getBar(0));
+        e.getPlayer().sendMessage(Flag.getBar(0.25));
+        e.getPlayer().sendMessage(Flag.getBar(0.5));
+        e.getPlayer().sendMessage(Flag.getBar(0.75));
+        e.getPlayer().sendMessage(Flag.getBar(1));
+
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null)
             for (Flag f : GenManager.flags)
                 if (f.head.equals(e.getClickedBlock().getLocation())) {
 
                     if (f.owner == null) f.claim(e.getPlayer());
                     else {
+
+                        if (f.owner.equals(e.getPlayer())) {
+
+                            Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You've already" +
+                                    " claimed this island. Try claiming another one!", true);
+                            return;
+
+                        }
 
                         Main.sendMessage(e.getPlayer(), ChatColor.RED + "This island has been " +
                                 "already claimed.", true);

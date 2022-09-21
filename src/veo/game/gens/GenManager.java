@@ -57,6 +57,8 @@ public class GenManager {
 
             if (running)
                 for (Generator g : gens) g.run();
+            if (running)
+                for (Flag f : flags) f.run();
 
         }, 0L, 1L);
 
