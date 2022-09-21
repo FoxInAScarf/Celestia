@@ -52,14 +52,18 @@ public class Generator {
         tl.setYaw(tl.getYaw() + 5);
         s.teleport(tl);
 
+
+        int nearbyPlayers = 0;
         for (Player p : Bukkit.getOnlinePlayers())
-            if (p.getLocation().distance(s.getLocation()) >= 4) {
+            if (p.getLocation().distance(s.getLocation()) <= 4) nearbyPlayers++;
 
-                n.setCustomName(ChatColor.GREEN + "Stand here!");
-                time = 0;
-                return;
+        if (nearbyPlayers == 0) {
 
-            }
+            n.setCustomName(ChatColor.GREEN + "Stand here!");
+            time = 0;
+            return;
+
+        }
 
         if (time == length) {
 

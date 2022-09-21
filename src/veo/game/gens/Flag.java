@@ -134,7 +134,7 @@ public class Flag {
 
         if (owner == null) return;
 
-        for (Entity e : stands.get("crouchHere").getNearbyEntities(4, 4, 4))
+        for (Entity e : stands.get("crouchHere").getNearbyEntities(2, 2, 2))
             if (e instanceof Player && ((Player) e).isSneaking()) {
 
                 if ((e.equals(owner))) continue;
