@@ -21,6 +21,6 @@ commands:
   gens:
     aliases: ['generator']
     description: Celestia command.
-  flags:
+  flag:
     aliases: []
     description: Celestia command.
