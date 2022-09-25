@@ -10,6 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -91,7 +92,16 @@ public class ZWPListeners implements Listener {
     }
 
     @EventHandler
-    public void onBlockChange(BlockPhysicsEvent e) {
+    public void onBlockChange(EntityInteractEvent e) {
+
+        if (e.getBlock().getType().equals(Material.FARMLAND)) {
+
+            e.getBlock().getWorld().spawnParticle(Particle.SMOKE_NORMAL,
+                    e.getBlock().getLocation().add(0.5, 1.2, 0.5),
+                    5, 0, 0, 0, 0);
+            e.setCancelled(true);
+
+        }
 
         /*System.out.println(e.getEventName());
         e.getBlock().getWorld().spawnParticle(Particle.SMOKE_NORMAL,

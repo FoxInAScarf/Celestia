@@ -24,10 +24,10 @@ public class Generator {
 
         this.name = name;
         this.m = m;
-        this.l = l;
+        this.l = new Location(l.getWorld(), Math.abs(l.getX()) + 0.5, l.getY(), Math.abs(l.getZ()) + 0.5);
         this.length = length;
         s = (ArmorStand) l.getWorld().spawnEntity(
-                new Location(l.getWorld(), l.getX(), l.getY() + 2, l.getZ()), EntityType.ARMOR_STAND);
+                new Location(this.l.getWorld(), this.l.getX(), this.l.getY() + 2, this.l.getZ()), EntityType.ARMOR_STAND);
         s.setInvisible(true);
         s.setMarker(true);
         s.setGravity(false);

@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
+import veo.game.gens.flag.Flag;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ import java.util.List;
 
 public class GenManager {
     static List<Generator> gens = new ArrayList<>();
-    static List<Flag> flags = new ArrayList<>();
-    static ZFile genFile, flagFile;
+    public static List<Flag> flags = new ArrayList<>();
+    static ZFile genFile;
+    public static ZFile flagFile;
 
     static boolean running = true;
 

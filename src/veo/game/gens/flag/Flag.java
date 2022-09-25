@@ -1,4 +1,4 @@
-package veo.game.gens;
+package veo.game.gens.flag;
 
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.EulerAngle;
 import veo.Main;
+import veo.game.gens.GenManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,6 +30,8 @@ public class Flag {
     public Location head, pole;
 
     public HashMap<String, ArmorStand> stands = new HashMap<>();
+    private int alert = 0;
+    private FlagStructure flag;
 
     public Flag(String name, Location head, Location pole) {
 
@@ -36,6 +39,7 @@ public class Flag {
                 Math.floor(head.getZ()));
         this.pole = pole;
         this.name = name;
+        this.flag = new FlagStructure(pole);
 
         // generate blocks
 
@@ -148,6 +152,8 @@ public class Flag {
 
         }
 
+        flag.raise(8, FlagManager.getFlag(owner.getPlayer()));
+
     }
 
     public void unclaim() {
@@ -173,12 +179,6 @@ public class Flag {
         stands.get("clickHere").setCustomName(ChatColor.GREEN + "Click here to claim this island!");
         stands.get("clickHere").setCustomNameVisible(true);
         stands.get("clickHere").addScoreboardTag("removable");
-
-        /*BlockPosition hbp = new BlockPosition(head.getX(), head.getY(), head.getZ());
-        TileEntity hb = ((CraftWorld) head.getWorld()).getHandle().capturedTileEntities.get(hbp);
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.
-        hb.a();*/
 
         // shittiest line(s) of code I've ever written in my entire life
         long t = 0L;
@@ -214,6 +214,18 @@ public class Flag {
 
             }
 
+        if (alert != 200 && alert != 0) alert++;
+        else alert = 0;
+
+        if (!crouching.isEmpty() && alert == 0) {
+
+            owner.getPlayer().playSound(owner.getPlayer().getLocation(), Sound.ENTITY_CAT_AMBIENT, 1, 1);
+            Main.sendMessage(owner.getPlayer(), ChatColor.DARK_RED + "" + ChatColor.BOLD
+                    + "Warning! One of your islands is under attack!", false);
+            alert = 1;
+
+        }
+
         Iterator<Map.Entry<Player, Integer>> i = crouching.entrySet().iterator();
         while (i.hasNext()) {
 
@@ -228,14 +240,21 @@ public class Flag {
 
             if (e.getValue() >= 160) {
 
-                e.getKey().sendMessage("DONE!");
+                Main.sendMessage(e.getKey(), ChatColor.GREEN + "GG!", false);
+                Main.sendMessage(owner.getPlayer(), ChatColor.DARK_RED + "" + ChatColor.BOLD +
+                        e.getKey().getName() + " has unclaimed one of your islands!", false);
+                owner.getPlayer().playSound(owner.getPlayer().getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1);
                 crouching.clear();
                 unclaim();
                 return;
 
             }
 
-            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), "", 0, 2, 0);
+            String dots = ChatColor.GRAY + "";
+            if (alert % 5 == 0) dots += ".";
+            if (alert % 10 == 0) dots += ".";
+            if (alert % 15 == 0) dots += ".";
+            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), dots, 0, 2, 0);
 
         }
 

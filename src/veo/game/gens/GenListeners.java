@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import veo.Main;
+import veo.game.gens.flag.Flag;
 
 public class GenListeners implements Listener {
 
