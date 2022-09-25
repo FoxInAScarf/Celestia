@@ -49,8 +49,12 @@ public class FlagManager {
             return null;
 
         FlagData d = new FlagData(UUID, f.getAbsolutePath());
+        d.setData(m);
         d.saveL();
         fs.add(d);
+
+        System.out.println("created: " + f.getAbsolutePath());
+
         return d;
 
     }

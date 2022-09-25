@@ -30,8 +30,11 @@ public class FlagData extends ZFile {
             m[row] = mRow;
 
         }
+        saveL();
 
     }
+
+    public void setData(Material[][] m) { this.m = m; }
 
     public void saveL() {
 

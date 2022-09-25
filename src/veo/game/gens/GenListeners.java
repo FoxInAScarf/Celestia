@@ -73,6 +73,8 @@ public class GenListeners implements Listener {
 
         if (FlagManager.getFlag(e.getPlayer()) == null) {
 
+            System.out.println("not contained");
+
             Material[][] m = new Material[FlagData.height][FlagData.width];
             for (int row = 0; row <= FlagData.height - 1; row++) {
 
