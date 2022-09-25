@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
 import veo.game.gens.flag.Flag;
+import veo.game.gens.flag.FlagManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +54,10 @@ public class GenManager {
             flags.add(new Flag(ls[0], head, pole));
 
         }
+
+        String fs = folder + "/Flags";
+        if (!new File(fs).exists()) new File(fs).mkdir();
+        FlagManager.init(new File(fs));
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> {
 

@@ -7,8 +7,8 @@ import veo.Main;
 
 public class FlagStructure {
 
-    private int raiseLoop = 0, raiseIteration = 0;
-    private Location pole;
+    //private int raiseLoop = 0, raiseIteration = 0;
+    private final Location pole;
 
     public FlagStructure(Location pole) {
 
@@ -50,6 +50,16 @@ public class FlagStructure {
     public void tear() {
 
 
+
+    }
+
+    public void createStruct() {
+
+        for (int i = 0; i <= 9; i++)
+            new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + i, this.pole.getZ())
+                    .getBlock().setType(Material.OAK_FENCE);
+        new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + 10, this.pole.getZ())
+                .getBlock().setType(Material.DARK_OAK_SLAB);
 
     }
 

@@ -14,11 +14,11 @@ import java.util.List;
 public class FlagManager {
 
     static List<FlagData> fs = new ArrayList<>();
-    private static File folder;
+    //private static File folder;
 
-    public void init(File folder) {
+    public static void init(File folder) {
 
-        this.folder = folder;
+        //this.folder = folder;
         /*
         *
         * READ FLAGS

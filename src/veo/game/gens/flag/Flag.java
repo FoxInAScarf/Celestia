@@ -42,12 +42,7 @@ public class Flag {
         this.flag = new FlagStructure(pole);
 
         // generate blocks
-
-        for (int i = 0; i <= 9; i++)
-            new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + i, this.pole.getZ())
-                    .getBlock().setType(Material.OAK_FENCE);
-        new Location(this.pole.getWorld(), this.pole.getX(), this.pole.getY() + 10, this.pole.getZ())
-                .getBlock().setType(Material.DARK_OAK_SLAB);
+        flag.createStruct();
 
         unclaim();
 
@@ -193,6 +188,7 @@ public class Flag {
 
         }, t);
 
+        flag.tear();
 
     }
 
