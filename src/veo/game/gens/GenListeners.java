@@ -3,6 +3,7 @@ package veo.game.gens;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +14,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import veo.Main;
 import veo.game.gens.flag.Flag;
+import veo.game.gens.flag.FlagData;
+import veo.game.gens.flag.FlagManager;
 
 public class GenListeners implements Listener {
 
@@ -65,6 +68,22 @@ public class GenListeners implements Listener {
                 } else ((CraftPlayer) e.getPlayer()).getHandle().b.a(
                         new PacketPlayOutEntityDestroy(f.stands.get("youClaimed").getEntityId()));
 
+
+        }
+
+        if (FlagManager.getFlag(e.getPlayer()) == null) {
+
+            Material[][] m = new Material[FlagData.height][FlagData.width];
+            for (int row = 0; row <= FlagData.height - 1; row++) {
+
+                Material[] mRow = new Material[FlagData.width];
+                for (int column = 0; column <= FlagData.width - 1; column++)
+                    mRow[column] = Material.RED_WOOL;
+
+                m[row] = mRow;
+
+            }
+            FlagManager.addFlag(e.getPlayer(), m);
 
         }
 

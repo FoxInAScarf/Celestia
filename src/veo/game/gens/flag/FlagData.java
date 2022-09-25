@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class FlagData extends ZFile {
 
-    public final int width = 4, height = 3;
+    public static final int width = 4, height = 3;
     OfflinePlayer p;
     Material[][] m;
 
@@ -28,6 +28,19 @@ public class FlagData extends ZFile {
                 mRow[column] = Material.getMaterial(sl[column]);
 
             m[row] = mRow;
+
+        }
+
+    }
+
+    public void saveL() {
+
+        clear();
+        for (int y = 0; y <= height - 1; y++) {
+
+            String l = "";
+            for (int x = 0; x <= width - 1; x++) l += m[y][x] + ";";
+            addLine(l);
 
         }
 

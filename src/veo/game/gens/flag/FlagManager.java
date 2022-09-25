@@ -1,5 +1,6 @@
 package veo.game.gens.flag;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import veo.Main;
@@ -14,11 +15,11 @@ import java.util.List;
 public class FlagManager {
 
     static List<FlagData> fs = new ArrayList<>();
-    //private static File folder;
+    private static File folder;
 
     public static void init(File folder) {
 
-        //this.folder = folder;
+        FlagManager.folder = folder;
         /*
         *
         * READ FLAGS
@@ -40,16 +41,18 @@ public class FlagManager {
 
     }
 
-    /*public static FlagData addFlag(Player p, Inventory i) {
+    public static FlagData addFlag(Player p, Material[][] m) {
 
         String UUID = p.getUniqueId().toString();
-        if (Arrays.stream(folder.listFiles()).toList().contains(
-                new File(folder.getAbsolutePath() + "/" + UUID + ".zra"))) {
-
+        File f = new File(folder.getAbsolutePath() + "/" + UUID + ".zra");
+        if (Arrays.stream(folder.listFiles()).toList().contains(f))
             return null;
 
-        }
+        FlagData d = new FlagData(UUID, f.getAbsolutePath());
+        d.saveL();
+        fs.add(d);
+        return d;
 
-    }*/
+    }
 
 }
