@@ -38,9 +38,7 @@ public class GenManager {
 
         }
 
-        String fs = folder + "/Flags";
-        if (!new File(fs).exists()) new File(fs).mkdir();
-        FlagManager.init(new File(fs));
+        FlagManager.init(new File(folder));
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> {
 

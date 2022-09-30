@@ -26,7 +26,8 @@ public class FlagManager {
         FlagManager.folder = folder;
 
         File flagFolder = new File(folder.getAbsolutePath() + "/Flags");
-        for (File f : flagFolder.listFiles())
+        if (!flagFolder.exists()) flagFolder.mkdir();
+        for (File f : Objects.requireNonNull(flagFolder.listFiles()))
             fs.add(new FlagData(f.getName().replaceAll(".zra", ""), f.getAbsolutePath()));
 
         flagFile = new ZFile(folder + "/flags.zra");
