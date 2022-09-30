@@ -23,8 +23,30 @@ public class GenListeners implements Listener {
     public void onRightClick(PlayerInteractEvent e) {
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null)
-            for (Flag f : GenManager.flags)
+            for (Flag f : FlagManager.flags)
                 if (f.head.equals(e.getClickedBlock().getLocation())) {
+
+                    if (FlagManager.cooldown.containsKey(e.getPlayer())) {
+
+                        int time = FlagManager.cooldown.get(e.getPlayer());
+                        Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You're on cooldown!"
+                                + " You can't claim another island for " + ChatColor.YELLOW + (int) Math.floor(time / (60 * 20))
+                                + ChatColor.RED + " minutes and " + ChatColor.YELLOW + (time % (60 * 20))
+                                + ChatColor.RED + " seconds!", true);
+                        return;
+
+                    }
+
+                    int counter = 0;
+                    for (Flag fl : FlagManager.flags)
+                        if (fl.owner.getPlayer().equals(e.getPlayer())) counter++;
+
+                    if (counter > 2) {
+
+                        Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
+                        return;
+
+                    }
 
                     if (f.owner == null) f.claim(e.getPlayer());
                     else {
@@ -54,7 +76,7 @@ public class GenListeners implements Listener {
 
         for (Generator g : GenManager.gens) {
 
-            Flag f = GenManager.getFlag(g.name);
+            Flag f = FlagManager.getFlag(g.name);
 
             if (f == null) continue;
             if (f.owner != null)
@@ -94,7 +116,7 @@ public class GenListeners implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
 
-        for (Flag f : GenManager.flags) if (f.owner.equals(e.getPlayer())) {
+        for (Flag f : FlagManager.flags) if (f.owner.equals(e.getPlayer())) {
 
             if (f.owner == null) continue;
             f.unclaim();
@@ -106,7 +128,7 @@ public class GenListeners implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
 
-        for (Flag f : GenManager.flags) if (f.owner == null) {
+        for (Flag f : FlagManager.flags) if (f.owner == null) {
 
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
                     "setblock " + ((int) f.head.getX()) + " " + ((int) f.head.getY()) + " " + ((int) f.head.getZ()) +

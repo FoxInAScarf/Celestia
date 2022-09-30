@@ -16,7 +16,6 @@ import java.util.List;
 
 public class GenManager {
     static List<Generator> gens = new ArrayList<>();
-    public static List<Flag> flags = new ArrayList<>();
     static ZFile genFile;
     public static ZFile flagFile;
 
@@ -51,7 +50,7 @@ public class GenManager {
             Location pole = new Location(w, Double.parseDouble(ls[5]),
                     Double.parseDouble(ls[6]),
                     Double.parseDouble(ls[7]));
-            flags.add(new Flag(ls[0], head, pole));
+            FlagManager.flags.add(new Flag(ls[0], head, pole));
 
         }
 
@@ -64,7 +63,7 @@ public class GenManager {
             if (running)
                 for (Generator g : gens) g.run();
             if (running)
-                for (Flag f : flags) f.run();
+                for (Flag f : FlagManager.flags) f.run();
 
         }, 0L, 1L);
 
@@ -77,14 +76,6 @@ public class GenManager {
 
         for (Generator g : gens) if (g.name.equals(name))
             return g;
-        return null;
-
-    }
-
-    public static Flag getFlag(String name) {
-
-        for (Flag f : flags) if (f.name.equals(name))
-            return f;
         return null;
 
     }
