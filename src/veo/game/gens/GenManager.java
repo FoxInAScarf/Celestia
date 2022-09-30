@@ -17,9 +17,8 @@ import java.util.List;
 public class GenManager {
     static List<Generator> gens = new ArrayList<>();
     static ZFile genFile;
-    public static ZFile flagFile;
 
-    static boolean running = true;
+    public static boolean running = true;
 
     public static void init(JavaPlugin main) {
 
@@ -39,21 +38,6 @@ public class GenManager {
 
         }
 
-        flagFile = new ZFile(folder + "/flags.zra");
-        for (String l : flagFile.lines) {
-
-            String[] ls = l.split("@");
-            World w = Bukkit.getWorld(ls[1]);
-            Location head = new Location(w, Double.parseDouble(ls[2]),
-                    Double.parseDouble(ls[3]),
-                    Double.parseDouble(ls[4]));
-            Location pole = new Location(w, Double.parseDouble(ls[5]),
-                    Double.parseDouble(ls[6]),
-                    Double.parseDouble(ls[7]));
-            FlagManager.flags.add(new Flag(ls[0], head, pole));
-
-        }
-
         String fs = folder + "/Flags";
         if (!new File(fs).exists()) new File(fs).mkdir();
         FlagManager.init(new File(fs));
@@ -62,8 +46,6 @@ public class GenManager {
 
             if (running)
                 for (Generator g : gens) g.run();
-            if (running)
-                for (Flag f : FlagManager.flags) f.run();
 
         }, 0L, 1L);
 

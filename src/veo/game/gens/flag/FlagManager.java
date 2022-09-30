@@ -1,11 +1,14 @@
 package veo.game.gens.flag;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
+import veo.game.gens.GenManager;
 
 import java.io.File;
 import java.util.*;
@@ -16,22 +19,39 @@ public class FlagManager {
     private static File folder;
     public static HashMap<Player, Integer> cooldown = new HashMap<>();
     public static List<Flag> flags = new ArrayList<>();
+    public static ZFile flagFile;
 
     public static void init(File folder) {
 
         FlagManager.folder = folder;
-        /*
-        *
-        * READ FLAGS
-        *
-        * */
-        for (File f : folder.listFiles())
+
+        File flagFolder = new File(folder.getAbsolutePath() + "/Flags");
+        for (File f : flagFolder.listFiles())
             fs.add(new FlagData(f.getName().replaceAll(".zra", ""), f.getAbsolutePath()));
+
+        flagFile = new ZFile(folder + "/flags.zra");
+        for (String l : flagFile.lines) {
+
+            String[] ls = l.split("@");
+            World w = Bukkit.getWorld(ls[1]);
+            Location head = new Location(w, Double.parseDouble(ls[2]),
+                    Double.parseDouble(ls[3]),
+                    Double.parseDouble(ls[4]));
+            Location pole = new Location(w, Double.parseDouble(ls[5]),
+                    Double.parseDouble(ls[6]),
+                    Double.parseDouble(ls[7]));
+            flags.add(new Flag(ls[0], head, pole));
+
+        }
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
+            if (!GenManager.running) return;
+
             Iterator<Map.Entry<Player, Integer>> i = cooldown.entrySet().iterator();
             if (i.next().getValue() >= (20 * 60 * 10)) i.remove();
+
+            for (Flag f : flags) f.run();
 
         }, 0L, 1L);
 

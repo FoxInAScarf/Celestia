@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import veo.Main;
 import veo.game.gens.flag.Flag;
+import veo.game.gens.flag.FlagManager;
 
 public class GenCommand implements CommandExecutor {
 
@@ -55,7 +56,7 @@ public class GenCommand implements CommandExecutor {
                 Main.sendMessage(p, ChatColor.GREEN + "These are the currently existing generators:", false);
                 for (Generator g : GenManager.gens) {
 
-                    ChatColor cc = GenManager.getFlag(g.name) != null ? ChatColor.GREEN : ChatColor.YELLOW;
+                    ChatColor cc = FlagManager.getFlag(g.name) != null ? ChatColor.GREEN : ChatColor.YELLOW;
                     Main.sendMessage(p, ChatColor.GREEN + "      - " + cc + g.name + ChatColor.GREEN + ":" +
                             " " + g.m.toString().replaceAll("_", "") + " generator",
                             false);
@@ -155,7 +156,7 @@ public class GenCommand implements CommandExecutor {
                 }*/
 
         GenManager.getGen(args[1]).remove();
-        GenManager.getFlag(args[1]).remove();
+        FlagManager.getFlag(args[1]).remove();
         Main.sendMessage(p, ChatColor.GREEN + "Removed generator and it's flag!", false);
 
     }
@@ -163,7 +164,7 @@ public class GenCommand implements CommandExecutor {
     public void addFlag(String[] args, Player p) {
 
         String name = args[2];
-        if (GenManager.getFlag(name) != null) {
+        if (FlagManager.getFlag(name) != null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There's already a flag attached to " +
                     "the generator named '"
@@ -201,8 +202,8 @@ public class GenCommand implements CommandExecutor {
 
         Location pole = new Location(p.getWorld(), px, py, pz);
 
-        GenManager.flags.add(new Flag(name, head, pole));
-        GenManager.flagFile.addLine(name + "@" + head.getWorld().getName() + "@" + head.getX() +
+        FlagManager.flags.add(new Flag(name, head, pole));
+        FlagManager.flagFile.addLine(name + "@" + head.getWorld().getName() + "@" + head.getX() +
                 "@" + head.getY() + "@" + head.getZ() + "@"
                 + pole.getX() + "@" + pole.getY() + "@" + pole.getZ() + "@");
 
@@ -212,7 +213,7 @@ public class GenCommand implements CommandExecutor {
 
     public void removeFlag(String[] args, Player p) {
 
-        if (GenManager.getFlag(args[2]) == null) {
+        if (FlagManager.getFlag(args[2]) == null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There is no flag named '"
                     + ChatColor.RED + args[2] + ChatColor.YELLOW + "'!", true);
@@ -228,7 +229,7 @@ public class GenCommand implements CommandExecutor {
 
                 }*/
 
-        GenManager.getFlag(args[2]).remove();
+        FlagManager.getFlag(args[2]).remove();
         Main.sendMessage(p, ChatColor.GREEN + "Removed flag!", false);
 
     }

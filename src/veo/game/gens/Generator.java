@@ -10,6 +10,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import veo.game.gens.flag.FlagManager;
 
 public class Generator {
 
@@ -48,10 +49,12 @@ public class Generator {
 
     public void run() {
 
+        if (FlagManager.getFlag(name) != null && FlagManager.getFlag(name).owner != null)
+            FlagManager.getFlag(name).owner.getPlayer().getInventory().addItem(new ItemStack(m, 2));
+
         Location tl = s.getLocation();
         tl.setYaw(tl.getYaw() + 5);
         s.teleport(tl);
-
 
         int nearbyPlayers = 0;
         for (Player p : Bukkit.getOnlinePlayers())

@@ -267,8 +267,8 @@ public class Flag {
 
         }
 
-        GenManager.flags.remove(this);
-        GenManager.flagFile.removeLine(name + "@" + head.getWorld().getName() + "@" + head.getX() +
+        FlagManager.flags.remove(this);
+        FlagManager.flagFile.removeLine(name + "@" + head.getWorld().getName() + "@" + head.getX() +
                 "@" + head.getY() + "@" + head.getZ() + "@"
                 + pole.getX() + "@" + pole.getY() + "@" + pole.getZ());
 
