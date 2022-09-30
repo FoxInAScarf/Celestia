@@ -147,7 +147,7 @@ public class Flag {
 
         }
 
-        flag.raise(8, FlagManager.getFlag(owner.getPlayer()));
+        flag.raise(8, owner.getPlayer());
 
     }
 

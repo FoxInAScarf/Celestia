@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import veo.Main;
 import veo.game.gens.flag.Flag;
-import veo.game.gens.flag.FlagData;
 import veo.game.gens.flag.FlagManager;
 
 public class GenListeners implements Listener {
@@ -93,7 +92,8 @@ public class GenListeners implements Listener {
 
         }
 
-        if (FlagManager.getFlag(e.getPlayer()) == null) {
+        // CUSTOM FLAG SYSTEM
+        /*if (FlagManager.getFlag(e.getPlayer()) == null) {
 
             System.out.println("not contained");
 
@@ -109,7 +109,7 @@ public class GenListeners implements Listener {
             }
             FlagManager.addFlag(e.getPlayer(), m);
 
-        }
+        }*/
 
     }
 

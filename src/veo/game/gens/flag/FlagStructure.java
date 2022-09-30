@@ -3,6 +3,10 @@ package veo.game.gens.flag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import veo.Main;
 
 public class FlagStructure {
@@ -16,6 +20,7 @@ public class FlagStructure {
 
     }
 
+    // CUSTOM FLAG SYSTEM
     /*public void raise(FlagData data) {
 
         raiseLoop = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
@@ -32,7 +37,7 @@ public class FlagStructure {
 
     }*/
 
-    public void raise(int h, FlagData data) {
+    /*public void raise(int h, FlagData data) {
 
         h = (int) pole.getY() + h;
         for (int y = 0; y <= data.height - 1; y++)
@@ -42,6 +47,35 @@ public class FlagStructure {
                 Location l = new Location(pole.getWorld(), pole.getX() + x + 1, h - y, pole.getZ());
 
                 l.getBlock().setType(m);
+
+            }
+
+    }
+
+    public void tear() {
+
+
+
+    }*/
+
+    public void raise(int h, Player owner) {
+
+        h = (int) pole.getY() + h;
+        for (int y = 0; y <= 3 - 1; y++)
+            for (int x = 0; x <= 4 - 1; x++) {
+
+                Location l = new Location(pole.getWorld(), x + 1, h - y, pole.getZ());
+                for (Player p : Bukkit.getOnlinePlayers()) {
+
+                    if (p.equals(owner)) {
+
+                        p.sendBlockChange(l, Material.GREEN_WOOL.createBlockData());
+                        continue;
+
+                    }
+                    p.sendBlockChange(l, Material.RED_WOOL.createBlockData());
+
+                }
 
             }
 

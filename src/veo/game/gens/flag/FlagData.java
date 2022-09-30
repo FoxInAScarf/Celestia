@@ -1,4 +1,4 @@
-package veo.game.gens.flag;
+/*package veo.game.gens.flag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -49,4 +49,4 @@ public class FlagData extends ZFile {
 
     }
 
-}
+}*/

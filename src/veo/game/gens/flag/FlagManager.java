@@ -15,7 +15,8 @@ import java.util.*;
 
 public class FlagManager {
 
-    static List<FlagData> fs = new ArrayList<>();
+    // CUSTOM FLAG SYSTEM
+    //static List<FlagData> fs = new ArrayList<>();
     private static File folder;
     public static HashMap<Player, Integer> cooldown = new HashMap<>();
     public static List<Flag> flags = new ArrayList<>();
@@ -27,8 +28,9 @@ public class FlagManager {
 
         File flagFolder = new File(folder.getAbsolutePath() + "/Flags");
         if (!flagFolder.exists()) flagFolder.mkdir();
-        for (File f : Objects.requireNonNull(flagFolder.listFiles()))
-            fs.add(new FlagData(f.getName().replaceAll(".zra", ""), f.getAbsolutePath()));
+        // CUSTOM FLAG SYSTEM
+        /*for (File f : Objects.requireNonNull(flagFolder.listFiles()))
+            fs.add(new FlagData(f.getName().replaceAll(".zra", ""), f.getAbsolutePath()));*/
 
         flagFile = new ZFile(folder + "/flags.zra");
         for (String l : flagFile.lines) {
@@ -60,7 +62,8 @@ public class FlagManager {
 
     }
 
-    public static FlagData getFlag(Player p) {
+    // CUSTOM FLAG SYSTEM
+    /*public static FlagData getFlag(Player p) {
 
         for (FlagData fd : fs) if (fd.p.getPlayer().equals(p))
             return fd;
@@ -85,7 +88,7 @@ public class FlagManager {
 
         return d;
 
-    }
+    }*/
 
     public static Flag getFlag(String name) {
 
