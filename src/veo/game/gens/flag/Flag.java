@@ -153,6 +153,7 @@ public class Flag {
 
     public void unclaim() {
 
+        FlagManager.cooldown.put(owner.getPlayer(), 0);
         owner = null;
 
         // commit ethnic cleansing

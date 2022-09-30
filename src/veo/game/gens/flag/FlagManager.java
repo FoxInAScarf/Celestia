@@ -52,7 +52,13 @@ public class FlagManager {
             if (!GenManager.running) return;
 
             Iterator<Map.Entry<Player, Integer>> i = cooldown.entrySet().iterator();
-            if (i.next().getValue() >= (20 * 60 * 10)) i.remove();
+            while (i.hasNext()) {
+
+                Map.Entry<Player, Integer> e = i.next();
+                if (e.getValue() >= (20 * 60 * 10)) i.remove();
+                cooldown.put(e.getKey(), cooldown.get(e.getValue() + 1));
+
+            }
 
             for (Flag f : flags) f.run();
 
