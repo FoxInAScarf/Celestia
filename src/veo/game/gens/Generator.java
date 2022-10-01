@@ -26,7 +26,7 @@ public class Generator {
 
         this.name = name;
         this.m = m;
-        this.l = new Location(l.getWorld(), Math.abs(l.getX()) + 0.5, l.getY(), Math.abs(l.getZ()) + 0.5);
+        this.l = new Location(l.getWorld(), Math.floor(l.getX()) + 0.5, l.getY(), Math.floor(l.getZ()) + 0.5);
         this.length = length;
         s = (ArmorStand) l.getWorld().spawnEntity(
                 new Location(this.l.getWorld(), this.l.getX(), this.l.getY() + 2, this.l.getZ()), EntityType.ARMOR_STAND);
@@ -51,7 +51,7 @@ public class Generator {
     public void run() {
 
         Flag f = FlagManager.getFlag(name);
-        if (f != null && f.owner != null)
+        if (f != null && f.owner != null && time == length)
             f.owner.getPlayer().getInventory().addItem(new ItemStack(m, 2));
 
         Location tl = s.getLocation();
@@ -79,7 +79,6 @@ public class Generator {
             i.teleport(new Location(l.getWorld(), s.getLocation().getX(),
                     s.getLocation().getY() + 1.8, s.getLocation().getZ()));
             i.setVelocity(new Vector(0, 0, 0));
-
 
         } else time++;
 

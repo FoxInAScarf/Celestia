@@ -60,6 +60,18 @@ public class FlagStructure {
 
     public void raise(int h, Player owner) {
 
+        for (Player p : Bukkit.getOnlinePlayers()) {
+
+            if (p.equals(owner)) {
+
+                p.sendBlockChange(pole, Material.GREEN_WOOL.createBlockData());
+                continue;
+
+            }
+            p.sendBlockChange(pole, Material.RED_WOOL.createBlockData());
+
+        }
+
         h = (int) pole.getY() + h;
         for (int y = 0; y <= 3 - 1; y++)
             for (int x = 0; x <= 4 - 1; x++) {

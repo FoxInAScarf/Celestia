@@ -97,7 +97,7 @@ public class Flag {
 
         }
         // give heading to the lil' guy
-        {
+        /*{
 
             Location tl = stands.get("statue").getLocation();
             double dx = pole.getX() - head.getX(),
@@ -105,7 +105,7 @@ public class Flag {
             tl.setYaw((float) Math.toDegrees(Math.atan(dx / dz)) - 90);
             stands.get("statue").teleport(tl);
 
-        }
+        }*/
 
         stands.put("hasClaimed", (ArmorStand) p.getWorld().spawnEntity(
                 new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 2.2, head.getZ() + 0.5),
@@ -153,7 +153,8 @@ public class Flag {
 
     public void unclaim() {
 
-        FlagManager.cooldown.put(owner.getPlayer(), 0);
+        if (owner != null)
+            FlagManager.cooldown.put(owner.getPlayer(), 0);
         owner = null;
 
         // commit ethnic cleansing
@@ -247,11 +248,16 @@ public class Flag {
 
             }
 
-            String dots = ChatColor.GRAY + "";
+            /*String dots = ChatColor.GRAY + ".";
             if (alert % 5 == 0) dots += ".";
             if (alert % 10 == 0) dots += ".";
-            if (alert % 15 == 0) dots += ".";
-            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), dots, 0, 2, 0);
+            if (alert % 15 == 0) dots += ".";*/
+
+            String load = ChatColor.GRAY + "|";
+            if (alert % 5 == 0) load = ChatColor.GRAY + "/";
+            if (alert % 10 == 0) load = ChatColor.GRAY + "-";
+            if (alert % 15 == 0) load = ChatColor.GRAY + "\\";
+            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), load, 0, 2, 0);
 
         }
 

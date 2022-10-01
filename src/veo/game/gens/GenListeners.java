@@ -4,7 +4,9 @@ import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -12,38 +14,47 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import veo.Main;
 import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
+
+import java.util.Objects;
 
 public class GenListeners implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null)
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null && !e.getAction().equals(Action.RIGHT_CLICK_AIR))
             for (Flag f : FlagManager.flags)
                 if (f.head.equals(e.getClickedBlock().getLocation())) {
 
-                    if (FlagManager.cooldown.containsKey(e.getPlayer())) {
+                    // conduct checkings
+                    if (f.owner != null) {
 
-                        int time = FlagManager.cooldown.get(e.getPlayer());
-                        Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You're on cooldown!"
-                                + " You can't claim another island for " + ChatColor.YELLOW + (int) Math.floor(time / (60 * 20))
-                                + ChatColor.RED + " minutes and " + ChatColor.YELLOW + (time % (60 * 20))
-                                + ChatColor.RED + " seconds!", true);
-                        return;
+                        if (FlagManager.cooldown.containsKey(e.getPlayer())) {
 
-                    }
+                            int time = FlagManager.cooldown.get(e.getPlayer());
+                            Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You're on cooldown!"
+                                    + " You can't claim another island for " + ChatColor.YELLOW + (int) Math.floor(time / (60 * 20))
+                                    + ChatColor.RED + " minutes and " + ChatColor.YELLOW + (time % (60 * 20))
+                                    + ChatColor.RED + " seconds!", true);
+                            return;
 
-                    int counter = 0;
-                    for (Flag fl : FlagManager.flags)
-                        if (fl.owner.getPlayer().equals(e.getPlayer())) counter++;
+                        }
 
-                    if (counter > 2) {
+                        int counter = 0;
+                        for (Flag fl : FlagManager.flags)
+                            if (fl.owner.getPlayer().equals(e.getPlayer())) counter++;
 
-                        Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
-                        return;
+                        if (counter > 2) {
+
+                            Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
+                            return;
+
+                        }
 
                     }
 
@@ -116,16 +127,17 @@ public class GenListeners implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
 
-        for (Flag f : FlagManager.flags) if (f.owner.equals(e.getPlayer())) {
+        for (Flag f : FlagManager.flags) {
 
             if (f.owner == null) continue;
-            f.unclaim();
+            if (Objects.equals(f.owner.getPlayer(), e.getPlayer()))
+                f.unclaim();
 
         }
 
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
 
         for (Flag f : FlagManager.flags) if (f.owner == null) {
@@ -138,6 +150,6 @@ public class GenListeners implements Listener {
 
         }
 
-    }
+    }*/
 
 }
