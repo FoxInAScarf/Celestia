@@ -154,10 +154,10 @@ public class Flag {
     public void unclaim() {
 
         if (owner != null)
-            FlagManager.cooldown.put(owner.getPlayer(), 0);
+            FlagManager.cooldown.putIfAbsent(owner, 0);
         owner = null;
 
-        // commit ethnic cleansing
+        // become serbian
         Iterator<Map.Entry<String, ArmorStand>> i = stands.entrySet().iterator();
         while (i.hasNext()) {
 
@@ -195,6 +195,7 @@ public class Flag {
     }
 
     private final HashMap<Player, Integer> crouching = new HashMap<>();
+    String load;
 
     public void run() {
 
@@ -253,10 +254,10 @@ public class Flag {
             if (alert % 10 == 0) dots += ".";
             if (alert % 15 == 0) dots += ".";*/
 
-            String load = ChatColor.GRAY + "|";
-            if (alert % 5 == 0) load = ChatColor.GRAY + "/";
-            if (alert % 10 == 0) load = ChatColor.GRAY + "-";
-            if (alert % 15 == 0) load = ChatColor.GRAY + "\\";
+            if (alert % 10 == 0) load = ChatColor.GRAY + "|";
+            if (alert % 20 == 0) load = ChatColor.GRAY + "/";
+            if (alert % 30 == 0) load = ChatColor.GRAY + "--";
+            if (alert % 40 == 0) load = ChatColor.GRAY + "\\";
             e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), load, 0, 2, 0);
 
         }

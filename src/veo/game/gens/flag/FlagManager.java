@@ -1,9 +1,6 @@
 package veo.game.gens.flag;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import veo.Main;
@@ -18,7 +15,7 @@ public class FlagManager {
     // CUSTOM FLAG SYSTEM
     //static List<FlagData> fs = new ArrayList<>();
     private static File folder;
-    public static HashMap<Player, Integer> cooldown = new HashMap<>();
+    public static HashMap<OfflinePlayer, Integer> cooldown = new HashMap<>();
     public static List<Flag> flags = new ArrayList<>();
     public static ZFile flagFile;
 
@@ -51,16 +48,17 @@ public class FlagManager {
 
             if (!GenManager.running) return;
 
-            Iterator<Map.Entry<Player, Integer>> i = cooldown.entrySet().iterator();
+            for (Flag f : flags) f.run();
+
+            Iterator<Map.Entry<OfflinePlayer, Integer>> i = cooldown.entrySet().iterator();
             while (i.hasNext()) {
 
-                Map.Entry<Player, Integer> e = i.next();
+                Map.Entry<OfflinePlayer, Integer> e = i.next();
+                System.out.println(e.getKey().getName() + " : " + e.getValue());
                 if (e.getValue() >= (20 * 60 * 10)) i.remove();
-                cooldown.put(e.getKey(), cooldown.get(e.getValue() + 1));
+                else cooldown.put(e.getKey(), cooldown.get(e.getValue() + 1));
 
             }
-
-            for (Flag f : flags) f.run();
 
         }, 0L, 1L);
 
