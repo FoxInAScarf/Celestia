@@ -47,6 +47,7 @@ public class FlagManager {
 
             if (!GenManager.running) return;
             for (Flag f : flags) f.run();
+            for (FlagCooldown fc : cooldown) fc.update();
 
         }, 0L, 1L);
 

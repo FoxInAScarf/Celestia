@@ -6,8 +6,8 @@ import veo.Main;
 
 public class FlagCooldown {
 
-    public int time = 0, duration;
-    private int loop = 0;
+    public int time = 0;
+    public long duration;
     public OfflinePlayer p;
 
     public FlagCooldown(OfflinePlayer p, int duration) {
@@ -15,17 +15,13 @@ public class FlagCooldown {
         this.duration = duration;
         this.p = p;
 
-        loop = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+    }
 
-            if (time >= duration) {
+    public void update() {
 
-                FlagManager.cooldown.remove(this);
-                Bukkit.getScheduler().cancelTask(loop);
-
-            }
-            time++;
-
-        }, 0L, 20 * 60 * 10);
+        if (time >= duration)
+            FlagManager.cooldown.remove(this);
+        time++;
 
     }
 

@@ -36,7 +36,9 @@ public class GenListeners implements Listener {
 
                         if (FlagManager.getCooldown(e.getPlayer()) != null) {
 
-                            int time = FlagManager.getCooldown(e.getPlayer()).time;
+                            int time = (int) (FlagManager.getCooldown(e.getPlayer()).duration -
+                                    FlagManager.getCooldown(e.getPlayer()).time);
+                            System.out.println(time);
                             Main.sendMessage(e.getPlayer(), ChatColor.RED + "You're on cooldown!"
                                     + " You can't claim another island for " + ChatColor.YELLOW + (int) Math.floor(time / (60 * 20))
                                     + ChatColor.RED + " minutes and " + ChatColor.YELLOW + (time % (60 * 20))
