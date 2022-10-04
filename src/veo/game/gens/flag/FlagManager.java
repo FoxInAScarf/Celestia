@@ -2,7 +2,6 @@ package veo.game.gens.flag;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
 import veo.game.gens.GenManager;
@@ -15,7 +14,7 @@ public class FlagManager {
     // CUSTOM FLAG SYSTEM
     //static List<FlagData> fs = new ArrayList<>();
     private static File folder;
-    public static HashMap<OfflinePlayer, Integer> cooldown = new HashMap<>();
+    public static List<FlagCooldown> cooldown = new ArrayList<>();
     public static List<Flag> flags = new ArrayList<>();
     public static ZFile flagFile;
 
@@ -47,18 +46,7 @@ public class FlagManager {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
             if (!GenManager.running) return;
-
             for (Flag f : flags) f.run();
-
-            Iterator<Map.Entry<OfflinePlayer, Integer>> i = cooldown.entrySet().iterator();
-            while (i.hasNext()) {
-
-                Map.Entry<OfflinePlayer, Integer> e = i.next();
-                System.out.println(e.getKey().getName() + " : " + e.getValue());
-                if (e.getValue() >= (20 * 60 * 10)) i.remove();
-                else cooldown.put(e.getKey(), cooldown.get(e.getValue() + 1));
-
-            }
 
         }, 0L, 1L);
 
@@ -98,6 +86,14 @@ public class FlagManager {
 
         for (Flag f : flags) if (f.name.equals(name))
             return f;
+        return null;
+
+    }
+
+    public static FlagCooldown getCooldown(OfflinePlayer p) {
+
+        for (FlagCooldown fc : cooldown) if (fc.p.equals(p))
+            return fc;
         return null;
 
     }

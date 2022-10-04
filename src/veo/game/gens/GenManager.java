@@ -3,11 +3,9 @@ package veo.game.gens;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
-import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
 
 import java.io.File;
