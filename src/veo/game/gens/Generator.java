@@ -84,7 +84,7 @@ public class Generator {
             }
 
             if (time % 20 == 0) n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
-                    + (length - time) / 20 + " seconds...");
+                    + (length - time) / 20 + " seconds" + ChatColor.GREEN + "...");
             return;
 
         }

@@ -140,6 +140,12 @@ public class GenListeners implements Listener {
         for (Flag f : FlagManager.flags) {
 
             if (f.owner == null) continue;
+            if (Bukkit.getOnlinePlayers().size() <= 1) {
+
+                f.unclaim();
+                continue;
+
+            }
             if (Objects.equals(f.owner.getPlayer(), e.getPlayer()))
                 f.unclaim();
 
