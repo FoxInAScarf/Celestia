@@ -153,8 +153,8 @@ public class Flag {
 
     public void unclaim() {
 
-        if (owner != null)
-            FlagManager.cooldown.add(new FlagCooldown(owner, 20 * 60 * 10));
+        if (owner != null && FlagManager.getCooldown(owner) == null)
+            FlagManager.cooldown.add(new FlagCooldown(owner, 20 * 60 * 5));
         owner = null;
 
         // become serbian
@@ -195,13 +195,13 @@ public class Flag {
     }
 
     private final HashMap<Player, Integer> crouching = new HashMap<>();
-    String load;
+    int load = 0;
 
     public void run() {
 
         if (owner == null) return;
 
-        for (Entity e : stands.get("crouchHere").getNearbyEntities(2, 2, 2))
+        for (Entity e : stands.get("crouchHere").getNearbyEntities(2, 3, 2))
             if (e instanceof Player && ((Player) e).isSneaking()) {
 
                 if ((e.equals(owner))) continue;
@@ -231,7 +231,15 @@ public class Flag {
             Map.Entry<Player, Integer> e = i.next();
             if (!e.getKey().isSneaking()) {
 
-                //e.getKey().sendMessage("Stopped crouching.");
+                e.getKey().sendTitle(getBar(((double) e.getValue()) / 160, true), "", 0, 10, 5);
+                i.remove();
+                continue;
+
+            }
+
+            if (e.getKey().getLocation().distance(stands.get("crouchHere").getLocation()) > 3) {
+
+                e.getKey().sendTitle(getBar(((double) e.getValue()) / 160, true), "", 0, 10, 5);
                 i.remove();
                 continue;
 
@@ -249,16 +257,15 @@ public class Flag {
 
             }
 
-            /*String dots = ChatColor.GRAY + ".";
-            if (alert % 5 == 0) dots += ".";
-            if (alert % 10 == 0) dots += ".";
-            if (alert % 15 == 0) dots += ".";*/
+            String tt = "";
+            if (load == 0) tt = ChatColor.GRAY + "|";
+            if (load == 1) tt = ChatColor.GRAY + "/";
+            if (load == 2) tt = ChatColor.GRAY + "--";
+            if (load == 3) tt = ChatColor.GRAY + "\\";
+            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160, false), tt, 0, 2, 0);
 
-            if (alert % 10 == 0) load = ChatColor.GRAY + "|";
-            if (alert % 20 == 0) load = ChatColor.GRAY + "/";
-            if (alert % 30 == 0) load = ChatColor.GRAY + "--";
-            if (alert % 40 == 0) load = ChatColor.GRAY + "\\";
-            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160), load, 0, 2, 0);
+            if (load != 3) load++;
+            else load = 0;
 
         }
 
@@ -282,14 +289,15 @@ public class Flag {
 
     }
 
-    static String getBar(double v) {
+    static String getBar(double v, boolean isRed) {
 
         // v should be a number between 0 and 1
 
         int bars = 20;
         v = Math.round(bars * v);
+        ChatColor bColor = isRed ? ChatColor.RED : ChatColor.GREEN;
         String s = ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[";
-        for (int i = 1; i <= v; i++) s += ChatColor.RESET + "" + ChatColor.GREEN + "|";
+        for (int i = 1; i <= v; i++) s += ChatColor.RESET + "" + bColor + "|";
         for (int i = 1; i <= bars - v; i++) s += ChatColor.RESET + "" + ChatColor.GRAY + "|";
         s += ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "]";
 

@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import veo.Main;
@@ -27,59 +28,60 @@ public class GenListeners implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null && !e.getAction().equals(Action.RIGHT_CLICK_AIR))
-            for (Flag f : FlagManager.flags)
-                if (f.head.equals(e.getClickedBlock().getLocation())) {
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getClickedBlock() == null || e.getHand().equals(EquipmentSlot.OFF_HAND)) return;
 
-                    // conduct checkings
-                    if (f.owner != null) {
+        for (Flag f : FlagManager.flags)
+            if (f.head.equals(e.getClickedBlock().getLocation())) {
 
-                        if (FlagManager.getCooldown(e.getPlayer()) != null) {
+                // conduct checkings for cooldown
+                if (FlagManager.getCooldown(e.getPlayer()) != null) {
 
-                            int time = (int) (FlagManager.getCooldown(e.getPlayer()).duration -
-                                    FlagManager.getCooldown(e.getPlayer()).time);
-                            System.out.println(time);
-                            Main.sendMessage(e.getPlayer(), ChatColor.RED + "You're on cooldown!"
-                                    + " You can't claim another island for " + ChatColor.YELLOW + (int) Math.floor(time / (60 * 20))
-                                    + ChatColor.RED + " minutes and " + ChatColor.YELLOW + (time % (60 * 20))
-                                    + ChatColor.RED + " seconds!", true);
-                            return;
-
-                        }
-
-                        int counter = 0;
-                        for (Flag fl : FlagManager.flags)
-                            if (fl.owner.getPlayer().equals(e.getPlayer())) counter++;
-
-                        if (counter > 2) {
-
-                            Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
-                            return;
-
-                        }
-
-                    }
-
-                    if (f.owner == null) f.claim(e.getPlayer());
-                    else {
-
-                        if (f.owner.equals(e.getPlayer())) {
-
-                            Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You've already" +
-                                    " claimed this island. Try claiming another one!", true);
-                            return;
-
-                        }
-
-                        Main.sendMessage(e.getPlayer(), ChatColor.RED + "This island has been " +
-                                "already claimed.", true);
-                        Main.sendMessage(e.getPlayer(), ChatColor.GREEN + "Unclaim it by crouching for " +
-                                ChatColor.YELLOW + "10" + ChatColor.GREEN + " seconds by it.", true);
-
-                    }
-                    break;
+                    int time = (int) (FlagManager.getCooldown(e.getPlayer()).duration -
+                            FlagManager.getCooldown(e.getPlayer()).time);
+                    Main.sendMessage(e.getPlayer(), ChatColor.RED + "You're on cooldown!"
+                            + " You can't claim another island for " + ChatColor.YELLOW + (int) Math.floor(time / (60 * 20))
+                            + ChatColor.RED + " minutes and " + ChatColor.YELLOW + (int) Math.floor((time % (20 * 60)) / 20)
+                            + ChatColor.RED + " seconds!", true);
+                    return;
 
                 }
+
+                // conduct checkings for flag cap
+                if (f.owner != null) {
+
+                    int counter = 0;
+                    for (Flag fl : FlagManager.flags)
+                        if (fl.owner.getPlayer().equals(e.getPlayer())) counter++;
+
+                    if (counter > 2) {
+
+                        Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
+                        return;
+
+                    }
+
+                }
+
+                if (f.owner == null) f.claim(e.getPlayer());
+                else {
+
+                    if (f.owner.equals(e.getPlayer())) {
+
+                        Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You've already" +
+                                " claimed this island. Try claiming another one!", true);
+                        return;
+
+                    }
+
+                    Main.sendMessage(e.getPlayer(), ChatColor.RED + "This island has been " +
+                            "already claimed.", true);
+                    Main.sendMessage(e.getPlayer(), ChatColor.GREEN + "Unclaim it by crouching for " +
+                            ChatColor.YELLOW + "10" + ChatColor.GREEN + " seconds by it.", true);
+
+                }
+                break;
+
+            }
 
     }
 

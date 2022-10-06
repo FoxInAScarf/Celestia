@@ -47,7 +47,8 @@ public class FlagManager {
 
             if (!GenManager.running) return;
             for (Flag f : flags) f.run();
-            for (FlagCooldown fc : cooldown) fc.update();
+            for (int i = 0; i <= cooldown.size() - 1; i++) cooldown.get(i).update();
+            // ^ operates as an iterator
 
         }, 0L, 1L);
 
@@ -93,7 +94,7 @@ public class FlagManager {
 
     public static FlagCooldown getCooldown(OfflinePlayer p) {
 
-        for (FlagCooldown fc : cooldown) if (fc.p.equals(p))
+        for (FlagCooldown fc : cooldown) if (fc.p.getUniqueId().equals(p.getUniqueId()))
             return fc;
         return null;
 

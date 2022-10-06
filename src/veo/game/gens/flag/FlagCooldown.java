@@ -19,8 +19,7 @@ public class FlagCooldown {
 
     public void update() {
 
-        if (time >= duration)
-            FlagManager.cooldown.remove(this);
+        if (time >= duration) FlagManager.cooldown.remove(this);
         time++;
 
     }
