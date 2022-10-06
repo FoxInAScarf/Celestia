@@ -3,20 +3,14 @@ package veo.game.gens;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import veo.Main;
 import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
@@ -32,6 +26,14 @@ public class GenListeners implements Listener {
 
         for (Flag f : FlagManager.flags)
             if (f.head.equals(e.getClickedBlock().getLocation())) {
+
+                if (Bukkit.getOnlinePlayers().size() <= 1) {
+
+                    Main.sendMessage(e.getPlayer(), ChatColor.RED + "There need to be at least 2" +
+                            " players online for the generators to work.", false);
+                    return;
+
+                }
 
                 // conduct checkings for cooldown
                 if (FlagManager.getCooldown(e.getPlayer()) != null) {
@@ -93,16 +95,20 @@ public class GenListeners implements Listener {
             Flag f = FlagManager.getFlag(g.name);
 
             if (f == null) continue;
-            if (f.owner != null)
-                if (f.owner.equals(e.getPlayer())) {
+            if (f.owner != null) {
 
-                ((CraftPlayer) e.getPlayer()).getHandle().b.a(
-                        new PacketPlayOutEntityDestroy(f.stands.get("hasClaimed").getEntityId()));
-                ((CraftPlayer) e.getPlayer()).getHandle().b.a(
-                        new PacketPlayOutEntityDestroy(f.stands.get("crouchHere").getEntityId()));
+                f.flag.raise(8, f.owner.getPlayer());
+                if (f.owner.getUniqueId().equals(e.getPlayer().getUniqueId())) {
+
+                    ((CraftPlayer) e.getPlayer()).getHandle().b.a(
+                            new PacketPlayOutEntityDestroy(f.stands.get("hasClaimed").getEntityId()));
+                    ((CraftPlayer) e.getPlayer()).getHandle().b.a(
+                            new PacketPlayOutEntityDestroy(f.stands.get("crouchHere").getEntityId()));
 
                 } else ((CraftPlayer) e.getPlayer()).getHandle().b.a(
                         new PacketPlayOutEntityDestroy(f.stands.get("youClaimed").getEntityId()));
+
+            }
 
 
         }

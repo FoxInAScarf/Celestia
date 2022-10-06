@@ -50,8 +50,16 @@ public class Generator {
 
     public void run() {
 
+        boolean sendItem = false;
+        if (time == length) {
+
+            sendItem = true;
+            time = 0;
+
+        } else time++;
+
         Flag f = FlagManager.getFlag(name);
-        if (f != null && f.owner != null && time == length)
+        if (sendItem && f != null) if (f.owner != null)
             f.owner.getPlayer().getInventory().addItem(new ItemStack(m, 2));
 
         Location tl = s.getLocation();
@@ -62,28 +70,26 @@ public class Generator {
         for (Player p : Bukkit.getOnlinePlayers())
             if (p.getLocation().distance(s.getLocation()) <= 4) nearbyPlayers++;
 
-        if (nearbyPlayers == 0) {
+        if (nearbyPlayers > 0) {
 
-            n.setCustomName(ChatColor.GREEN + "Stand here!");
-            time = 0;
+            if (sendItem) {
+
+                Item i = l.getWorld().dropItemNaturally(new Location(l.getWorld(),
+                                l.getX(), l.getY() + 2, l.getZ()),
+                        new ItemStack(m));
+                i.teleport(new Location(l.getWorld(), s.getLocation().getX(),
+                        s.getLocation().getY() + 1.8, s.getLocation().getZ()));
+                i.setVelocity(new Vector(0, 0, 0));
+
+            }
+
+            if (time % 20 == 0) n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
+                    + (length - time) / 20 + " seconds...");
             return;
 
         }
-
-        if (time == length) {
-
-            time = 0;
-            Item i = l.getWorld().dropItemNaturally(new Location(l.getWorld(),
-                            l.getX(), l.getY() + 2, l.getZ()),
-                    new ItemStack(m));
-            i.teleport(new Location(l.getWorld(), s.getLocation().getX(),
-                    s.getLocation().getY() + 1.8, s.getLocation().getZ()));
-            i.setVelocity(new Vector(0, 0, 0));
-
-        } else time++;
-
-        if (time % 20 == 0) n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
-                + (length - time) / 20 + " seconds...");
+        if (time % 20 == 0) n.setCustomName(ChatColor.GREEN + "Stand here! (" + ChatColor.GOLD
+                + (length - time) / 20 + "s" + ChatColor.GREEN + ")");
 
     }
 

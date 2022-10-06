@@ -31,7 +31,7 @@ public class Flag {
 
     public HashMap<String, ArmorStand> stands = new HashMap<>();
     private int alert = 0;
-    private FlagStructure flag;
+    public FlagStructure flag;
 
     public Flag(String name, Location head, Location pole) {
 
@@ -190,7 +190,7 @@ public class Flag {
 
         }, t);
 
-        flag.tear();
+        flag.tear(8);
 
     }
 
@@ -262,10 +262,14 @@ public class Flag {
             if (load == 1) tt = ChatColor.GRAY + "/";
             if (load == 2) tt = ChatColor.GRAY + "--";
             if (load == 3) tt = ChatColor.GRAY + "\\";
-            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160, false), tt, 0, 2, 0);
+            e.getKey().sendTitle(getBar(((double) e.getValue()) / 160, false), tt, 0, 2, 10);
 
-            if (load != 3) load++;
-            else load = 0;
+            if (alert % 10 == 0) {
+
+                if (load != 3) load++;
+                else load = 0;
+
+            }
 
         }
 

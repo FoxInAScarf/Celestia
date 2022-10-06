@@ -60,43 +60,27 @@ public class FlagStructure {
 
     public void raise(int h, Player owner) {
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers())
+            for (int x = 0; x <= 3; x++)
+                for (int y = 0; y <= 2; y++) {
 
-            if (p.equals(owner)) {
-
-                p.sendBlockChange(pole, Material.GREEN_WOOL.createBlockData());
-                continue;
-
-            }
-            p.sendBlockChange(pole, Material.RED_WOOL.createBlockData());
-
-        }
-
-        h = (int) pole.getY() + h;
-        for (int y = 0; y <= 3 - 1; y++)
-            for (int x = 0; x <= 4 - 1; x++) {
-
-                Location l = new Location(pole.getWorld(), x + 1, h - y, pole.getZ());
-                for (Player p : Bukkit.getOnlinePlayers()) {
-
-                    if (p.equals(owner)) {
-
-                        p.sendBlockChange(l, Material.GREEN_WOOL.createBlockData());
-                        continue;
-
-                    }
-                    p.sendBlockChange(l, Material.RED_WOOL.createBlockData());
+                    Location b = new Location(pole.getWorld(), pole.getX() + x + 1, pole.getY() + h - y, pole.getZ());
+                    p.sendBlockChange(b, p.equals(owner) ? Material.GREEN_WOOL.createBlockData(): Material.RED_WOOL.createBlockData());
 
                 }
 
-            }
-
     }
 
-    public void tear() {
+    public void tear(int h) {
 
+        for (Player p : Bukkit.getOnlinePlayers())
+            for (int x = 0; x <= 3; x++)
+                for (int y = 0; y <= 2; y++) {
 
+                    Location b = new Location(pole.getWorld(), pole.getX() + x + 1, pole.getY() + h - y, pole.getZ());
+                    p.sendBlockChange(b, Material.AIR.createBlockData());
 
+                }
     }
 
     public void createStruct() {
