@@ -1,5 +1,6 @@
 package veo.game.items;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -128,6 +129,10 @@ public class ZItem extends ZFile {
             if (durability != -1) item.setDurability((short) durability);
 
         }
+
+        lore.add("");
+        lore.add(ChatColor.RED + "\uD83D\uDC80 " + ((Damageable) meta).getDamage() + " damage");
+        //lore.add(); hmm...
 
         for (ZEnchantment ze : e) meta.addEnchant(ze.e, ze.lvl, true);
         meta.setLore(lore);
