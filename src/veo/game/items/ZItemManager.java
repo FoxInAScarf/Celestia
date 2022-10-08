@@ -1,5 +1,6 @@
 package veo.game.items;
 
+import org.bukkit.inventory.ItemStack;
 import veo.Main;
 
 import java.io.File;
@@ -29,8 +30,9 @@ public class ZItemManager {
 
     }
 
-    public static ZItem getItem(String name) {
+    public static ItemStack getItem(String name) {
 
+        for (ZItem i : items) if (i.name.equals(name)) return i.item;
         return null;
 
     }

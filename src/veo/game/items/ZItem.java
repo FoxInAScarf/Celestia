@@ -133,6 +133,7 @@ public class ZItem extends ZFile {
         meta.setLore(lore);
 
         item.setItemMeta(meta);
+        System.out.println("[ZItemReader]: Successfully imported '" + name + "'!");
 
     }
 
