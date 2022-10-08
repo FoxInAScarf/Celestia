@@ -65,7 +65,7 @@ public class FlagStructure {
                 for (int y = 0; y <= 2; y++) {
 
                     Location b = new Location(pole.getWorld(), pole.getX() + x + 1, pole.getY() + h - y, pole.getZ());
-                    p.sendBlockChange(b, p.equals(owner) ? Material.GREEN_WOOL.createBlockData(): Material.RED_WOOL.createBlockData());
+                    p.sendBlockChange(b, p.equals(owner) ? Material.GREEN_WOOL.createBlockData() : Material.RED_WOOL.createBlockData());
 
                 }
 
