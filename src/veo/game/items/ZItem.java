@@ -2,6 +2,9 @@ package veo.game.items;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -12,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ZItem extends ZFile {
 
@@ -34,7 +38,10 @@ public class ZItem extends ZFile {
             if (s.equals("enchantments")) {
 
                 int i = lines.indexOf(s);
-                while (lines.get(i + 1).split("")[0].equals("\t")) {
+                while (lines.get(i + 1).split("")[0].equals(" ")
+                        && lines.get(i + 1).split("")[1].equals(" ")
+                        && lines.get(i + 1).split("")[2].equals(" ")
+                        && lines.get(i + 1).split("")[3].equals(" ")) {
 
                     String[] se = lines.get(i + 1).split("@");
                     if (!lines.get(i + 1).contains("@") || se.length <= 1) {
@@ -60,7 +67,10 @@ public class ZItem extends ZFile {
             if (s.equals("lore")) {
 
                 int i = lines.indexOf(s);
-                while (lines.get(i + 1).split("")[0].equals("\t")) {
+                while (lines.get(i + 1).split("")[0].equals(" ")
+                        && lines.get(i + 1).split("")[1].equals(" ")
+                        && lines.get(i + 1).split("")[2].equals(" ")
+                        && lines.get(i + 1).split("")[3].equals(" ")) {
 
                     lore.add(lines.get(i + 1));
                     i++;
@@ -88,8 +98,7 @@ public class ZItem extends ZFile {
         ItemMeta meta = item.getItemMeta();
 
         if (data.containsKey("name")) meta.setDisplayName(data.get("name"));
-        if (lines.contains("hideAttributes")) // this might cause errors
-            meta.removeItemFlags(meta.getItemFlags().toArray(new ItemFlag[0]));
+        if (lines.contains("hideAttributes")) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         if (data.containsKey("damage")) {
 
             int value = 0;
@@ -100,14 +109,16 @@ public class ZItem extends ZFile {
                 return;
 
             }
-            if (!(meta instanceof Damageable dm)) {
+            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", value, AttributeModifier.Operation.valueOf("ADD"), EquipmentSlot.HAND);
+            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier);
+            /*if (!(meta instanceof Damageable dm)) {
 
                 error(1.1);
                 return;
 
             }
             dm.setDamage(value);
-            meta = dm; // this might not work
+            meta = dm; this might not work*/
 
         }
         if (data.containsKey("durability")) {
@@ -131,7 +142,7 @@ public class ZItem extends ZFile {
         }
 
         lore.add("");
-        lore.add(ChatColor.RED + "\uD83D\uDC80 " + ((Damageable) meta).getDamage() + " damage");
+        lore.add(ChatColor.RED + "☠ " + ((Damageable) meta).getDamage() + " damage");
         //lore.add(); hmm...
 
         for (ZEnchantment ze : e) meta.addEnchant(ze.e, ze.lvl, true);
