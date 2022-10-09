@@ -24,3 +24,6 @@ commands:
   flag:
     aliases: []
     description: Celestia command.
+  zitem:
+    aliases: []
+    description: ZItem module command.
