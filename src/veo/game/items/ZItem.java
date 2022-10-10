@@ -142,19 +142,19 @@ public class ZItem extends ZFile {
             switch (type) {
 
                 case 1:
-                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDDE1" + ChatColor.DARK_GRAY + "]";
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDDE1" + ChatColor.DARK_GRAY + "] ";
                     break;
 
                 case 2:
-                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83E\uDE93" + ChatColor.DARK_GRAY + "]";
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83E\uDE93" + ChatColor.DARK_GRAY + "] ";
                     break;
 
                 case 3:
-                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83C\uDFF9" + ChatColor.DARK_GRAY + "]";
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83C\uDFF9" + ChatColor.DARK_GRAY + "] ";
                     break;
 
                 case 4:
-                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDEE1" + ChatColor.DARK_GRAY + "]";
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDEE1" + ChatColor.DARK_GRAY + "] ";
                     break;
 
                 default:
@@ -162,7 +162,7 @@ public class ZItem extends ZFile {
                     break;
 
             }
-            meta.setDisplayName(prefix + ChatColor.RESET + " " + name);
+            meta.setDisplayName(prefix + ChatColor.RESET + name);
 
         }
         if (lines.contains("hideAttributes")) {
@@ -209,8 +209,8 @@ public class ZItem extends ZFile {
         }
         if (data.containsKey("speed")) {
 
-            int value = 0;
-            try { value = Integer.parseInt(data.get("speed")); }
+            double value = 0;
+            try { value = Double.parseDouble(data.get("speed")); }
             catch (Exception ignored) {
 
                 error(1.0);
