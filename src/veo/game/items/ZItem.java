@@ -1,9 +1,14 @@
 package veo.game.items;
 
+import com.google.common.collect.Multimap;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -12,10 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import veo.essentials.zfm.ZFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ZItem extends ZFile {
 
@@ -30,10 +32,14 @@ public class ZItem extends ZFile {
         name = f.getName().replaceAll(".zra", "");
         List<ZEnchantment> e = new ArrayList<>();
         List<String> lore = new ArrayList<>();
-        for (String s : lines) if (s.contains("=")) {
+        for (String s : lines) {
 
-            String[] ss = s.split("=");
-            data.put(ss[0], ss[1]);
+            if (s.contains("=")) {
+
+                String[] ss = s.split("=");
+                data.put(ss[0], ss[1]);
+
+            }
 
             if (s.equals("enchantments")) {
 
@@ -43,23 +49,22 @@ public class ZItem extends ZFile {
                         && lines.get(i + 1).split("")[2].equals(" ")
                         && lines.get(i + 1).split("")[3].equals(" ")) {
 
-                    String[] se = lines.get(i + 1).split("@");
+                    String[] se = lines.get(i + 1).replace("    ", "").split("@");
                     if (!lines.get(i + 1).contains("@") || se.length <= 1) {
-
                         error(3.1);
                         return;
-
                     }
+
                     int lvl = 0;
                     try {lvl = Integer.parseInt(se[1]); }
                     catch (Exception ignored) {
-
                         error(3.2);
                         return;
-
                     }
                     e.add(new ZEnchantment(se[0], lvl, this));
-                    i++;
+
+                    if (i != lines.size() - 2) i++;
+                    else break;
 
                 }
 
@@ -72,8 +77,10 @@ public class ZItem extends ZFile {
                         && lines.get(i + 1).split("")[2].equals(" ")
                         && lines.get(i + 1).split("")[3].equals(" ")) {
 
-                    lore.add(lines.get(i + 1));
-                    i++;
+                    lore.add(lines.get(i + 1).replace("    ", ""));
+
+                    if (i != lines.size() - 2) i++;
+                    else break;
 
                 }
 
@@ -81,6 +88,36 @@ public class ZItem extends ZFile {
 
         }
 
+        if (!data.containsKey("type")) {
+
+            error(4.0);
+            return;
+
+        }
+        int type = 0;
+        switch (data.get("type")) {
+
+            case "normal":
+                type = 0;
+                break;
+
+            case "sword":
+                type = 1;
+                break;
+
+            case "axe":
+                type = 2;
+                break;
+
+            case "bow":
+                type = 3;
+                break;
+
+            case "armor":
+                type = 4;
+                break;
+
+        }
         if (!data.containsKey("material")) {
 
             error(0.0);
@@ -97,8 +134,45 @@ public class ZItem extends ZFile {
         item = new ItemStack(m);
         ItemMeta meta = item.getItemMeta();
 
-        if (data.containsKey("name")) meta.setDisplayName(data.get("name"));
-        if (lines.contains("hideAttributes")) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        if (data.containsKey("name")) {
+
+            String name = data.get("name"),
+                    color = name.split("")[0] + name.split("")[1];
+            String prefix;
+            switch (type) {
+
+                case 1:
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDDE1" + ChatColor.DARK_GRAY + "]";
+                    break;
+
+                case 2:
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83E\uDE93" + ChatColor.DARK_GRAY + "]";
+                    break;
+
+                case 3:
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83C\uDFF9" + ChatColor.DARK_GRAY + "]";
+                    break;
+
+                case 4:
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDEE1" + ChatColor.DARK_GRAY + "]";
+                    break;
+
+                default:
+                    prefix = "";
+                    break;
+
+            }
+            meta.setDisplayName(prefix + ChatColor.RESET + " " + name);
+
+        }
+        if (lines.contains("hideAttributes")) {
+
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+            meta.addItemFlags(ItemFlag.HIDE_DYE);
+
+        }
         if (data.containsKey("damage")) {
 
             int value = 0;
@@ -109,16 +183,42 @@ public class ZItem extends ZFile {
                 return;
 
             }
-            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", value, AttributeModifier.Operation.valueOf("ADD"), EquipmentSlot.HAND);
-            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier);
-            /*if (!(meta instanceof Damageable dm)) {
+            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_damage", value, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
 
-                error(1.1);
+        }
+        if (data.containsKey("armor")) {
+
+            int value = 0;
+            try { value = Integer.parseInt(data.get("armor")); }
+            catch (Exception ignored) {
+
+                error(1.2);
                 return;
 
             }
-            dm.setDamage(value);
-            meta = dm; this might not work*/
+            AttributeModifier headM = new AttributeModifier(UUID.randomUUID(), "generic.armor", value, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+            AttributeModifier chestM = new AttributeModifier(UUID.randomUUID(), "generic.armor", value, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+            AttributeModifier legsM = new AttributeModifier(UUID.randomUUID(), "generic.armor", value, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+            AttributeModifier feetM = new AttributeModifier(UUID.randomUUID(), "generic.armor", value, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, headM);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, chestM);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, legsM);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, feetM);
+
+        }
+        if (data.containsKey("speed")) {
+
+            int value = 0;
+            try { value = Integer.parseInt(data.get("speed")); }
+            catch (Exception ignored) {
+
+                error(1.0);
+                return;
+
+            }
+            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_speed", value, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier);
 
         }
         if (data.containsKey("durability")) {
@@ -141,9 +241,23 @@ public class ZItem extends ZFile {
 
         }
 
-        lore.add("");
-        lore.add(ChatColor.RED + "☠ " + ((Damageable) meta).getDamage() + " damage");
-        //lore.add(); hmm...
+        switch (type) {
+
+            case 1, 2 -> {
+                lore.add("");
+                lore.add(ChatColor.RED + "☠ " + data.get("damage") + " Attack Damage");
+                lore.add(ChatColor.YELLOW + "⚔ " + data.get("speed") + " Attack Speed");
+            }
+            case 3 -> {
+                lore.add("");
+                lore.add("idfk bruh");
+            }
+            case 4 -> {
+                lore.add("");
+                lore.add(ChatColor.DARK_AQUA + "\uD83D\uDEE1 " + data.get("armor") + " Armor");
+            }
+
+        }
 
         for (ZEnchantment ze : e) meta.addEnchant(ze.e, ze.lvl, true);
         meta.setLore(lore);
@@ -187,9 +301,11 @@ public class ZItem extends ZFile {
 * 0.1 - invalid material name
 * 1.0 - damage value is not an integer
 * 1.1 - given item is not a damageable
+* 1.2 - armor value is not an integer
 * 2.0 - durability value is not an integer
 * 3.0 - enchantment does not exist
 * 3.1 - no enchantment level provided
 * 3.2 - enchantment level is not an integer
+* 4.0 - type not specified (normal, sword, axe, bow, armor)
 *
 * */
