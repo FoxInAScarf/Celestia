@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -14,10 +15,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import veo.essentials.zfm.ZFile;
 
+import java.awt.*;
 import java.io.File;
 import java.util.*;
+import java.util.List;
 
 public class ZItem extends ZFile {
 
@@ -213,7 +217,7 @@ public class ZItem extends ZFile {
             try { value = Double.parseDouble(data.get("speed")); }
             catch (Exception ignored) {
 
-                error(1.0);
+                error(1.3);
                 return;
 
             }
@@ -240,6 +244,23 @@ public class ZItem extends ZFile {
             if (durability != -1) item.setDurability((short) durability);
 
         }
+        if (data.containsKey("dye")) {
+
+            try {
+
+                LeatherArmorMeta laM = (LeatherArmorMeta) meta;
+                laM.setColor(Color.fromBGR(Integer.parseInt(data.get("dye").split("-")[0]),
+                        Integer.parseInt(data.get("dye").split("-")[1]),
+                        Integer.parseInt(data.get("dye").split("-")[2])));
+
+            } catch (Exception ignored) {
+
+                error(4.1);
+                return;
+
+            }
+
+        }
 
         switch (type) {
 
@@ -248,10 +269,10 @@ public class ZItem extends ZFile {
                 lore.add(ChatColor.RED + "☠ " + data.get("damage") + " Attack Damage");
                 lore.add(ChatColor.YELLOW + "⚔ " + data.get("speed") + " Attack Speed");
             }
-            case 3 -> {
+            /*case 3 -> {
                 lore.add("");
                 lore.add("idfk bruh");
-            }
+            }*/
             case 4 -> {
                 lore.add("");
                 lore.add(ChatColor.DARK_AQUA + "\uD83D\uDEE1 " + data.get("armor") + " Armor");
@@ -302,10 +323,12 @@ public class ZItem extends ZFile {
 * 1.0 - damage value is not an integer
 * 1.1 - given item is not a damageable
 * 1.2 - armor value is not an integer
+* 1.3 - speed value is not a double
 * 2.0 - durability value is not an integer
 * 3.0 - enchantment does not exist
 * 3.1 - no enchantment level provided
 * 3.2 - enchantment level is not an integer
 * 4.0 - type not specified (normal, sword, axe, bow, armor)
+* 4.1 - item is not dyeable
 *
 * */
