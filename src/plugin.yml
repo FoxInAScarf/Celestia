@@ -27,3 +27,6 @@ commands:
   zitem:
     aliases: []
     description: ZItem module command.
+  shop:
+    aliases: []
+    description: ZShop module command.
