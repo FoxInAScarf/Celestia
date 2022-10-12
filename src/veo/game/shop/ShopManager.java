@@ -1,11 +1,7 @@
 package veo.game.shop;
 
 import org.bukkit.Bukkit;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import veo.Main;
-import veo.game.items.ZItem;
-import veo.game.items.ZItemCommand;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,8 +31,9 @@ public class ShopManager {
 
     }
 
-    public static Inventory getShop(String name) {
+    public static Shop getShop(String name) {
 
+        for (Shop s : shops) if (s.name.equals(name)) return s;
         return null;
 
     }

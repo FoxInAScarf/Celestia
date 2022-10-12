@@ -11,6 +11,7 @@ import veo.essentials.zpm.ZPM;
 import veo.essentials.zwp.ZWP;
 import veo.game.gens.GenManager;
 import veo.game.items.ZItemManager;
+import veo.game.shop.ShopManager;
 
 import java.io.File;
 
@@ -43,6 +44,7 @@ public class Main extends JavaPlugin {
         ZCM.init(this);
         GenManager.init(this);
         ZItemManager.init();
+        ShopManager.init();
 
     }
 

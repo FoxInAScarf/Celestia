@@ -84,7 +84,7 @@ public class Shop extends ZFile {
 
     }
 
-    public void dispalyGUI(Player p) {
+    public void displayGUI(Player p) {
 
         /*
         *
