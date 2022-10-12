@@ -86,6 +86,17 @@ public class Shop extends ZFile {
 
     public void dispalyGUI(Player p) {
 
+        /*
+        *
+        * 0  1  2  3  4  5  6  7  8
+        * 9  10 11 12 13 14 15 16 17
+        * 18 19 20 21 22 23 24 25 26
+        * 27 28 29 30 31 32 33 34 35
+        * 36 37 38 39 40 41 42 43 44
+        * 45 46 47 48 49 50 51 52 53
+        *
+        * */
+
         Inventory inv = Bukkit.createInventory(p, 54, displayName);
 
         // stupid gray shit
@@ -98,7 +109,23 @@ public class Shop extends ZFile {
 
         if (pages == 1) {
 
+            for (int i = 0; i <= 8; i++) inv.setItem(i, grayPane);
+            for (int i = 9; i <= 36; i += 9) inv.setItem(i, grayPane);
+            for (int i = 18; i <= 45; i += 9) inv.setItem(i - 1, grayPane);
+            for (int i = 18; i <= 45; i += 9) inv.setItem(i - 3, grayPane);
+            for (int i = 45; i <= 53; i++) inv.setItem(i, grayPane);
 
+            for (int i = 0; i <= recipes.size() - 1; i++) {
+
+                Recipe r = recipes.get(i);
+                inv.setItem(16 + (9 * i), r.item);
+                for (int j = 0; j <= r.elements.size() - 1; j++)
+                    inv.setItem(i - (2 + j), r.elements.get(j));
+
+            }
+
+            p.openInventory(inv);
+            return;
 
         }
 
