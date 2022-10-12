@@ -109,7 +109,7 @@ public class ZCMListeners implements Listener {
 
         Player p = e.getPlayer();
 
-        if (!ZPM.getProfiledPlayers().contains(p)) {
+        if (!ZPM.getProfiledPlayers().contains(p.getUniqueId())) {
 
             File f1 = new File(ZPM.prpFolder + "/" + p.getUniqueId());
             ZPM.prp.add(new PlayerRankProfile(f1).reset());

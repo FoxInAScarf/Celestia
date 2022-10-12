@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ZPM implements Listener {
 
@@ -97,23 +98,23 @@ public class ZPM implements Listener {
 
     }*/
 
-    public static List<Player> getProfiledPlayers() {
+    public static List<UUID> getProfiledPlayers() {
 
-        List<Player> profiledPlayers = new ArrayList<>();
+        List<UUID> profiledPlayers = new ArrayList<>();
         {
 
             for (PlayerChatProfile pr : pcp)
-                if (!profiledPlayers.contains(pr.getPlayer()))
-                    profiledPlayers.add(pr.getPlayer());
+                if (!profiledPlayers.contains(pr.getUUID()))
+                    profiledPlayers.add(pr.getUUID());
             for (PlayerRankProfile pr : prp)
-                if (!profiledPlayers.contains(pr.getPlayer()))
-                    profiledPlayers.add(pr.getPlayer());
+                if (!profiledPlayers.contains(pr.getUUID()))
+                    profiledPlayers.add(pr.getUUID());
             for (PlayerSocialProfile pr : psp)
-                if (!profiledPlayers.contains(pr.getPlayer()))
-                    profiledPlayers.add(pr.getPlayer());
+                if (!profiledPlayers.contains(pr.getUUID()))
+                    profiledPlayers.add(pr.getUUID());
             for (PlayerGameProfile pr : pgp)
-                if (!profiledPlayers.contains(pr.getPlayer()))
-                    profiledPlayers.add(pr.getPlayer());
+                if (!profiledPlayers.contains(pr.getUUID()))
+                    profiledPlayers.add(pr.getUUID());
 
         }
 

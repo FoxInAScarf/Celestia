@@ -22,5 +22,6 @@ public class Profile extends ZFile {
     }
 
     public Player getPlayer() { return p.getPlayer(); }
+    public UUID getUUID() { return p.getUniqueId(); }
 
 }

@@ -18,7 +18,9 @@ public class PlayerRankProfile extends Profile {
 
         for (String s : lines) {
 
+            s = s.replaceAll("&", "§");
             s = s.replaceAll(" ", "");
+
             String[] ss = s.split(":");
             switch (ss[0]) {
 
@@ -47,8 +49,8 @@ public class PlayerRankProfile extends Profile {
 
         clear();
         save();
-        addLine("rank: §7Default");
-        addLine("color: §7");
+        addLine("rank: &7Default");
+        addLine("color: &7");
         addLine("isAdmin: false");
         save();
 
@@ -84,7 +86,7 @@ public class PlayerRankProfile extends Profile {
         clear();
         save();
         addLine("rank: " + rankName);
-        addLine("color: §" + textColor.getChar());
+        addLine("color: &" + textColor.getChar());
         addLine("isAdmin: " + isAdmin);
         save();
 

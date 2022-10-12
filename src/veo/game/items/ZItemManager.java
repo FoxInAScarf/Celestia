@@ -1,7 +1,9 @@
 package veo.game.items;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import veo.Main;
+import veo.game.custom.enchantment.Listeners;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class ZItemManager {
         folder = Main.mainFolder.getAbsolutePath() + "/Items";
         if (!new File(folder).exists()) new File(folder).mkdir();
 
+        Bukkit.getPluginManager().registerEvents(new Listeners(), Main.getInstance());
         load();
         Main.getInstance().getCommand("zitem").setExecutor(new ZItemCommand());
 

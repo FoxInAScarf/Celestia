@@ -1,24 +1,21 @@
 package veo.game.items;
 
-import com.google.common.collect.Multimap;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import veo.essentials.zfm.ZFile;
+import veo.game.custom.enchantment.ZEnchantment;
 
-import java.awt.*;
 import java.io.File;
 import java.util.*;
 import java.util.List;
@@ -36,6 +33,11 @@ public class ZItem extends ZFile {
         name = f.getName().replaceAll(".zra", "");
         List<ZEnchantment> e = new ArrayList<>();
         List<String> lore = new ArrayList<>();
+
+        List<String> nLines = new ArrayList<>();
+        for (String s : lines) nLines.add(s.replaceAll("&", "§"));
+        lines.clear();
+        lines.addAll(nLines);
         for (String s : lines) {
 
             if (s.contains("=")) {
@@ -267,7 +269,9 @@ public class ZItem extends ZFile {
             case 1, 2 -> {
                 lore.add("");
                 lore.add(ChatColor.RED + "☠ " + data.get("damage") + " Attack Damage");
-                lore.add(ChatColor.YELLOW + "⚔ " + data.get("speed") + " Attack Speed");
+                lore.add(ChatColor.YELLOW + "⚔ " +
+                        ((double) Math.round((Math.abs(Double.parseDouble(data.get("speed"))) - 0.8) * 10) / 10)
+                        + " Attack Speed");
             }
             /*case 3 -> {
                 lore.add("");
@@ -280,7 +284,20 @@ public class ZItem extends ZFile {
 
         }
 
-        for (ZEnchantment ze : e) meta.addEnchant(ze.e, ze.lvl, true);
+        for (ZEnchantment ze : e) {
+
+            if (ze.isCustom) {
+
+                net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+                NBTTagCompound nbt = new NBTTagCompound();
+                nbt.a(ze.eName, "");
+                nmsItem.b(nbt);
+                continue;
+
+            }
+            meta.addEnchant(ze.e, ze.lvl, true);
+
+        }
         meta.setLore(lore);
 
         item.setItemMeta(meta);
