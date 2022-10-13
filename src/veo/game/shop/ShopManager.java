@@ -11,6 +11,7 @@ import java.util.Objects;
 public class ShopManager {
 
     static List<Shop> shops = new ArrayList<>();
+    static List<ShopInstance> instances = new ArrayList<>();
     static String folder;
 
     public static void init() {

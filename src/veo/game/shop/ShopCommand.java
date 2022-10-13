@@ -67,7 +67,8 @@ public class ShopCommand implements CommandExecutor {
                     return false;
 
                 }
-                shop.displayGUI(p);
+                ShopManager.instances.add(new ShopInstance(p, shop));
+                ShopManager.instances.get(ShopManager.instances.size() - 1).display();
                 Main.sendMessage(p, ChatColor.GREEN + "Shop successfully displayed to " + args[1] + ".", false);
                 break;
 

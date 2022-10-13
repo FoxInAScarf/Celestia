@@ -20,7 +20,7 @@ public class Shop extends ZFile {
 
     String name, displayName;
     List<Recipe> recipes = new ArrayList<>();
-    int pages = 1, currentPage = 1;
+    int pages = 1;
 
     public Shop(File f) {
 
@@ -89,7 +89,7 @@ public class Shop extends ZFile {
 
     }
 
-    public void displayGUI(Player p) {
+    public void displayGUI(Player p, int currentPage) {
 
         /*
         *
@@ -105,7 +105,7 @@ public class Shop extends ZFile {
         Inventory inv = Bukkit.createInventory(p, 54, displayName);
 
         // stupid gray shit
-        ItemStack grayPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemStack grayPane = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta grayPaneMeta = grayPane.getItemMeta();
         grayPaneMeta.setDisplayName(" ");
         grayPane.setItemMeta(grayPaneMeta);
@@ -135,10 +135,9 @@ public class Shop extends ZFile {
         // stupid gray shit
         for (int i = 0; i <= 8; i++) inv.setItem(i, grayPane);
         for (int i = 9; i <= 17; i++) inv.setItem(i, grayPane);
-        for (int i = 9; i <= 36; i += 9) inv.setItem(i, grayPane);
-        for (int i = 18; i <= 45; i += 9) inv.setItem(i - 1, grayPane);
-        for (int i = 18; i <= 45; i += 9) inv.setItem(i - 3, grayPane);
-        for (int i = 45; i <= 53; i++) inv.setItem(i, grayPane);
+        for (int i = 9; i <= 45; i += 9) inv.setItem(i, grayPane);
+        for (int i = 18; i <= 54; i += 9) inv.setItem(i - 1, grayPane);
+        for (int i = 18; i <= 54; i += 9) inv.setItem(i - 3, grayPane);
 
         // ADD ARROWS
         ItemStack left = new ItemStack(Material.PLAYER_HEAD);
@@ -196,7 +195,8 @@ public class Shop extends ZFile {
         }
 
         // ADD ITEMS
-        for (int i = 0; i <= recipes.size() - 1; i++) {
+        int[] intrv = getIndexIntervals(currentPage);
+        for (int i = intrv[0]; i <= intrv[1]; i++) {
 
             Recipe r = recipes.get(i);
             inv.setItem(25 + (9 * i), r.item);
@@ -206,6 +206,26 @@ public class Shop extends ZFile {
         }
 
         p.openInventory(inv);
+
+    }
+
+    private int[] getIndexIntervals(int page) {
+
+        /*
+         * page begin-end
+         * 1 -> 0 - 3
+         * 2 -> 4 - 7
+         * 3 -> 8 - 11
+         * ...
+         * ..
+         * .
+         * 10 -> 36 - 37 END OF ARRAY
+         *
+         * */
+        int begin = (page - 1) * 4,
+                end = page * 4 - 1;
+        if (end >= recipes.size() - 1) return new int[]{begin, recipes.size() - 1};
+        return new int[]{begin, end};
 
     }
 
