@@ -45,7 +45,8 @@ public class Shop extends ZFile {
         }
         readRecipes();
 
-        pages = (int) Math.ceil(recipes.size() / 4);
+        pages = (int) Math.ceil((double) recipes.size() / 4.0);
+        if (pages == 0) pages = 1;
 
     }
 
@@ -72,13 +73,14 @@ public class Shop extends ZFile {
                 && lines.get(i + 1).split("")[2].equals(" ")
                 && lines.get(i + 1).split("")[3].equals(" ")) {
 
-            String[] rar = lines.get(i + 1).split(" -> ");
+            String[] rar = lines.get(i + 1).replace("    ", "").split(" -> ");
             Recipe r = new Recipe(rar[1].split("@")[0], Integer.parseInt(rar[1].split("@")[1]));
             for (String s : rar[0].split(" AND "))
                 r.addElement(s.split("@")[0], Integer.parseInt(s.split("@")[1]));
 
             recipes.add(r);
-            i++;
+            if (i != lines.size() - 2) i++;
+            else break;
 
         }
 
@@ -102,10 +104,8 @@ public class Shop extends ZFile {
         // stupid gray shit
         ItemStack grayPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta grayPaneMeta = grayPane.getItemMeta();
-        grayPaneMeta.setDisplayName("");
+        grayPaneMeta.setDisplayName(" ");
         grayPane.setItemMeta(grayPaneMeta);
-
-
 
         if (pages == 1) {
 
@@ -120,7 +120,7 @@ public class Shop extends ZFile {
                 Recipe r = recipes.get(i);
                 inv.setItem(16 + (9 * i), r.item);
                 for (int j = 0; j <= r.elements.size() - 1; j++)
-                    inv.setItem(i - (2 + j), r.elements.get(j));
+                    inv.setItem((16 + (9 * i)) - (2 + j), r.elements.get(j));
 
             }
 
@@ -129,6 +129,14 @@ public class Shop extends ZFile {
 
         }
 
+        /*
+        *
+        *
+        * ADD SCROLLABLE PAGES
+        * AND STUFF
+        *
+        *
+        * */
         p.openInventory(inv);
 
     }
