@@ -21,6 +21,7 @@ public class Shop extends ZFile {
     String name, displayName;
     List<Recipe> recipes = new ArrayList<>();
     int pages = 1;
+    Inventory inv;
 
     public Shop(File f) {
 
@@ -50,6 +51,8 @@ public class Shop extends ZFile {
 
         pages = (int) Math.ceil((double) recipes.size() / 4.0);
         if (pages == 0) pages = 1;
+
+        build(1);
 
     }
 
@@ -89,23 +92,23 @@ public class Shop extends ZFile {
 
     }
 
-    public void displayGUI(Player p, int currentPage) {
+    public void build(int currentPage) {
 
         /*
-        *
-        * 0  1  2  3  4  5  6  7  8
-        * 9  10 11 12 13 14 15 16 17
-        * 18 19 20 21 22 23 24 25 26
-        * 27 28 29 30 31 32 33 34 35
-        * 36 37 38 39 40 41 42 43 44
-        * 45 46 47 48 49 50 51 52 53
-        *
-        * */
+         *
+         * 0  1  2  3  4  5  6  7  8
+         * 9  10 11 12 13 14 15 16 17
+         * 18 19 20 21 22 23 24 25 26
+         * 27 28 29 30 31 32 33 34 35
+         * 36 37 38 39 40 41 42 43 44
+         * 45 46 47 48 49 50 51 52 53
+         *
+         * */
 
-        Inventory inv = Bukkit.createInventory(p, 54, displayName);
+        inv = Bukkit.createInventory(null, 54, displayName);
 
         // stupid gray shit
-        ItemStack grayPane = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+        ItemStack grayPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta grayPaneMeta = grayPane.getItemMeta();
         grayPaneMeta.setDisplayName(" ");
         grayPane.setItemMeta(grayPaneMeta);
@@ -127,7 +130,6 @@ public class Shop extends ZFile {
 
             }
 
-            p.openInventory(inv);
             return;
 
         }
@@ -179,7 +181,7 @@ public class Shop extends ZFile {
         // ADD PAGES
         for (int i = 0; i <= pages - 1; i++) {
 
-            ItemStack page = new ItemStack(currentPage == pages + 1 ? Material.RED_STAINED_GLASS_PANE
+            ItemStack page = new ItemStack(currentPage == i + 1 ? Material.RED_STAINED_GLASS_PANE
                     : Material.LIME_STAINED_GLASS_PANE);
             ItemMeta pageMeta = page.getItemMeta();
             if (currentPage == pages + 1) {
@@ -190,6 +192,7 @@ public class Shop extends ZFile {
             }
             else pageMeta.setDisplayName(ChatColor.GREEN + "Page #" + (i + 1));
 
+            page.setItemMeta(pageMeta);
             inv.setItem(2 + i, page);
 
         }
@@ -204,8 +207,6 @@ public class Shop extends ZFile {
                 inv.setItem((25 + (9 * i)) - (2 + j), r.elements.get(j));
 
         }
-
-        p.openInventory(inv);
 
     }
 

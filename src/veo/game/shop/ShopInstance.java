@@ -1,6 +1,9 @@
 package veo.game.shop;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class ShopInstance {
 
@@ -17,7 +20,7 @@ public class ShopInstance {
 
     public void display() {
 
-        shop.displayGUI(owner, currentPage);
+        owner.openInventory(shop.inv);
 
     }
 
