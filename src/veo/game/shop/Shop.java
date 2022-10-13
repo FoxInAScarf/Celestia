@@ -184,7 +184,7 @@ public class Shop extends ZFile {
             ItemStack page = new ItemStack(currentPage == i + 1 ? Material.RED_STAINED_GLASS_PANE
                     : Material.LIME_STAINED_GLASS_PANE);
             ItemMeta pageMeta = page.getItemMeta();
-            if (currentPage == pages + 1) {
+            if (currentPage == i + 1) {
 
                 pageMeta.setDisplayName(ChatColor.RED + "Page #" + (i + 1));
                 pageMeta.setLore(Arrays.asList(ChatColor.GRAY + "Selected"));

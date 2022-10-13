@@ -17,20 +17,22 @@ public class Listeners implements Listener {
         if (e.getCurrentItem() == null) return;
         else e.setCancelled(true);
 
-        switch (e.getRawSlot()) {
+        if (si.shop.pages != 1) switch (e.getRawSlot()) {
 
             case 0:
 
                 if (si.currentPage > 1) si.currentPage--;
-                e.getWhoClicked().closeInventory();
+                System.out.println(si.currentPage);
+                //e.getWhoClicked().closeInventory();
                 si.shop.build(si.currentPage);
                 e.getWhoClicked().openInventory(si.shop.inv);
                 break;
 
             case 8:
 
-                if (si.currentPage < 4) si.currentPage++;
-                e.getWhoClicked().closeInventory();
+                if (si.currentPage < si.shop.pages) si.currentPage++;
+                System.out.println(si.currentPage);
+                //e.getWhoClicked().closeInventory();
                 si.shop.build(si.currentPage);
                 e.getWhoClicked().openInventory(si.shop.inv);
                 break;
@@ -39,13 +41,13 @@ public class Listeners implements Listener {
 
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
 
         ShopInstance si = getInstanceByPlayer((Player) e.getPlayer());
         if (si != null) ShopManager.instances.remove(si);
 
-    }*/
+    }
 
     private ShopInstance getInstance(Inventory i) {
 
