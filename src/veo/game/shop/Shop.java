@@ -199,14 +199,12 @@ public class Shop extends ZFile {
 
         // ADD ITEMS
         int[] intrv = getIndexIntervals(currentPage);
-        System.out.println(intrv[0] + " " + intrv[1]);
         for (int i = intrv[0]; i <= intrv[1]; i++) {
 
             Recipe r = recipes.get(i);
             int index = 25 + (9 * (i - (4 * (currentPage - 1))));
-            System.out.println(index);
             inv.setItem(index, r.item);
-            for (int j = 0; j <= r.elements.size() - 1; j++) // this causes problems
+            for (int j = 0; j <= r.elements.size() - 1; j++)
                 inv.setItem(index - (2 + j), r.elements.get(j));
 
         }

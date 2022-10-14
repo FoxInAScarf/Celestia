@@ -35,14 +35,14 @@ public class Recipe {
             return zitem;
 
         }
-        zitem = new ItemStack(Material.getMaterial(item.toUpperCase()), amount);
-        if (zitem == null) {
+        Material m = Material.getMaterial(item.toUpperCase());
+        if (m == null) {
 
             System.out.println("[ShopReader-ERROR]: Specified item does not exist.");
             return null;
 
         }
-        return zitem;
+        return new ItemStack(m, amount);
 
     }
 

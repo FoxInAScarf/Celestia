@@ -15,7 +15,7 @@ public class Listeners implements Listener {
         ShopInstance si = getInstanceByPlayer((Player) e.getWhoClicked());
         if (si == null) return;
         if (e.getCurrentItem() == null) return;
-        else e.setCancelled(true);
+        if (e.getInventory().equals(si.shop.inv)) e.setCancelled(true);
 
         if (si.shop.pages != 1) switch (e.getRawSlot()) {
 
