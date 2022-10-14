@@ -28,6 +28,7 @@ public class ShopManager {
     public static void load() {
 
         shops.clear();
+        instances.clear();
         for (File f : Objects.requireNonNull(new File(folder).listFiles())) shops.add(new Shop(f));
 
     }
