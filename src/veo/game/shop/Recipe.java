@@ -6,12 +6,13 @@ import veo.game.items.ZItem;
 import veo.game.items.ZItemManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Recipe {
 
     public ItemStack item;
-    public List<ItemStack> elements = new ArrayList<>();
+    public HashMap<ItemStack, Integer> elements = new HashMap<>();
 
     public Recipe(String item, int amount) {
 
@@ -22,7 +23,10 @@ public class Recipe {
     public void addElement(String item, int amount) {
 
         ItemStack i = getItem(item, amount);
-        elements.add(i);
+        elements.put(i, amount);
+
+        //System.out.println("Added: " + item + " " + amount + " -> "
+        //        + elements.get(elements.size() - 1).getType() + " " + elements.get(elements.size() - 1).getAmount());
 
     }
 

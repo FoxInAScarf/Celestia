@@ -125,8 +125,19 @@ public class Shop extends ZFile {
 
                 Recipe r = recipes.get(i);
                 inv.setItem(16 + (9 * i), r.item);
-                for (int j = 0; j <= r.elements.size() - 1; j++)
-                    inv.setItem((16 + (9 * i)) - (2 + j), r.elements.get(j));
+                Iterator<Map.Entry<ItemStack, Integer>> it = r.elements.entrySet().iterator();
+                int j = 0;
+                while (it.hasNext()) {
+
+                    Map.Entry<ItemStack, Integer> map = it.next();
+                    ItemStack is = map.getKey().clone();
+                    is.setAmount(map.getValue());
+
+                    inv.setItem((16 + (9 * i)) - (2 + j), is);
+                    j++;
+
+                }
+
 
             }
 
@@ -204,8 +215,18 @@ public class Shop extends ZFile {
             Recipe r = recipes.get(i);
             int index = 25 + (9 * (i - (4 * (currentPage - 1))));
             inv.setItem(index, r.item);
-            for (int j = 0; j <= r.elements.size() - 1; j++)
-                inv.setItem(index - (2 + j), r.elements.get(j));
+            Iterator<Map.Entry<ItemStack, Integer>> it = r.elements.entrySet().iterator();
+            int j = 0;
+            while (it.hasNext()) {
+
+                Map.Entry<ItemStack, Integer> map = it.next();
+                ItemStack is = map.getKey().clone();
+                is.setAmount(map.getValue());
+
+                inv.setItem(index - (2 + j), is);
+                j++;
+
+            }
 
         }
 
