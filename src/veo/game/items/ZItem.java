@@ -358,20 +358,35 @@ public class ZItem extends ZFile {
 
                     //lore.add(ChatColor.DARK_PURPLE + "⚗");
                     String sc = pe.getType().getColor().toString().replaceAll("Color:\\[rgb0x", "#").replaceAll("]", "");
-                    net.md_5.bungee.api.ChatColor c = net.md_5.bungee.api.ChatColor.of(sc);
-                    String a = c + "⚗ Potion of " + pe.getType().getName(), b;
-                    switch (pe.getAmplifier()) {
+                    net.md_5.bungee.api.ChatColor color = net.md_5.bungee.api.ChatColor.of(sc);
+                    String[] aa = pe.getType().getName().toLowerCase().split("_");
+                    String a = "";
+                    for (String as : aa) {
 
-                        case 1 -> b = "I";
-                        case 2 -> b = "II";
-                        case 3 -> b = "III";
-                        case 4 -> b = "IV";
-                        case 5 -> b = "V";
-                        default -> b = pe.getAmplifier() + "";
+                        String[] ab = as.split("");
+                        a += ab[0].toUpperCase();
+                        for (int i = 1; i <= ab.length - 1; i++) a += ab[i];
+                        a += " ";
 
                     }
-                    a += b;
-                    lore.add(a);
+
+                    String b = color + "⚗ " + a, c;
+                    switch (pe.getAmplifier()) {
+
+                        case 1 -> c = "I";
+                        case 2 -> c = "II";
+                        case 3 -> c = "III";
+                        case 4 -> c = "IV";
+                        case 5 -> c = "V";
+                        default -> c = "" + pe.getAmplifier();
+
+                    }
+                    b += c;
+
+                    String d = " (" + (int) Math.floor((double) pe.getDuration() / (20 * 60))
+                            + ":" + ((pe.getDuration() / 20) % 60) + ")";
+                    b += d;
+                    lore.add(b);
 
                 }
 
