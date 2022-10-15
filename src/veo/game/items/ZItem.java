@@ -103,9 +103,10 @@ public class ZItem extends ZFile {
                         && lines.get(i + 1).split("")[2].equals(" ")
                         && lines.get(i + 1).split("")[3].equals(" ")) {
 
-                    String pType = data.get("potion").split("@")[0].toUpperCase();
-                    int pStrength = Integer.parseInt(data.get("potion").split("@")[1]),
-                            pTime = Integer.parseInt(data.get("potion").split("@")[2]);
+                    String[] ae = lines.get(i + 1).replace("    ", "").split("@");
+                    String pType = ae[0].toUpperCase();
+                    int pStrength = Integer.parseInt(ae[1]),
+                            pTime = Integer.parseInt(ae[2]);
                     potions.add(new PotionEffect(PotionEffectType.getByName(pType), pTime, pStrength));
 
                     if (i != lines.size() - 2) i++;
@@ -295,6 +296,43 @@ public class ZItem extends ZFile {
             }
 
         }
+        if (data.containsKey("potionColor")) {
+
+            try {
+
+                PotionMeta pm = (PotionMeta) meta;
+                String c = data.get("potionColor");
+                pm.setColor(Color.fromRGB(java.awt.Color.decode(c).getRed(),
+                        java.awt.Color.decode(c).getGreen(), java.awt.Color.decode(c).getBlue()));
+                net.md_5.bungee.api.ChatColor cc = net.md_5.bungee.api.ChatColor.of(c);
+
+                String finA;
+                {
+
+                    String[] a = this.data.get("name").split("&");
+                    finA = a[0];
+                    for (int i = 1; i <= a.length - 1; i++) {
+
+                        String[] b = a[i].split("");
+                        String finB = "";
+                        for (int j = 1; j <= b.length - 1; j++) finB += b[j];
+                        finA += finB;
+
+                    }
+
+                }
+                String name = ChatColor.DARK_GRAY + "[" + cc + "⚗" + ChatColor.DARK_GRAY + "] " + cc + finA;
+                pm.setDisplayName(name);
+                meta = pm;
+
+            } catch (Exception ignored) {
+
+                error(4.2);
+                return;
+
+            }
+
+        }
 
         switch (type) {
 
@@ -312,6 +350,31 @@ public class ZItem extends ZFile {
             case 4 -> {
                 lore.add("");
                 lore.add(ChatColor.DARK_AQUA + "\uD83D\uDEE1 " + data.get("armor") + " Armor");
+            }
+            case 5 -> {
+
+                lore.add("");
+                for (PotionEffect pe : potions) {
+
+                    //lore.add(ChatColor.DARK_PURPLE + "⚗");
+                    String sc = pe.getType().getColor().toString().replaceAll("Color:\\[rgb0x", "#").replaceAll("]", "");
+                    net.md_5.bungee.api.ChatColor c = net.md_5.bungee.api.ChatColor.of(sc);
+                    String a = c + "⚗ Potion of " + pe.getType().getName(), b;
+                    switch (pe.getAmplifier()) {
+
+                        case 1 -> b = "I";
+                        case 2 -> b = "II";
+                        case 3 -> b = "III";
+                        case 4 -> b = "IV";
+                        case 5 -> b = "V";
+                        default -> b = pe.getAmplifier() + "";
+
+                    }
+                    a += b;
+                    lore.add(a);
+
+                }
+
             }
 
         }
