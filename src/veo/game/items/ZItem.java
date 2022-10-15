@@ -13,6 +13,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import veo.essentials.zfm.ZFile;
 import veo.game.custom.enchantment.ZEnchantment;
 
@@ -33,6 +36,7 @@ public class ZItem extends ZFile {
         name = f.getName().replaceAll(".zra", "");
         List<ZEnchantment> e = new ArrayList<>();
         List<String> lore = new ArrayList<>();
+        List<PotionEffect> potions = new ArrayList<>();
 
         List<String> nLines = new ArrayList<>();
         for (String s : lines) nLines.add(s.replaceAll("&", "§"));
@@ -91,6 +95,25 @@ public class ZItem extends ZFile {
                 }
 
             }
+            if (s.equals("potions")) {
+
+                int i = lines.indexOf(s);
+                while (lines.get(i + 1).split("")[0].equals(" ")
+                        && lines.get(i + 1).split("")[1].equals(" ")
+                        && lines.get(i + 1).split("")[2].equals(" ")
+                        && lines.get(i + 1).split("")[3].equals(" ")) {
+
+                    String pType = data.get("potion").split("@")[0].toUpperCase();
+                    int pStrength = Integer.parseInt(data.get("potion").split("@")[1]),
+                            pTime = Integer.parseInt(data.get("potion").split("@")[2]);
+                    potions.add(new PotionEffect(PotionEffectType.getByName(pType), pTime, pStrength));
+
+                    if (i != lines.size() - 2) i++;
+                    else break;
+
+                }
+
+            }
 
         }
 
@@ -121,6 +144,10 @@ public class ZItem extends ZFile {
 
             case "armor":
                 type = 4;
+                break;
+
+            case "potion":
+                type = 5;
                 break;
 
         }
@@ -163,6 +190,10 @@ public class ZItem extends ZFile {
                     prefix = ChatColor.DARK_GRAY + "[" + color + "\uD83D\uDEE1" + ChatColor.DARK_GRAY + "] ";
                     break;
 
+                case 5:
+                    prefix = ChatColor.DARK_GRAY + "[" + color + "⚗" + ChatColor.DARK_GRAY + "] ";
+                    break;
+
                 default:
                     prefix = "";
                     break;
@@ -177,6 +208,7 @@ public class ZItem extends ZFile {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
             meta.addItemFlags(ItemFlag.HIDE_DYE);
+            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 
         }
         if (data.containsKey("damage")) {
@@ -292,6 +324,7 @@ public class ZItem extends ZFile {
                 NBTTagCompound nbt = new NBTTagCompound();
                 nbt.a(ze.eName, "");
                 nmsItem.b(nbt);
+                item = CraftItemStack.asBukkitCopy(nmsItem);
                 continue;
 
             }
@@ -299,6 +332,18 @@ public class ZItem extends ZFile {
 
         }
         meta.setLore(lore);
+        for (PotionEffect pe : potions) try {
+
+            PotionMeta pm = (PotionMeta) meta;
+            pm.addCustomEffect(pe, true);
+            meta = pm;
+
+        } catch (Exception ignored) {
+
+            error(4.2);
+            return;
+
+        }
 
         item.setItemMeta(meta);
         System.out.println("[ZItemReader]: Successfully imported '" + name + "'!");
@@ -347,5 +392,6 @@ public class ZItem extends ZFile {
 * 3.2 - enchantment level is not an integer
 * 4.0 - type not specified (normal, sword, axe, bow, armor)
 * 4.1 - item is not dyeable
+* 4.2 - item cannot pick up potion effects
 *
 * */
