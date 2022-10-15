@@ -2,12 +2,9 @@ package veo.game.shop;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import veo.game.items.ZItem;
 import veo.game.items.ZItemManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Recipe {
 
