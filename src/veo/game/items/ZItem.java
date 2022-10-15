@@ -309,7 +309,7 @@ public class ZItem extends ZFile {
                 String finA;
                 {
 
-                    String[] a = this.data.get("name").split("&");
+                    String[] a = this.data.get("name").split("§");
                     finA = a[0];
                     for (int i = 1; i <= a.length - 1; i++) {
 
