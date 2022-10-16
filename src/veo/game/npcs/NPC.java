@@ -2,10 +2,9 @@ package veo.game.npcs;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
-import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
-import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+import net.minecraft.EnumChatFormat;
+import net.minecraft.network.PacketDataSerializer;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.DataWatcher;
 import net.minecraft.network.syncher.DataWatcherObject;
 import net.minecraft.network.syncher.DataWatcherRegistry;
@@ -13,6 +12,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.PlayerInteractManager;
 import net.minecraft.server.level.WorldServer;
+import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.world.scores.ScoreboardTeam;
+import net.minecraft.world.scores.ScoreboardTeamBase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,9 +22,12 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_19_R1.scoreboard.CraftScoreboard;
+import org.bukkit.craftbukkit.v1_19_R1.scoreboard.CraftScoreboardManager;
+import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import veo.Main;
 import veo.essentials.zfm.ZFile;
 import veo.game.items.ZItem;
 import veo.game.items.ZItemManager;
@@ -44,13 +49,17 @@ public class NPC extends ZFile {
     * location=world@20@20@20@50@50
     * action=shop
     * value=farmshop
-    * skin=<base64 value>
+    * skinValue=<base64 value>
     *
     * */
     String name, displayName, displaySubname;
     Location l;
     int actionType = 0;
     Object value;
+    ArmorStand as;
+    EntityPlayer npc;
+    String skinValue = "", skinSignature = "";
+    Slime hitbox1, hitbox2;
 
     public NPC(File f) {
 
@@ -143,15 +152,41 @@ public class NPC extends ZFile {
             }
 
         }
+        if (data.containsKey("skinValue")) skinValue = data.get("skinValue");
+        if (data.containsKey("skinSignature")) skinSignature = data.get("skinSignature");
+
+        as = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
+        as.setGravity(false);
+        as.setMarker(true);
+        as.setInvisible(true);
+        as.setCustomName(displayName);
+        as.setCustomNameVisible(true);
+        as.addScoreboardTag("removable");
+
+        hitbox1 = (Slime) l.getWorld().spawnEntity(l, EntityType.SLIME);
+        hitbox1.setInvisible(true);
+        hitbox1.setAI(false);
+        hitbox1.setSilent(true);
+        hitbox1.addScoreboardTag("removable");
+        hitbox1.setInvulnerable(true);
+        hitbox1.setSize(2);
+
+        hitbox2 = (Slime) l.getWorld().spawnEntity(l.clone().add(0, 1, 0), EntityType.SLIME);
+        hitbox2.setInvisible(true);
+        hitbox2.setAI(false);
+        hitbox2.setSilent(true);
+        hitbox2.addScoreboardTag("removable");
+        hitbox2.setInvulnerable(true);
+        hitbox2.setSize(2);
 
     }
 
     private HashMap<String, String> getData() {
 
         HashMap<String, String> data = new HashMap<>();
-        for (String s : lines) if (s.contains("=")) {
+        for (String s : lines) if (s.contains(":")) {
 
-            String[] ss = s.split("=");
+            String[] ss = s.split(":");
             data.put(ss[0], ss[1]);
 
         }
@@ -163,20 +198,29 @@ public class NPC extends ZFile {
 
         // Thank you, Stephen (stephen#2067) for helping with this <3 you're an absolute hero
 
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), displayName);
-        //gameProfile.getProperties().put("textures", new Property("textures", , ));
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), displaySubname);
+        gameProfile.getProperties().put("textures", new Property("textures", skinValue, skinSignature));
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) l.getWorld()).getHandle();
-        EntityPlayer fakePlayer = new EntityPlayer(server, world, gameProfile, null);
-        fakePlayer.a(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
+        npc = new EntityPlayer(server, world, gameProfile, null);
+        npc.a(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
 
         EntityPlayer connection = ((CraftPlayer) p).getHandle();
-        connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, fakePlayer));
-        connection.b.a(new PacketPlayOutNamedEntitySpawn(fakePlayer));
-        connection.b.a(new PacketPlayOutEntityHeadRotation(fakePlayer, (byte) (fakePlayer.getBukkitYaw() * 256 / 360)));
-        DataWatcher watcher = fakePlayer.ai();
+        connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, npc));
+        connection.b.a(new PacketPlayOutNamedEntitySpawn(npc));
+        connection.b.a(new PacketPlayOutEntityHeadRotation(npc, (byte) (npc.getBukkitYaw() * 256 / 360)));
+        DataWatcher watcher = npc.ai();
         watcher.b(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
-        connection.b.a(new PacketPlayOutEntityMetadata(fakePlayer.ae(), watcher, true));
+        connection.b.a(new PacketPlayOutEntityMetadata(npc.ae(), watcher, true));
+
+        // https://www.youtube.com/watch?v=Avwg6ZCQX1o
+        // ^^ cool person
+
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+
+            connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
+
+        }, 5L);
 
     }
 

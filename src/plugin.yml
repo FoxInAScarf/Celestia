@@ -30,3 +30,6 @@ commands:
   shop:
     aliases: []
     description: ZShop module command.
+  npc:
+    aliases: []
+    description: ZNPC module command.
