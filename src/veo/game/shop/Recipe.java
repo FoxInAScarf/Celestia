@@ -39,7 +39,7 @@ public class Recipe {
         Material m = Material.getMaterial(item.toUpperCase());
         if (m == null) {
 
-            System.out.println("[ShopReader-ERROR]: Specified item does not exist.");
+            System.out.println("[ShopReader-ERROR]: Specified item does not exist." /*+ (this.item != null ? this.item.getItemMeta().getDisplayName() : this.item.getType())*/);
             return null;
 
         }

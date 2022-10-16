@@ -14,6 +14,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import veo.Main;
 import veo.game.shop.Shop;
 import veo.game.shop.ShopManager;
 
@@ -22,15 +23,34 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
-        for (NPC n : NPCManager.npcs) if (n.l.getChunk().isLoaded()) n.createTo(e.getPlayer());
+        for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
+
+            NPC n = NPCManager.npcs.get(i);
+            if (n.l.getChunk().isLoaded())
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+
+                    for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
+
+                }, i * 5L);
+
+        }
 
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
 
-        for (NPC n : NPCManager.npcs) if (n.l.getChunk().equals(e.getChunk()))
-            for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
+        for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
+
+            NPC n = NPCManager.npcs.get(i);
+            if (n.l.getChunk().equals(e.getChunk()))
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+
+                    for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
+
+                }, i * 5L);
+
+        }
 
     }
 

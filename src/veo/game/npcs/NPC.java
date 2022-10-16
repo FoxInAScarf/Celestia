@@ -60,6 +60,7 @@ public class NPC extends ZFile {
     EntityPlayer npc;
     String skinValue = "", skinSignature = "";
     Slime hitbox1, hitbox2;
+    boolean loadedHitbox = false;
 
     public NPC(File f) {
 
@@ -161,6 +162,28 @@ public class NPC extends ZFile {
         if (data.containsKey("skinValue")) skinValue = data.get("skinValue");
         if (data.containsKey("skinSignature")) skinSignature = data.get("skinSignature");
 
+        if (l.getChunk().isLoaded()) makeHitboxes();
+
+
+        System.out.println("[NPCReader]: '" + name + "' loaded up successfully!");
+
+    }
+
+    private HashMap<String, String> getData() {
+
+        HashMap<String, String> data = new HashMap<>();
+        for (String s : lines) if (s.contains(":")) {
+
+            String[] ss = s.split(":");
+            data.put(ss[0], ss[1]);
+
+        }
+        return data;
+
+    }
+
+    private void makeHitboxes() {
+
         as = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
         as.setGravity(false);
         as.setMarker(true);
@@ -182,23 +205,14 @@ public class NPC extends ZFile {
         hitbox2.setSilent(true);
         hitbox2.addScoreboardTag("removable");
         hitbox2.setSize(2);
-
-    }
-
-    private HashMap<String, String> getData() {
-
-        HashMap<String, String> data = new HashMap<>();
-        for (String s : lines) if (s.contains(":")) {
-
-            String[] ss = s.split(":");
-            data.put(ss[0], ss[1]);
-
-        }
-        return data;
+        loadedHitbox = true;
 
     }
 
     public void createTo(Player p) {
+
+        if (!loadedHitbox) makeHitboxes();
+
 
         // Thank you, Stephen (stephen#2067) for helping with this <3 you're an absolute hero
 
@@ -224,7 +238,7 @@ public class NPC extends ZFile {
 
             connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
 
-        }, 5L);
+        }, 20L);
 
     }
 

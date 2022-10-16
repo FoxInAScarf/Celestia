@@ -52,6 +52,7 @@ public class Shop extends ZFile {
         if (pages == 0) pages = 1;
 
         build(1);
+        System.out.println("[ShopReader]: '" + name + "' loaded up successfully!");
 
     }
 
@@ -129,6 +130,8 @@ public class Shop extends ZFile {
                 while (it.hasNext()) {
 
                     Map.Entry<ItemStack, Integer> map = it.next();
+                    //System.out.println(name + ": " + map.getValue());
+
                     ItemStack is = map.getKey().clone();
                     is.setAmount(map.getValue());
 

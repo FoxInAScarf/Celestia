@@ -30,6 +30,8 @@ public class ZWP {
         ac = new ZFile(folder + "/allowedContainers.zra");
         for (String s : ac.lines) {
 
+            if (s.equals("")) continue;
+
             String[] ss = s.split(" ");
             World w = Bukkit.getWorld(ss[0]);
             allowedContainers.add(w.getBlockAt(Integer.parseInt(ss[1]),
