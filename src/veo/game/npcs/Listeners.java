@@ -23,21 +23,33 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
-        for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
 
-            NPC n = NPCManager.npcs.get(i);
-            if (n.l.getChunk().isLoaded())
+            for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
+
+                NPC n = NPCManager.npcs.get(i);
+                /*if (n.l.getChunk().isLoaded())*/
                 Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
 
                     for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
 
                 }, i * 5L);
 
-        }
+            }
+
+        }, 5L);
 
     }
 
     @EventHandler
+    public void onChunkLoad(ChunkLoadEvent e) {
+
+        for (NPC n : NPCManager.npcs) if (!n.loadedHitbox && n.l.getChunk().isLoaded())
+            n.makeHitboxes();
+
+    }
+
+    /*@EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
 
         for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
@@ -52,7 +64,7 @@ public class Listeners implements Listener {
 
         }
 
-    }
+    }*/
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {

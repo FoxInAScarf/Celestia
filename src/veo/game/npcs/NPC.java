@@ -182,7 +182,7 @@ public class NPC extends ZFile {
 
     }
 
-    private void makeHitboxes() {
+    public void makeHitboxes() {
 
         as = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
         as.setGravity(false);
@@ -238,7 +238,7 @@ public class NPC extends ZFile {
 
             connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
 
-        }, 20L);
+        }, 5L);
 
     }
 
