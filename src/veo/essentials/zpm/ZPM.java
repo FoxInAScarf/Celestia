@@ -98,23 +98,23 @@ public class ZPM implements Listener {
 
     }*/
 
-    public static List<UUID> getProfiledPlayers() {
+    public static List<String> getProfiledPlayers() {
 
-        List<UUID> profiledPlayers = new ArrayList<>();
+        List<String> profiledPlayers = new ArrayList<>();
         {
 
             for (PlayerChatProfile pr : pcp)
-                if (!profiledPlayers.contains(pr.getUUID()))
-                    profiledPlayers.add(pr.getUUID());
+                if (!profiledPlayers.contains(pr.getUUID().toString()))
+                    profiledPlayers.add(pr.getUUID().toString());
             for (PlayerRankProfile pr : prp)
-                if (!profiledPlayers.contains(pr.getUUID()))
-                    profiledPlayers.add(pr.getUUID());
+                if (!profiledPlayers.contains(pr.getUUID().toString()))
+                    profiledPlayers.add(pr.getUUID().toString());
             for (PlayerSocialProfile pr : psp)
-                if (!profiledPlayers.contains(pr.getUUID()))
-                    profiledPlayers.add(pr.getUUID());
+                if (!profiledPlayers.contains(pr.getUUID().toString()))
+                    profiledPlayers.add(pr.getUUID().toString());
             for (PlayerGameProfile pr : pgp)
-                if (!profiledPlayers.contains(pr.getUUID()))
-                    profiledPlayers.add(pr.getUUID());
+                if (!profiledPlayers.contains(pr.getUUID().toString()))
+                    profiledPlayers.add(pr.getUUID().toString());
 
         }
 
@@ -125,7 +125,7 @@ public class ZPM implements Listener {
     public static PlayerChatProfile getPCP(Player p) {
 
         for (PlayerChatProfile pr : pcp)
-            if (pr.getPlayer().equals(p)) return pr;
+            if (pr.getPlayer().getUniqueId().equals(p.getUniqueId())) return pr;
         return null;
 
     }
@@ -133,7 +133,7 @@ public class ZPM implements Listener {
     public static PlayerRankProfile getPRP(Player p) {
 
         for (PlayerRankProfile pr : prp)
-            if (pr.getPlayer().equals(p)) return pr;
+            if (pr.getPlayer().getUniqueId().equals(p.getUniqueId())) return pr;
         return null;
 
     }
@@ -141,7 +141,7 @@ public class ZPM implements Listener {
     public static PlayerSocialProfile getPSP(Player p) {
 
         for (PlayerSocialProfile pr : psp)
-            if (pr.getPlayer().equals(p)) return pr;
+            if (pr.getPlayer().getUniqueId().equals(p.getUniqueId())) return pr;
         return null;
 
     }
@@ -149,7 +149,7 @@ public class ZPM implements Listener {
     public static PlayerGameProfile getPGP(Player p) {
 
         for (PlayerGameProfile pr : pgp)
-            if (pr.getPlayer().equals(p)) return pr;
+            if (pr.getPlayer().getUniqueId().equals(p.getUniqueId())) return pr;
         return null;
 
     }

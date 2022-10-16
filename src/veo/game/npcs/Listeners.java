@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -30,6 +31,14 @@ public class Listeners implements Listener {
 
         for (NPC n : NPCManager.npcs) if (n.l.getChunk().equals(e.getChunk()))
             for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
+
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent e) {
+
+        for (NPC n : NPCManager.npcs)
+            if (e.getEntity().equals(n.hitbox1) || e.getEntity().equals(n.hitbox2)) e.setCancelled(true);
 
     }
 
@@ -60,6 +69,9 @@ public class Listeners implements Listener {
                     case 4:
                         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), (String) n.value);
                         break;
+
+                    case 5:
+                        e.getPlayer().sendMessage((String) n.value);
 
                 }
 

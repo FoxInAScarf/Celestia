@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Listeners implements Listener {
 
-    @EventHandler
+    /*@EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
 
         if (!(e.getDamager() instanceof Player)) return;
@@ -23,14 +23,9 @@ public class Listeners implements Listener {
 
             ((LivingEntity) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 10, true));
             e.getEntity().setFreezeTicks(40);
-            /*
-            *
-            * add frostbite effect
-            *
-            * */
 
         }
 
-    }
+    }*/
 
 }

@@ -15,6 +15,7 @@ import veo.essentials.zpm.profiles.PlayerChatProfile;
 import veo.essentials.zpm.profiles.PlayerRankProfile;
 
 import java.io.File;
+import java.util.UUID;
 
 public class ZCMListeners implements Listener {
 
@@ -108,8 +109,7 @@ public class ZCMListeners implements Listener {
     public void onJoin(PlayerJoinEvent e) {
 
         Player p = e.getPlayer();
-
-        if (!ZPM.getProfiledPlayers().contains(p.getUniqueId())) {
+        if (!ZPM.getProfiledPlayers().contains(p.getUniqueId().toString())) {
 
             File f1 = new File(ZPM.prpFolder + "/" + p.getUniqueId());
             ZPM.prp.add(new PlayerRankProfile(f1).reset());

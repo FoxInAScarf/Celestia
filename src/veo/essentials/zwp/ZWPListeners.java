@@ -1,19 +1,25 @@
 package veo.essentials.zwp;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import veo.Main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ZWPListeners implements Listener {
@@ -51,7 +57,7 @@ public class ZWPListeners implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
 
             Material cb = e.getClickedBlock().getType();
-            if (cb.equals(Material.CHEST) || cb.equals(Material.BARREL) || cb.equals(Material.ENDER_CHEST))
+            if (cb.equals(Material.CHEST) || cb.equals(Material.BARREL) || cb.equals(Material.ENDER_CHEST) || cb.equals(Material.BREWING_STAND))
                 if (!ZWP.allowedContainers.contains(e.getClickedBlock())) {
 
                     p.playSound(p.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 1, 1);
@@ -92,6 +98,16 @@ public class ZWPListeners implements Listener {
     }
 
     @EventHandler
+    public void onBlockFade(BlockFadeEvent e) {
+
+        e.getBlock().getWorld().spawnParticle(Particle.SMOKE_NORMAL,
+                e.getBlock().getLocation().add(0.5, 1.2, 0.5),
+                5, 0, 0, 0, 0);
+        e.setCancelled(true);
+
+    }
+
+    @EventHandler
     public void onBlockChange(EntityInteractEvent e) {
 
         if (e.getBlock().getType().equals(Material.FARMLAND)) {
@@ -110,5 +126,86 @@ public class ZWPListeners implements Listener {
         e.setCancelled(true);*/
 
     }
+
+    @EventHandler
+    public void onInteractEntity(PlayerInteractEntityEvent e) {
+
+        if (e.getPlayer().isOp()) return;
+        if (e.getHand().equals(EquipmentSlot.OFF_HAND)) return;
+        if (e.getRightClicked().getType().equals(EntityType.ARMOR_STAND)
+                || e.getRightClicked().getType().equals(EntityType.ITEM_FRAME)
+                || e.getRightClicked().getType().equals(EntityType.PAINTING)) {
+
+            e.getRightClicked().getWorld().spawnParticle(Particle.SMOKE_NORMAL,
+                    e.getRightClicked().getLocation().add(0.5, 1.2, 0.5),
+                    5, 0, 0, 0, 0);
+            e.setCancelled(true);
+
+        }
+
+    }
+
+    HashMap<Player, Double> distanceMap = new HashMap<>();
+
+    @EventHandler
+    public void playerMove(PlayerMoveEvent e) {
+
+        if (e.getPlayer().getLocation().getY() < -64) e.getPlayer().teleport(ZWP.respawn);
+
+        if (!distanceMap.containsKey(e.getPlayer())) {
+
+            distanceMap.put(e.getPlayer(), e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre));
+            return;
+
+        }
+        if (e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre) > ZWP.pvpProtectionRadius
+                && distanceMap.get(e.getPlayer()) < ZWP.pvpProtectionRadius) {
+
+            e.getPlayer().sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "Warning!",
+                    ChatColor.RED + "PVP is enabled in this area.", 5, 40, 5);
+
+        }
+        if (e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius
+                && distanceMap.get(e.getPlayer()) > ZWP.pvpProtectionRadius) {
+
+            e.getPlayer().sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "PVP disabled!",
+                    ChatColor.GREEN + ":)", 5, 40, 5);
+
+        }
+
+
+        distanceMap.put(e.getPlayer(), e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre));
+
+    }
+
+    @EventHandler
+    public void onFight(EntityDamageByEntityEvent e) {
+
+        if (e.getEntity().getType().equals(EntityType.ARMOR_STAND) || e.getEntity().getType().equals(EntityType.PAINTING)
+                || e.getEntity().getType().equals(EntityType.ITEM_FRAME))
+            if (e.getDamager() instanceof Player) // it sucks i know but i dont have time to finish it properly
+                if (((Player) e.getDamager()).isOp()) {
+
+                    e.getEntity().getWorld().spawnParticle(Particle.SMOKE_NORMAL,
+                            e.getEntity().getLocation().clone().add(0.5, 1.2, 0.5),
+                            5, 0, 0, 0, 0);
+                    e.setCancelled(true);
+
+                }
+
+        if (e.getEntity().getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius ||
+                e.getDamager().getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius) {
+
+            Main.sendMessage((Player) e.getDamager(), ChatColor.RED + "Oops! Can't fight here!", true);
+            e.setCancelled(true);
+
+        }
+
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent e) { e.setRespawnLocation(ZWP.respawn); }
+    @EventHandler
+    public void onCraft(CraftItemEvent e) { e.setCancelled(true); }
 
 }

@@ -397,11 +397,11 @@ public class ZItem extends ZFile {
 
             if (ze.isCustom) {
 
-                net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+                /*net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
                 NBTTagCompound nbt = new NBTTagCompound();
                 nbt.a(ze.eName, "");
                 nmsItem.b(nbt);
-                item = CraftItemStack.asBukkitCopy(nmsItem);
+                item = CraftItemStack.asBukkitCopy(nmsItem);*/
                 continue;
 
             }

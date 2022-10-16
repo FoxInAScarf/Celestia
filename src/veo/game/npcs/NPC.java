@@ -144,6 +144,12 @@ public class NPC extends ZFile {
                 value = data.get("value");
 
             }
+            case "text" -> {
+
+                actionType = 5;
+                value = data.get("value");
+
+            }
             default -> {
 
                 System.out.println("[NPCReader-ERROR]: Invalid action type in '" + name + ".zra'!");
@@ -168,7 +174,6 @@ public class NPC extends ZFile {
         hitbox1.setAI(false);
         hitbox1.setSilent(true);
         hitbox1.addScoreboardTag("removable");
-        hitbox1.setInvulnerable(true);
         hitbox1.setSize(2);
 
         hitbox2 = (Slime) l.getWorld().spawnEntity(l.clone().add(0, 1, 0), EntityType.SLIME);
@@ -176,7 +181,6 @@ public class NPC extends ZFile {
         hitbox2.setAI(false);
         hitbox2.setSilent(true);
         hitbox2.addScoreboardTag("removable");
-        hitbox2.setInvulnerable(true);
         hitbox2.setSize(2);
 
     }
