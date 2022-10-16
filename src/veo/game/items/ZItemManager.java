@@ -1,6 +1,7 @@
 package veo.game.items;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import veo.Main;
 import veo.game.custom.enchantment.Listeners;
@@ -36,7 +37,8 @@ public class ZItemManager {
     public static ItemStack getItem(String name) {
 
         for (ZItem i : items) if (i.name.equals(name)) return i.item;
-        return null;
+        Material m = Material.getMaterial(name.toUpperCase());
+        return m == null ? null : new ItemStack(m);
 
     }
 
