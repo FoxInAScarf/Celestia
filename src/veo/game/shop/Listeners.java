@@ -51,8 +51,13 @@ public class Listeners implements Listener {
             if (r == null) return;
             if (hasAllIngredients(p, r)) {
 
-                for (Map.Entry<ItemStack, Integer> map : r.elements.entrySet())
-                    removeItems(p.getInventory(), map.getKey().clone());
+                for (Map.Entry<ItemStack, Integer> map : r.elements.entrySet()) {
+
+                    ItemStack is = map.getKey().clone();
+                    is.setAmount(map.getValue());
+                    removeItems(p.getInventory(), is);
+
+                }
                 p.getInventory().addItem(r.item);
                 Main.sendMessage(p, ChatColor.GREEN + "You bought: " + r.item.getItemMeta().getDisplayName()
                         + ChatColor.GREEN + (r.item.getAmount() > 1 ? " x" + r.item.getAmount() + "!" : "!"), false);

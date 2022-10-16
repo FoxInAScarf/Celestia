@@ -1,6 +1,7 @@
 package veo.game.shop;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import veo.Main;
 
 import java.io.File;
@@ -37,6 +38,15 @@ public class ShopManager {
 
         for (Shop s : shops) if (s.name.equals(name)) return s;
         return null;
+
+    }
+
+    public static void addInstance(Player p, Shop s) {
+
+        for (int i = 0; i <= instances.size() - 1; i++) if (instances.get(i).owner.equals(p))
+            instances.remove(instances.get(i));
+
+        instances.add(new ShopInstance(p, s));
 
     }
     
