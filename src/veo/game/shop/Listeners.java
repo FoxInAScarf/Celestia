@@ -1,11 +1,13 @@
 package veo.game.shop;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import veo.Main;
 
@@ -49,8 +51,8 @@ public class Listeners implements Listener {
             if (r == null) return;
             if (hasAllIngredients(p, r)) {
 
-                for (Map.Entry<ItemStack, Integer> map : r.elements.entrySet()) for (int i = 0; i <= map.getValue(); i++)
-                    p.getInventory().remove(map.getKey().clone()); // Fix this Zraphy!
+                for (Map.Entry<ItemStack, Integer> map : r.elements.entrySet())
+                    removeItems(p.getInventory(), map.getKey().clone());
                 p.getInventory().addItem(r.item);
                 Main.sendMessage(p, ChatColor.GREEN + "You bought: " + r.item.getItemMeta().getDisplayName()
                         + ChatColor.GREEN + (r.item.getAmount() > 1 ? " x" + r.item.getAmount() + "!" : "!"), false);
@@ -90,6 +92,51 @@ public class Listeners implements Listener {
 
         for (ShopInstance si : ShopManager.instances) if (si.owner.equals(p)) return si;
         return null;
+
+    }
+
+    // You might want to use this later, Zraphy...
+    private void removeItems(Inventory i, ItemStack is) {
+
+        int amount = is.getAmount();
+        for (int j = 0; j <= i.getContents().length - 1; j++) {
+
+            if (amount == 0) return;
+
+            ItemStack is1 = i.getItem(j);
+            if (is1 != null) if (ignoreAmountEquals(is, is1)) {
+
+                if (is1.getAmount() - amount < 0) { // if is1 doesn't contain enough items
+
+                    amount = amount - is1.getAmount();
+                    i.setItem(j, new ItemStack(Material.AIR));
+                    continue;
+
+                }
+                if (is1.getAmount() - amount > 0) { // if is1 contains enough items BUT there are leftovers
+
+                    ItemStack is1COPY = is1.clone();
+                    is1COPY.setAmount(is1.getAmount() - amount);
+                    i.setItem(j, is1COPY);
+                    continue;
+
+                }
+                i.setItem(j, new ItemStack(Material.AIR));
+                return;
+
+            }
+        }
+
+    }
+
+    private boolean ignoreAmountEquals(ItemStack is1, ItemStack is2) {
+
+        ItemStack is1COPY = is1.clone();
+        is1COPY.setAmount(1);
+        ItemStack is2COPY = is2.clone();
+        is2COPY.setAmount(1);
+
+        return is1COPY.equals(is2COPY);
 
     }
 
