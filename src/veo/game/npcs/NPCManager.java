@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import veo.Main;
 import veo.game.shop.Shop;
@@ -36,6 +37,10 @@ public class NPCManager {
         for (NPC n : npcs) {
 
             n.as.remove();
+            for (Entity e : n.l.getWorld().getEntities())
+                if (e.getScoreboardTags().contains("removable") && e.getType().equals(EntityType.ARMOR_STAND))
+                    e.remove();
+
             PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(n.npc.ae());
             for (Player p : Bukkit.getOnlinePlayers()) ((CraftPlayer) p).getHandle().b.a(packet);
 
@@ -44,7 +49,17 @@ public class NPCManager {
 
         // do stuff
         for (File f : Objects.requireNonNull(new File(folder).listFiles())) npcs.add(new NPC(f));
-        for (NPC n : npcs) for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
+        for (NPC n : npcs) for (Player p : Bukkit.getOnlinePlayers()) {
+
+            n.createTo(p);
+            if (n.l.getChunk().isLoaded()) n.makeHitboxes();
+
+        }
+        /*Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+
+            for (NPC n : npcs) n.makeHitboxes();
+
+        }, 10L, 10L);*/
 
     }
 

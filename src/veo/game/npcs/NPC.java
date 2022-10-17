@@ -60,7 +60,7 @@ public class NPC extends ZFile {
     EntityPlayer npc;
     String skinValue = "", skinSignature = "";
     Slime hitbox1, hitbox2;
-    boolean loadedHitbox = false;
+    //boolean isHitboxLoaded = false;
 
     public NPC(File f) {
 
@@ -162,8 +162,7 @@ public class NPC extends ZFile {
         if (data.containsKey("skinValue")) skinValue = data.get("skinValue");
         if (data.containsKey("skinSignature")) skinSignature = data.get("skinSignature");
 
-        if (l.getChunk().isLoaded()) makeHitboxes();
-
+        //Bukkit.getScheduler().runTaskLater(Main.getInstance(), this::makeHitboxes, 10L);
 
         System.out.println("[NPCReader]: '" + name + "' loaded up successfully!");
 
@@ -172,9 +171,9 @@ public class NPC extends ZFile {
     private HashMap<String, String> getData() {
 
         HashMap<String, String> data = new HashMap<>();
-        for (String s : lines) if (s.contains(":")) {
+        for (String s : lines) if (s.contains(": ")) {
 
-            String[] ss = s.split(":");
+            String[] ss = s.split(": ");
             data.put(ss[0], ss[1]);
 
         }
@@ -184,6 +183,24 @@ public class NPC extends ZFile {
 
     public void makeHitboxes() {
 
+        makeAS();
+        makeHB1();
+        makeHB2();
+
+        //if (l.getChunk().isLoaded()) isHitboxLoaded = true;
+
+    }
+
+    //private boolean isASLoaded = false;
+    private void makeAS() {
+
+        if (as != null) {
+
+            as.remove();
+            as = null;
+
+        }
+
         as = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
         as.setGravity(false);
         as.setMarker(true);
@@ -192,12 +209,41 @@ public class NPC extends ZFile {
         as.setCustomNameVisible(true);
         as.addScoreboardTag("removable");
 
+        //isASLoaded = true;
+
+    }
+
+    //private boolean isHB1Loaded = false;
+    private void makeHB1() {
+
+        if (hitbox1 != null) {
+
+            hitbox1.remove();
+            hitbox1 = null;
+
+        }
+
         hitbox1 = (Slime) l.getWorld().spawnEntity(l, EntityType.SLIME);
         hitbox1.setInvisible(true);
         hitbox1.setAI(false);
         hitbox1.setSilent(true);
         hitbox1.addScoreboardTag("removable");
         hitbox1.setSize(2);
+        hitbox1.setCollidable(false);
+
+        //isHB1Loaded = true;
+
+    }
+
+    //private boolean isHB2Loaded = false;
+    private void makeHB2() {
+
+        if (hitbox2 != null) {
+
+            hitbox2.remove();
+            hitbox2 = null;
+
+        }
 
         hitbox2 = (Slime) l.getWorld().spawnEntity(l.clone().add(0, 1, 0), EntityType.SLIME);
         hitbox2.setInvisible(true);
@@ -205,13 +251,13 @@ public class NPC extends ZFile {
         hitbox2.setSilent(true);
         hitbox2.addScoreboardTag("removable");
         hitbox2.setSize(2);
-        loadedHitbox = true;
+        hitbox2.setCollidable(false);
+
+        //isHB2Loaded = true;
 
     }
 
     public void createTo(Player p) {
-
-        if (!loadedHitbox) makeHitboxes();
 
 
         // Thank you, Stephen (stephen#2067) for helping with this <3 you're an absolute hero
@@ -239,6 +285,9 @@ public class NPC extends ZFile {
             connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
 
         }, 5L);
+
+        //((CraftServer) Bukkit.getServer()).getServer().bh().k.remove(npc);
+        //connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
 
     }
 

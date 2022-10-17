@@ -23,48 +23,17 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-
-            for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
-
-                NPC n = NPCManager.npcs.get(i);
-                /*if (n.l.getChunk().isLoaded())*/
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-
-                    for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
-
-                }, i * 5L);
-
-            }
-
-        }, 5L);
+        for (NPC n : NPCManager.npcs) n.createTo(e.getPlayer());
 
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
 
-        for (NPC n : NPCManager.npcs) if (!n.loadedHitbox && n.l.getChunk().isLoaded())
-            n.makeHitboxes();
+        for (NPC n : NPCManager.npcs)
+            if (n.l.getChunk().equals(e.getChunk())/* && !n.isHitboxLoaded*/) n.makeHitboxes();
 
     }
-
-    /*@EventHandler
-    public void onChunkLoad(ChunkLoadEvent e) {
-
-        for (int i = 0; i <= NPCManager.npcs.size() - 1; i++) {
-
-            NPC n = NPCManager.npcs.get(i);
-            if (n.l.getChunk().equals(e.getChunk()))
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-
-                    for (Player p : Bukkit.getOnlinePlayers()) n.createTo(p);
-
-                }, i * 5L);
-
-        }
-
-    }*/
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
