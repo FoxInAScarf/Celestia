@@ -56,11 +56,11 @@ public class NPCManager {
             if (n.l.getChunk().isLoaded()) n.makeHitboxes();
 
         }
-        /*Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
-            for (NPC n : npcs) n.makeHitboxes();
+            for (NPC n : npcs) if (n.l.getChunk().isLoaded()) n.makeHitboxes();
 
-        }, 10L, 10L);*/
+        }, 10L, 10L);
 
     }
 
