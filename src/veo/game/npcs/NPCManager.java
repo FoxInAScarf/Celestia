@@ -36,7 +36,8 @@ public class NPCManager {
         // clear
         for (NPC n : npcs) {
 
-            n.as.remove();
+            n.as1.remove();
+            n.as2.remove();
             for (Entity e : n.l.getWorld().getEntities())
                 if (e.getScoreboardTags().contains("removable") && e.getType().equals(EntityType.ARMOR_STAND))
                     e.remove();

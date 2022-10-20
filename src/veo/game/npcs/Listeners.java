@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +32,23 @@ public class Listeners implements Listener {
     public void onChunkLoad(ChunkLoadEvent e) {
 
         for (NPC n : NPCManager.npcs)
-            if (n.l.getChunk().equals(e.getChunk())/* && !n.isHitboxLoaded*/) n.makeHitboxes();
+            if (n.l.getChunk().equals(e.getChunk())) n.makeHitboxes();
+
+    }
+
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent e) {
+
+        // it despawns, gets reset automatically to null, so theres no need to do it manually
+
+        /*for (NPC n : NPCManager.npcs) if (n.l.getChunk().equals(e.getChunk())) {
+
+            n.hitbox1.remove();
+            n.hitbox2.remove();
+            n.hitbox1 = null;
+            n.hitbox2 = null;
+
+        }*/
 
     }
 
@@ -49,7 +66,8 @@ public class Listeners implements Listener {
         if (e.getHand().equals(EquipmentSlot.OFF_HAND)) return;
 
         for (NPC n : NPCManager.npcs)
-            if (e.getRightClicked().equals(n.hitbox1) || e.getRightClicked().equals(n.hitbox2))
+            if (e.getRightClicked().getScoreboardTags().contains(n.name + "Hitbox1")
+                    || e.getRightClicked().getScoreboardTags().contains(n.name + "Hitbox2"))
                 switch (n.actionType) {
 
                     case 0:

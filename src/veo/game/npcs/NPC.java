@@ -15,10 +15,7 @@ import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.ScoreboardTeam;
 import net.minecraft.world.scores.ScoreboardTeamBase;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
@@ -56,7 +53,7 @@ public class NPC extends ZFile {
     Location l;
     int actionType = 0;
     Object value;
-    ArmorStand as;
+    ArmorStand as1, as2;
     EntityPlayer npc;
     String skinValue = "", skinSignature = "";
     Slime hitbox1, hitbox2;
@@ -183,9 +180,13 @@ public class NPC extends ZFile {
 
     public void makeHitboxes() {
 
-        makeAS();
-        makeHB1();
-        makeHB2();
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+
+            makeAS();
+            makeHB1();
+            makeHB2();
+
+        }, 20L);
 
         //if (l.getChunk().isLoaded()) isHitboxLoaded = true;
 
@@ -194,20 +195,35 @@ public class NPC extends ZFile {
     //private boolean isASLoaded = false;
     private void makeAS() {
 
-        if (as != null) {
+        if (as1 != null) {
 
-            as.remove();
-            as = null;
+            as1.remove();
+            as1 = null;
 
         }
 
-        as = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
-        as.setGravity(false);
-        as.setMarker(true);
-        as.setInvisible(true);
-        as.setCustomName(displayName);
-        as.setCustomNameVisible(true);
-        as.addScoreboardTag("removable");
+        as1 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
+        as1.setGravity(false);
+        as1.setMarker(true);
+        as1.setInvisible(true);
+        as1.setCustomName(displayName);
+        as1.setCustomNameVisible(true);
+        as1.addScoreboardTag("removable");
+
+        if (as2 != null) {
+
+            as2.remove();
+            as2 = null;
+
+        }
+
+        as2 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.25, 0), EntityType.ARMOR_STAND);
+        as2.setGravity(false);
+        as2.setMarker(true);
+        as2.setInvisible(true);
+        as2.setCustomName(displaySubname);
+        as2.setCustomNameVisible(true);
+        as2.addScoreboardTag("removable");
 
         //isASLoaded = true;
 
@@ -216,42 +232,65 @@ public class NPC extends ZFile {
     //private boolean isHB1Loaded = false;
     private void makeHB1() {
 
-        if (hitbox1 != null) {
+        int count = 0;
+        for (World w : Bukkit.getWorlds()) for (Entity e : w.getEntities())
+            if (e.getScoreboardTags().contains(name + "Hitbox1")) {
 
-            hitbox1.remove();
-            hitbox1 = null;
+                count++;
+                if (count > 1) e.remove();
+
+            }
+
+        if (count < 1) {
+
+            hitbox1 = (Slime) l.getWorld().spawnEntity(l, EntityType.SLIME);
+            hitbox1.setInvisible(true);
+            hitbox1.setAI(false);
+            hitbox1.setSilent(true);
+            hitbox1.addScoreboardTag("removable");
+            hitbox1.addScoreboardTag(name + "Hitbox1");
+            hitbox1.setSize(2);
+            hitbox1.setCollidable(false);
 
         }
-
-        hitbox1 = (Slime) l.getWorld().spawnEntity(l, EntityType.SLIME);
+        /*hitbox1 = (Slime) l.getWorld().spawnEntity(l, EntityType.SLIME);
         hitbox1.setInvisible(true);
         hitbox1.setAI(false);
         hitbox1.setSilent(true);
         hitbox1.addScoreboardTag("removable");
         hitbox1.setSize(2);
-        hitbox1.setCollidable(false);
+        hitbox1.setCollidable(false);*/
 
         //isHB1Loaded = true;
 
     }
 
+    // kerfus my beloved <3
+
     //private boolean isHB2Loaded = false;
     private void makeHB2() {
 
-        if (hitbox2 != null) {
+        int count = 0;
+        for (World w : Bukkit.getWorlds()) for (Entity e : w.getEntities())
+            if (e.getScoreboardTags().contains(name + "Hitbox2")) {
 
-            hitbox2.remove();
-            hitbox2 = null;
+                count++;
+                if (count > 1) e.remove();
+
+            }
+
+        if (count < 1) {
+
+            hitbox2 = (Slime) l.getWorld().spawnEntity(l.clone().add(0, 1, 0), EntityType.SLIME);
+            hitbox2.setInvisible(true);
+            hitbox2.setAI(false);
+            hitbox2.setSilent(true);
+            hitbox2.addScoreboardTag("removable");
+            hitbox2.addScoreboardTag(name + "Hitbox2");
+            hitbox2.setSize(2);
+            hitbox2.setCollidable(false);
 
         }
-
-        hitbox2 = (Slime) l.getWorld().spawnEntity(l.clone().add(0, 1, 0), EntityType.SLIME);
-        hitbox2.setInvisible(true);
-        hitbox2.setAI(false);
-        hitbox2.setSilent(true);
-        hitbox2.addScoreboardTag("removable");
-        hitbox2.setSize(2);
-        hitbox2.setCollidable(false);
 
         //isHB2Loaded = true;
 
@@ -262,7 +301,7 @@ public class NPC extends ZFile {
 
         // Thank you, Stephen (stephen#2067) for helping with this <3 you're an absolute hero
 
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), displaySubname);
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
         gameProfile.getProperties().put("textures", new Property("textures", skinValue, skinSignature));
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) l.getWorld()).getHandle();
@@ -280,11 +319,11 @@ public class NPC extends ZFile {
         // https://www.youtube.com/watch?v=Avwg6ZCQX1o
         // ^^ cool person
 
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+        /*Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
 
             connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
 
-        }, 5L);
+        }, 5L);*/
 
         //((CraftServer) Bukkit.getServer()).getServer().bh().k.remove(npc);
         //connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
