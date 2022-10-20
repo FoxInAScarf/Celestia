@@ -11,11 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.potion.PotionEffect;
 import veo.Main;
 
 import java.util.ArrayList;
@@ -150,31 +148,41 @@ public class ZWPListeners implements Listener {
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
 
-        if (e.getPlayer().getLocation().getY() < -64) e.getPlayer().teleport(ZWP.respawn);
+        Player p = e.getPlayer();
 
-        if (!distanceMap.containsKey(e.getPlayer())) {
+        if (p.getLocation().getY() < -64) {
 
-            distanceMap.put(e.getPlayer(), e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre));
+            p.teleport(ZWP.respawn);
+            p.setHealth(p.getMaxHealth());
+            p.setFoodLevel(20);
+            for (PotionEffect pe : p.getActivePotionEffects())
+                p.removePotionEffect(pe.getType());
+
+        }
+
+        if (!distanceMap.containsKey(p)) {
+
+            distanceMap.put(p, p.getLocation().distance(ZWP.pvpProtectionCentre));
             return;
 
         }
-        if (e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre) > ZWP.pvpProtectionRadius
-                && distanceMap.get(e.getPlayer()) < ZWP.pvpProtectionRadius) {
+        if (p.getLocation().distance(ZWP.pvpProtectionCentre) > ZWP.pvpProtectionRadius
+                && distanceMap.get(p) < ZWP.pvpProtectionRadius) {
 
-            e.getPlayer().sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "Warning!",
+            p.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "Warning!",
                     ChatColor.RED + "PVP is enabled in this area.", 5, 40, 5);
 
         }
-        if (e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius
-                && distanceMap.get(e.getPlayer()) > ZWP.pvpProtectionRadius) {
+        if (p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius
+                && distanceMap.get(p) > ZWP.pvpProtectionRadius) {
 
-            e.getPlayer().sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "PVP disabled!",
+            p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "PVP disabled!",
                     ChatColor.GREEN + ":)", 5, 40, 5);
 
         }
 
 
-        distanceMap.put(e.getPlayer(), e.getPlayer().getLocation().distance(ZWP.pvpProtectionCentre));
+        distanceMap.put(p, p.getLocation().distance(ZWP.pvpProtectionCentre));
 
     }
 
@@ -207,5 +215,8 @@ public class ZWPListeners implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent e) { e.setRespawnLocation(ZWP.respawn); }
     @EventHandler
     public void onCraft(CraftItemEvent e) { e.setCancelled(true); }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) { e.getPlayer().teleport(ZWP.respawn); }
 
 }
