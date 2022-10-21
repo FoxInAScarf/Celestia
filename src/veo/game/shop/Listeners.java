@@ -59,7 +59,22 @@ public class Listeners implements Listener {
 
                 }
                 p.getInventory().addItem(r.item);
-                Main.sendMessage(p, ChatColor.GREEN + "You bought: " + r.item.getItemMeta().getDisplayName()
+                String name = r.item.getItemMeta().getDisplayName();
+                if (r.item.getItemMeta() == null) {
+
+                    name = "";
+                    for (String as : r.item.getType().name().toLowerCase().split("_")) {
+
+                        String[] ab = as.split("");
+                        name += ab[0].toUpperCase();
+                        for (int i = 1; i <= ab.length - 1; i++) name += ab[i];
+                        name += " ";
+
+                    }
+
+                }
+
+                Main.sendMessage(p, ChatColor.GREEN + "You bought: " + name
                         + ChatColor.GREEN + (r.item.getAmount() > 1 ? " x" + r.item.getAmount() + "!" : "!"), false);
                 return;
 
@@ -123,7 +138,7 @@ public class Listeners implements Listener {
                     ItemStack is1COPY = is1.clone();
                     is1COPY.setAmount(is1.getAmount() - amount);
                     i.setItem(j, is1COPY);
-                    continue;
+                    return;
 
                 }
                 i.setItem(j, new ItemStack(Material.AIR));
