@@ -81,6 +81,7 @@ public class ZWP {
 
         Bukkit.getPluginManager().registerEvents(new ZWPListeners(), main);
         main.getCommand("zwp").setExecutor(new ZWPCommand());
+        main.getCommand("spawn").setExecutor(new SpawnCommand());
 
     }
 
