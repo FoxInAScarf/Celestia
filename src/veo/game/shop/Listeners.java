@@ -73,6 +73,10 @@ public class Listeners implements Listener {
                         name += " ";
 
                     }
+                    String nCopy = "";
+                    String[] nCopyS = name.split("");
+                    for (int i = 0; i <= nCopyS.length - 2; i++) nCopy += nCopyS[i];
+                    name = nCopy;
 
                 }
 
@@ -133,7 +137,7 @@ public class Listeners implements Listener {
 
     private Recipe getRecipe(ShopInstance si, ItemStack is) {
 
-        for (Recipe r : si.shop.recipes) if (nameEquals(r.item, is)) return r;
+        for (Recipe r : si.shop.recipes) if (nameEquals(r.item, is) && r.item.getAmount() == is.getAmount()) return r;
         return null;
 
     }

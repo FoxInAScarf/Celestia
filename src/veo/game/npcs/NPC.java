@@ -195,35 +195,47 @@ public class NPC extends ZFile {
     //private boolean isASLoaded = false;
     private void makeAS() {
 
-        if (as1 != null) {
+        int countAS1 = 0;
+        for (World w : Bukkit.getWorlds()) for (Entity e : w.getEntities())
+            if (e.getScoreboardTags().contains(name + "AS1")) {
 
-            as1.remove();
-            as1 = null;
+                countAS1++;
+                if (countAS1 > 1) e.remove();
+
+            }
+
+        if (countAS1 < 1) {
+
+            as1 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
+            as1.setGravity(false);
+            as1.setMarker(true);
+            as1.setInvisible(true);
+            as1.setCustomName(displayName);
+            as1.setCustomNameVisible(true);
+            as1.addScoreboardTag("removable");
 
         }
 
-        as1 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
-        as1.setGravity(false);
-        as1.setMarker(true);
-        as1.setInvisible(true);
-        as1.setCustomName(displayName);
-        as1.setCustomNameVisible(true);
-        as1.addScoreboardTag("removable");
+        int countAS2 = 0;
+        for (World w : Bukkit.getWorlds()) for (Entity e : w.getEntities())
+            if (e.getScoreboardTags().contains(name + "AS2")) {
 
-        if (as2 != null) {
+                countAS2++;
+                if (countAS2 > 1) e.remove();
 
-            as2.remove();
-            as2 = null;
+            }
+
+        if (countAS2 < 1) {
+
+            as2 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.25, 0), EntityType.ARMOR_STAND);
+            as2.setGravity(false);
+            as2.setMarker(true);
+            as2.setInvisible(true);
+            as2.setCustomName(displaySubname);
+            as2.setCustomNameVisible(true);
+            as2.addScoreboardTag("removable");
 
         }
-
-        as2 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.25, 0), EntityType.ARMOR_STAND);
-        as2.setGravity(false);
-        as2.setMarker(true);
-        as2.setInvisible(true);
-        as2.setCustomName(displaySubname);
-        as2.setCustomNameVisible(true);
-        as2.addScoreboardTag("removable");
 
         //isASLoaded = true;
 

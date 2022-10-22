@@ -154,7 +154,7 @@ public class Flag {
     public void unclaim() {
 
         if (owner != null && FlagManager.getCooldown(owner) == null)
-            FlagManager.cooldown.add(new FlagCooldown(owner, 20 * 60 * 5));
+            FlagManager.cooldown.add(new FlagCooldown(owner, 20 * 60 * 2));
         owner = null;
 
         // become serbian
