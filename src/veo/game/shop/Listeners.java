@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import veo.Main;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -59,8 +60,9 @@ public class Listeners implements Listener {
 
                 }
                 p.getInventory().addItem(r.item);
-                String name = r.item.getItemMeta().getDisplayName();
-                if (r.item.getItemMeta() == null) {
+                String name;
+                if (r.item.hasItemMeta()) name = r.item.getItemMeta().getDisplayName();
+                else {
 
                     name = "";
                     for (String as : r.item.getType().name().toLowerCase().split("_")) {
@@ -93,7 +95,8 @@ public class Listeners implements Listener {
         while (i.hasNext()) {
 
             Map.Entry<ItemStack, Integer> map = i.next();
-            if (p.getInventory().containsAtLeast(map.getKey(), map.getValue())) count++;
+            //if (p.getInventory().containsAtLeast(map.getKey(), map.getValue())) count++;
+            if (containsAtLeast(p.getInventory(), map.getKey(), map.getValue())) count++;
 
         }
 
@@ -101,9 +104,36 @@ public class Listeners implements Listener {
 
     }
 
+    private boolean containsAtLeast(Inventory i, ItemStack is, int value) {
+
+        HashMap<String, Integer> iVmap = new HashMap<>();
+
+        for (ItemStack isL : i.getContents()) {
+
+            if (isL == null) continue;
+
+            String isLNAME = getName(isL);
+            if (iVmap.containsKey(isLNAME)) iVmap.put(isLNAME, iVmap.get(isLNAME) + isL.getAmount());
+            else iVmap.put(isLNAME, isL.getAmount());
+
+        }
+
+        //System.out.println("");
+        for (Map.Entry<String, Integer> entry : iVmap.entrySet()) {
+
+            //System.out.println(entry.getKey() + ": " + entry.getValue());
+            /*if (entry.getKey().equals(getName(is))) System.out.println("COCK 1");
+            if (entry.getValue() >= value) System.out.println("COCK 2");*/
+            if (entry.getKey().equals(getName(is)) && entry.getValue() >= value) return true;
+
+        }
+        return false;
+
+    }
+
     private Recipe getRecipe(ShopInstance si, ItemStack is) {
 
-        for (Recipe r : si.shop.recipes) if (r.item.equals(is)) return r;
+        for (Recipe r : si.shop.recipes) if (nameEquals(r.item, is)) return r;
         return null;
 
     }
@@ -151,12 +181,32 @@ public class Listeners implements Listener {
 
     private boolean ignoreAmountEquals(ItemStack is1, ItemStack is2) {
 
-        ItemStack is1COPY = is1.clone();
+        /*ItemStack is1COPY = is1.clone();
         is1COPY.setAmount(1);
+        net.minecraft.world.item.ItemStack is1COPYNBT = CraftItemStack.asNMSCopy(is1COPY);
+        System.out.println(is1COPYNBT.u().toString());
+
         ItemStack is2COPY = is2.clone();
         is2COPY.setAmount(1);
+        net.minecraft.world.item.ItemStack is2COPYNBT = CraftItemStack.asNMSCopy(is2COPY);
+        System.out.println(is2COPYNBT.u().toString());
 
-        return is1COPY.equals(is2COPY);
+        return is1COPY.equals(is2COPY);*/
+
+        return nameEquals(is1, is2);
+
+    }
+
+    private boolean nameEquals(ItemStack i1, ItemStack i2) {
+
+        return getName(i1).equals(getName(i2));
+
+    }
+
+    private String getName(ItemStack i) {
+
+        if (i.hasItemMeta()) return i.getItemMeta().getDisplayName();
+        return i.getType().name();
 
     }
 
