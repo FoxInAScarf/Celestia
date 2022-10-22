@@ -4,12 +4,14 @@ import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import veo.Main;
 import veo.game.gens.flag.Flag;
@@ -87,10 +89,10 @@ public class GenListeners implements Listener {
 
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
+    /*@EventHandler
+    public void onJoin(PlayerJoinEvent e) {*/
 
-        for (Generator g : GenManager.gens) {
+        /*for (Generator g : GenManager.gens) {
 
             Flag f = FlagManager.getFlag(g.name);
 
@@ -111,7 +113,7 @@ public class GenListeners implements Listener {
             }
 
 
-        }
+        }*/
 
         // CUSTOM FLAG SYSTEM
         /*if (FlagManager.getFlag(e.getPlayer()) == null) {
@@ -132,7 +134,14 @@ public class GenListeners implements Listener {
 
         }*/
 
-    }
+    /*}
+
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent e) {
+
+
+
+    }*/
 
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {

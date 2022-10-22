@@ -180,13 +180,9 @@ public class NPC extends ZFile {
 
     public void makeHitboxes() {
 
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-
-            makeAS();
-            makeHB1();
-            makeHB2();
-
-        }, 20L);
+        makeAS();
+        makeHB1();
+        makeHB2();
 
         //if (l.getChunk().isLoaded()) isHitboxLoaded = true;
 
@@ -210,9 +206,10 @@ public class NPC extends ZFile {
             as1.setGravity(false);
             as1.setMarker(true);
             as1.setInvisible(true);
-            as1.setCustomName(displayName);
+            as1.setCustomName(displaySubname);
             as1.setCustomNameVisible(true);
             as1.addScoreboardTag("removable");
+            as1.addScoreboardTag(name + "AS1");
 
         }
 
@@ -231,9 +228,10 @@ public class NPC extends ZFile {
             as2.setGravity(false);
             as2.setMarker(true);
             as2.setInvisible(true);
-            as2.setCustomName(displaySubname);
+            as2.setCustomName(displayName);
             as2.setCustomNameVisible(true);
             as2.addScoreboardTag("removable");
+            as2.addScoreboardTag(name + "AS2");
 
         }
 

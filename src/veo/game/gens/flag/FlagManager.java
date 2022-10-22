@@ -1,10 +1,13 @@
 package veo.game.gens.flag;
 
+import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
 import veo.game.gens.GenManager;
+import veo.game.gens.Generator;
 
 import java.io.File;
 import java.util.*;
@@ -53,6 +56,34 @@ public class FlagManager {
         }, 0L, 1L);
 
         Main.getInstance().getCommand("flag").setExecutor(new FlagCommand());
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+
+            for (Player p : Bukkit.getOnlinePlayers())
+                for (Generator g : GenManager.gens) {
+
+                    Flag f = FlagManager.getFlag(g.name);
+
+                    if (f == null) continue;
+                    if (f.owner != null) {
+
+                        f.flag.raise(8, f.owner.getPlayer());
+                        if (f.owner.getUniqueId().equals(p.getUniqueId())) {
+
+                            ((CraftPlayer) p).getHandle().b.a(
+                                    new PacketPlayOutEntityDestroy(f.stands.get("hasClaimed").getEntityId()));
+                            ((CraftPlayer) p).getHandle().b.a(
+                                    new PacketPlayOutEntityDestroy(f.stands.get("crouchHere").getEntityId()));
+
+                        } else ((CraftPlayer) p).getHandle().b.a(
+                                new PacketPlayOutEntityDestroy(f.stands.get("youClaimed").getEntityId()));
+
+                    }
+
+
+                }
+
+        }, 10L, 10L);
 
     }
 

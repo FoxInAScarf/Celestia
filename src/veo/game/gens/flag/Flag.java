@@ -70,10 +70,10 @@ public class Flag {
         {
 
             stands.get("statue").setArms(true);
-            stands.get("statue").setHeadPose(new EulerAngle(15, 0, 0));
-            stands.get("statue").setRightArmPose(new EulerAngle(115, 335, 0));
-            stands.get("statue").setLeftArmPose(new EulerAngle(0, 0, 10));
-            stands.get("statue").setLeftLegPose(new EulerAngle(340, 0, 0));
+            stands.get("statue").setHeadPose(new EulerAngle(Math.toRadians(330), 0, 0));
+            stands.get("statue").setRightArmPose(new EulerAngle(Math.toRadians(340), 0, Math.toRadians(10)));
+            stands.get("statue").setLeftArmPose(new EulerAngle(Math.toRadians(250), Math.toRadians(340), Math.toRadians(20)));
+            stands.get("statue").setRightLegPose(new EulerAngle(Math.toRadians(30), 0, 0));
             ItemStack h = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta hm = (SkullMeta) h.getItemMeta();
             hm.setOwningPlayer(owner);
