@@ -32,10 +32,7 @@ import veo.game.shop.Shop;
 import veo.game.shop.ShopManager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class NPC extends ZFile {
 
@@ -202,7 +199,7 @@ public class NPC extends ZFile {
 
         if (countAS1 < 1) {
 
-            as1 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
+            as1 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 1.85, 0), EntityType.ARMOR_STAND);
             as1.setGravity(false);
             as1.setMarker(true);
             as1.setInvisible(true);
@@ -224,7 +221,7 @@ public class NPC extends ZFile {
 
         if (countAS2 < 1) {
 
-            as2 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.25, 0), EntityType.ARMOR_STAND);
+            as2 = (ArmorStand) l.getWorld().spawnEntity(l.clone().add(0, 2.05, 0), EntityType.ARMOR_STAND);
             as2.setGravity(false);
             as2.setMarker(true);
             as2.setInvisible(true);
@@ -329,11 +326,15 @@ public class NPC extends ZFile {
         // https://www.youtube.com/watch?v=Avwg6ZCQX1o
         // ^^ cool person
 
-        /*Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+        ScoreboardTeam st = new ScoreboardTeam(new Scoreboard(), "");
+        st.a(ScoreboardTeamBase.EnumNameTagVisibility.b);
+        st.g().add("");
+        connection.b.a(PacketPlayOutScoreboardTeam.a(st));
+        connection.b.a(PacketPlayOutScoreboardTeam.a(st, true));
 
-            connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));
-
-        }, 5L);*/
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () ->
+                connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc)),
+                20L);
 
         //((CraftServer) Bukkit.getServer()).getServer().bh().k.remove(npc);
         //connection.b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc));

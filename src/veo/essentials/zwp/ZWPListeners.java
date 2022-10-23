@@ -192,7 +192,7 @@ public class ZWPListeners implements Listener {
         if (e.getEntity().getType().equals(EntityType.ARMOR_STAND) || e.getEntity().getType().equals(EntityType.PAINTING)
                 || e.getEntity().getType().equals(EntityType.ITEM_FRAME))
             if (e.getDamager() instanceof Player) // it sucks i know but i dont have time to finish it properly
-                if (((Player) e.getDamager()).isOp()) {
+                if (!((Player) e.getDamager()).isOp()) {
 
                     e.getEntity().getWorld().spawnParticle(Particle.SMOKE_NORMAL,
                             e.getEntity().getLocation().clone().add(0.5, 1.2, 0.5),
