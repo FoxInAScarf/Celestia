@@ -55,7 +55,14 @@ public class ZWPListeners implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
 
             Material cb = e.getClickedBlock().getType();
-            if (cb.equals(Material.CHEST) || cb.equals(Material.BARREL) || cb.equals(Material.ENDER_CHEST) || cb.equals(Material.BREWING_STAND))
+            if (cb.equals(Material.CHEST) || cb.equals(Material.BARREL) || cb.equals(Material.ENDER_CHEST) || cb.equals(Material.BREWING_STAND)
+                || cb.equals(Material.WHITE_CANDLE) || cb.equals(Material.ORANGE_CANDLE) || cb.equals(Material.PURPLE_CANDLE) || cb.equals(Material.CYAN_CANDLE)
+                || cb.equals(Material.YELLOW_CANDLE) || cb.equals(Material.LIME_CANDLE) || cb.equals(Material.PINK_CANDLE) || cb.equals(Material.GRAY_CANDLE)
+                || cb.equals(Material.LIGHT_GRAY_CANDLE) || cb.equals(Material.LIGHT_BLUE_CANDLE) || cb.equals(Material.MAGENTA_CANDLE) || cb.equals(Material.BLUE_CANDLE)
+                || cb.equals(Material.BROWN_CANDLE) || cb.equals(Material.GREEN_CANDLE) || cb.equals(Material.RED_CANDLE) || cb.equals(Material.BLACK_CANDLE))
+
+                // YES I HAVE TO MANUALLY CHECK ALL COLORS!
+
                 if (!ZWP.allowedContainers.contains(e.getClickedBlock())) {
 
                     p.playSound(p.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 1, 1);
@@ -129,7 +136,7 @@ public class ZWPListeners implements Listener {
     public void onInteractEntity(PlayerInteractEntityEvent e) {
 
         if (e.getPlayer().isOp()) return;
-        if (e.getHand().equals(EquipmentSlot.OFF_HAND)) return;
+        //if (e.getHand().equals(EquipmentSlot.OFF_HAND)) return;
         if (e.getRightClicked().getType().equals(EntityType.ARMOR_STAND)
                 || e.getRightClicked().getType().equals(EntityType.ITEM_FRAME)
                 || e.getRightClicked().getType().equals(EntityType.PAINTING)) {
@@ -142,6 +149,18 @@ public class ZWPListeners implements Listener {
         }
 
     }
+
+    @EventHandler
+    public void onArmorStandInteract(PlayerArmorStandManipulateEvent e) {
+
+        if (e.getPlayer().isOp()) return;
+        e.getRightClicked().getWorld().spawnParticle(Particle.SMOKE_NORMAL,
+                e.getRightClicked().getLocation().add(0.5, 1.2, 0.5),
+                5, 0, 0, 0, 0);
+        e.setCancelled(true);
+
+    }
+
 
     HashMap<Player, Double> distanceMap = new HashMap<>();
 
