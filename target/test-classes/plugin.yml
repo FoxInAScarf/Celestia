@@ -1,0 +1,38 @@
+authors: [Zraphy, FRALEXAlexander]
+
+main: veo.Main
+version: 1.0.0
+name: Celestia
+api-version: 1.19
+
+commands:
+  zwp:
+    aliases: ['worldprotect', 'zworldprotect']
+    description: ZWorldProtect module command.
+  chat:
+    aliases: []
+    description: ZChatManager module command.
+  block:
+    aliases: []
+    description: ZChatManager module command.
+  unblock:
+    aliases: []
+    description: ZChatManager module command.
+  gens:
+    aliases: ['generator']
+    description: Celestia command.
+  flag:
+    aliases: []
+    description: Celestia command.
+  zitem:
+    aliases: []
+    description: ZItem module command.
+  shop:
+    aliases: []
+    description: ZShop module command.
+  npc:
+    aliases: []
+    description: ZNPC module command.
+  spawn:
+    aliases: []
+    description: Teleports you back to spawn!
