@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import veo.Main;
 import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
+import veo.game.items.ZItemManager;
+
+import java.util.Iterator;
 
 public class GenCommand implements CommandExecutor {
 
@@ -51,14 +54,30 @@ public class GenCommand implements CommandExecutor {
                 removeGen(args, p);
                 break;
 
+            case "modify":
+                modifyGen(args, p);
+                break;
+
+            case "clear":
+
+                for (int i = 0; i <= GenManager.gens.size() - 1; i++) GenManager.gens.get(i).remove();
+                break;
+
+            case "test":
+
+                GenManager.genFile.clearAll();
+                break;
+
             case "list":
 
                 Main.sendMessage(p, ChatColor.GREEN + "These are the currently existing generators:", false);
                 for (Generator g : GenManager.gens) {
 
+                    System.out.println(g.name + "@" + g.m.getType().name() + "@" + g.l.getWorld().getName() + "@"
+                            + g.l.getX() + "@" + g.l.getY() + "@" + g.l.getZ() + "@" + g.length + "@" + g.h.toString());
                     ChatColor cc = FlagManager.getFlag(g.name) != null ? ChatColor.GREEN : ChatColor.YELLOW;
                     Main.sendMessage(p, ChatColor.GREEN + "      - " + cc + g.name + ChatColor.GREEN + ":" +
-                            " " + g.m.toString().replaceAll("_", "") + " generator",
+                            " " + g.m.getType().name() + " generator",
                             false);
 
                 }
@@ -110,8 +129,8 @@ public class GenCommand implements CommandExecutor {
 
         }
 
-        Material m = Material.getMaterial(args[2].toUpperCase());
-        if (m == null) {
+        //Material m = Material.getMaterial(args[2].toUpperCase());
+        if (Material.getMaterial(args[2].toUpperCase()) == null || ZItemManager.getItem(args[2]) == null) {
 
             Main.sendMessage(p, ChatColor.YELLOW + "There's no such material as '"
                     + ChatColor.RED + args[2] + ChatColor.YELLOW + "'!", true);
@@ -127,10 +146,16 @@ public class GenCommand implements CommandExecutor {
         if (args[5].equals("~")) z = p.getLocation().getZ();
         else z = Double.parseDouble(args[5]);
 
+        x = Math.floor(x) + 0.5;
+        z = Math.floor(z) + 0.5;
+
         int time = Integer.parseInt(args[6]);
-        GenManager.gens.add(new Generator(name, m, new Location(p.getWorld(), x, y, z), time));
-        GenManager.genFile.addLine(name + "@" + m.toString() + "@" + p.getWorld().getName() + "@"
-                + x + "@" + y + "@" + z + "@" + time);
+        Material head = ZItemManager.getItem(args[2]) == null ? Material.getMaterial(args[2].toUpperCase())
+                : ZItemManager.getItem(args[2]).getType();
+
+        GenManager.gens.add(new Generator(name, args[2].toUpperCase(), new Location(p.getWorld(), x, y, z), time, head));
+        GenManager.genFile.addLine(name + "@" + args[2].toUpperCase() + "@" + p.getWorld().getName() + "@"
+                + x + "@" + y + "@" + z + "@" + time + "@" + head);
 
         // joemama69@world@1@1@1@100
         Main.sendMessage(p, ChatColor.GREEN + "Added generator!", false);
@@ -156,8 +181,31 @@ public class GenCommand implements CommandExecutor {
                 }*/
 
         GenManager.getGen(args[1]).remove();
-        FlagManager.getFlag(args[1]).remove();
+        if (GenManager.getGen(args[1]) != null) FlagManager.getFlag(args[1]).remove();
         Main.sendMessage(p, ChatColor.GREEN + "Removed generator and it's flag!", false);
+
+    }
+
+    public void modifyGen(String[] args, Player p) {
+
+        // /gens modify <name> <drop;item;name;time>
+        Generator gen = GenManager.getGen(args[1]);
+        if (gen == null) {
+
+            Main.sendMessage(p, ChatColor.YELLOW + "There is no generator named '"
+                    + ChatColor.RED + args[1] + ChatColor.YELLOW + "'!", true);
+            return;
+
+        }
+        switch (args[2]) {
+
+            case "drop" -> gen.edit(gen.name, args[3], gen.length, gen.h);
+            case "item" -> gen.edit(gen.name, gen.drop, gen.length, Material.getMaterial(args[3].toUpperCase()));
+            case "name" -> gen.edit(args[3], gen.drop, gen.length, gen.h);
+            case "time" -> gen.edit(gen.name, gen.drop, Integer.parseInt(args[3]), gen.h);
+
+        }
+        Main.sendMessage(p, ChatColor.GREEN + "Successfully edited something, IDK.", false);
 
     }
 
@@ -190,6 +238,9 @@ public class GenCommand implements CommandExecutor {
         if (args[5].equals("~")) hz = p.getLocation().getZ();
         else hz = Double.parseDouble(args[5]);
 
+        hx = Math.floor(hx);
+        hz = Math.floor(hz);
+
         Location head = new Location(p.getWorld(), hx, hy, hz);
 
         double px, py, pz;
@@ -199,6 +250,9 @@ public class GenCommand implements CommandExecutor {
         else py = Double.parseDouble(args[7]);
         if (args[8].equals("~")) pz = p.getLocation().getZ();
         else pz = Double.parseDouble(args[8]);
+
+        px = Math.floor(hx);
+        pz = Math.floor(hz);
 
         Location pole = new Location(p.getWorld(), px, py, pz);
 

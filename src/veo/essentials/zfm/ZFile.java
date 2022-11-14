@@ -86,4 +86,11 @@ public class ZFile {
 
     }
 
+    public void clearAll() {
+
+        lines.clear();
+        clear();
+
+    }
+
 }

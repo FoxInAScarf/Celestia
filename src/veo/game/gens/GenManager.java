@@ -31,8 +31,8 @@ public class GenManager {
                     Double.parseDouble(ls[3]),
                     Double.parseDouble(ls[4]),
                     Double.parseDouble(ls[5]));
-            gens.add(new Generator(ls[0], Material.getMaterial(ls[1]),
-                    location, Integer.parseInt(ls[6])));
+            gens.add(new Generator(ls[0], ls[1],
+                    location, Integer.parseInt(ls[6]), Material.getMaterial(ls[7])));
 
         }
 

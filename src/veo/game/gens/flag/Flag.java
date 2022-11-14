@@ -35,8 +35,7 @@ public class Flag {
 
     public Flag(String name, Location head, Location pole) {
 
-        this.head = new Location(head.getWorld(), Math.floor(head.getX()), head.getY(),
-                Math.floor(head.getZ()));
+        this.head = new Location(head.getWorld(), head.getX(), head.getY(), head.getZ());
         this.pole = pole;
         this.name = name;
         this.flag = new FlagStructure(pole);

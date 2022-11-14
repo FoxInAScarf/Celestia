@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.essentials.zct.ZCM;
+import veo.essentials.zfm.ZFile;
 import veo.essentials.zpm.ZPM;
 import veo.essentials.zwp.ZWP;
 import veo.game.gens.GenManager;
@@ -40,11 +41,11 @@ public class Main extends JavaPlugin {
         for (World w : Bukkit.getWorlds()) for (Entity e : w.getEntities())
             if (e.getScoreboardTags().contains("removable")) e.remove();
 
+        ZItemManager.init();
         ZPM.init(this);
         ZWP.init(this);
         ZCM.init(this);
         GenManager.init(this);
-        ZItemManager.init();
         ShopManager.init();
         NPCManager.init();
 
