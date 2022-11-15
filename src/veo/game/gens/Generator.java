@@ -42,24 +42,41 @@ public class Generator {
 
         //s = (ArmorStand) l.getWorld().spawnEntity(
         //        new Location(this.l.getWorld(), this.l.getX(), this.l.getY() + 2, this.l.getZ()), EntityType.ARMOR_STAND);
-        s = (ArmorStand) l.getWorld().spawnEntity(new Location(l.getWorld(), l.getX(), l.getY() + 2, l.getZ()), EntityType.ARMOR_STAND);
-        s.setInvisible(true);
-        s.setMarker(true);
-        s.setGravity(false);
-        s.setHelmet(new ItemStack(h));
-        s.addScoreboardTag("removable");
-        s.addScoreboardTag(name + "GenItem");
 
-        n = (ArmorStand) l.getWorld().spawnEntity(
-                new Location(l.getWorld(), l.getX(), l.getY() + 4.2, l.getZ()), EntityType.ARMOR_STAND);
-        n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
-                + (length - time) / 20 + " seconds...");
-        n.setCustomNameVisible(true);
-        n.setInvisible(true);
-        n.setMarker(true);
-        n.setGravity(false);
-        n.addScoreboardTag("removable");
-        n.addScoreboardTag(name + "GenName");
+        int sc = 0;
+        if (l.getWorld() != null) for (Entity e : l.getWorld().getEntities())
+            if (e.getScoreboardTags().contains(name + "GenItem")) sc++;
+
+        if (sc < 1) {
+
+            s = (ArmorStand) l.getWorld().spawnEntity(new Location(l.getWorld(), l.getX(), l.getY() + 2, l.getZ()), EntityType.ARMOR_STAND);
+            s.setInvisible(true);
+            s.setMarker(true);
+            s.setGravity(false);
+            s.setHelmet(new ItemStack(h));
+            s.addScoreboardTag("removable");
+            s.addScoreboardTag(name + "GenItem");
+
+        }
+
+        int nc = 0;
+        if (l.getWorld() != null) for (Entity e : l.getWorld().getEntities())
+            if (e.getScoreboardTags().contains(name + "GenName")) nc++;
+
+        if (sc < 1) {
+
+            n = (ArmorStand) l.getWorld().spawnEntity(
+                    new Location(l.getWorld(), l.getX(), l.getY() + 4.2, l.getZ()), EntityType.ARMOR_STAND);
+            n.setCustomName(ChatColor.GREEN + "Next item is in " + ChatColor.GOLD
+                    + (length - time) / 20 + " seconds...");
+            n.setCustomNameVisible(true);
+            n.setInvisible(true);
+            n.setMarker(true);
+            n.setGravity(false);
+            n.addScoreboardTag("removable");
+            n.addScoreboardTag(name + "GenName");
+
+        }
 
     }
 

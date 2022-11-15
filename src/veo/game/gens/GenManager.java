@@ -1,8 +1,10 @@
 package veo.game.gens;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
@@ -17,6 +19,7 @@ public class GenManager {
     static ZFile genFile;
 
     public static boolean running = true;
+
 
     public static void init(JavaPlugin main) {
 
@@ -47,6 +50,35 @@ public class GenManager {
 
         Bukkit.getPluginManager().registerEvents(new GenListeners(), main);
         main.getCommand("gens").setExecutor(new GenCommand());
+
+        /*Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+
+            for (Generator g : GenManager.gens) if (g.l.getWorld() != null) {
+
+                    int genItems = 0, genNames = 0;
+                    for (Entity c : g.l.getWorld().getEntities()) {
+
+                        if (c.getScoreboardTags().contains(g.name + "GenItem")) genItems++;
+                        if (genItems > 1) {
+
+                            c.remove();
+                            genItems--;
+                            continue;
+
+                        }
+                        if (c.getScoreboardTags().contains(g.name + "GenName")) genNames++;
+                        if (genNames > 1) {
+
+                            c.remove();
+                            genNames++;
+
+                        }
+
+                    }
+
+                }
+
+        }, 20L, 20L);*/
 
     }
 
