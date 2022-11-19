@@ -9,7 +9,7 @@ public class ZEnchantment {
 
     public ZEnchantment(String name, int lvl) {
 
-        e = Enchantment.getByName(name);
+        e = Enchantment.getByName(name.toUpperCase());
         if (e == null) e = CustomEnchantments.getByName(name);
         if (e == null) System.out.println("[ZCUSTOMENCHANTS]: ERROR!");
         this.lvl = lvl;

@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import veo.game.items.ZItemManager;
 
 public class Listeners implements Listener {
 
@@ -20,9 +21,20 @@ public class Listeners implements Listener {
 
         if (p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) return;
         if (!p.getInventory().getItemInMainHand().hasItemMeta()) return;
-        if (!p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.FROSTBITE)) return;
 
-        e.getEntity().setFreezeTicks(140);
+        if (p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.FROSTBITE))
+            e.getEntity().setFreezeTicks(140);
+
+        if (p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.CRUX)) {
+
+            ((LivingEntity) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 3, false));
+            ((LivingEntity) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 30 * 20, 3, false));
+
+        }
+
+        if (p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.MURDER)
+            && e.getEntity().isDead() && ZItemManager.getItem("heart") != null)
+            p.getInventory().addItem(ZItemManager.getItem("heart"));
 
     }
 

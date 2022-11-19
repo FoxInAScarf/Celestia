@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import veo.Main;
+import veo.game.custom.enchantment.CustomEnchantments;
 import veo.game.custom.enchantment.Listeners;
 
 import java.io.File;
@@ -22,6 +23,7 @@ public class ZItemManager {
         if (!new File(folder).exists()) new File(folder).mkdir();
 
         Bukkit.getPluginManager().registerEvents(new Listeners(), Main.getInstance());
+        CustomEnchantments.register();
         load();
         Main.getInstance().getCommand("zitem").setExecutor(new ZItemCommand());
 
