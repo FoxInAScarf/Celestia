@@ -1,12 +1,11 @@
 package veo.game.items;
 
-import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -70,7 +69,7 @@ public class ZItem extends ZFile {
                         error(3.2);
                         return;
                     }
-                    e.add(new ZEnchantment(se[0], lvl, this));
+                    e.add(new ZEnchantment(se[0], Integer.parseInt(se[1])));
 
                     if (i != lines.size() - 2) i++;
                     else break;
@@ -393,21 +392,7 @@ public class ZItem extends ZFile {
 
         }
 
-        for (ZEnchantment ze : e) {
-
-            if (ze.isCustom) {
-
-                /*net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-                NBTTagCompound nbt = new NBTTagCompound();
-                nbt.a(ze.eName, "");
-                nmsItem.b(nbt);
-                item = CraftItemStack.asBukkitCopy(nmsItem);*/
-                continue;
-
-            }
-            meta.addEnchant(ze.e, ze.lvl, true);
-
-        }
+        for (ZEnchantment ze : e) meta.addEnchant(ze.e, ze.lvl, true);
         meta.setLore(lore);
         for (PotionEffect pe : potions) try {
 
