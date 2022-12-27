@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import veo.Main;
 import veo.essentials.zpm.ZPM;
 import veo.essentials.zpm.profiles.PlayerChatProfile;
+import veo.essentials.zpm.profiles.PlayerGameProfile;
 import veo.essentials.zpm.profiles.PlayerRankProfile;
 
 import java.io.File;
@@ -109,15 +110,6 @@ public class ZCMListeners implements Listener {
     public void onJoin(PlayerJoinEvent e) {
 
         Player p = e.getPlayer();
-        if (!ZPM.getProfiledPlayers().contains(p.getUniqueId().toString())) {
-
-            File f1 = new File(ZPM.prpFolder + "/" + p.getUniqueId());
-            ZPM.prp.add(new PlayerRankProfile(f1).reset());
-
-            File f2 = new File(ZPM.pcpFolder + "/" + p.getUniqueId());
-            ZPM.pcp.add(new PlayerChatProfile(f2).reset());
-
-        }
 
         ChatColor c = ZPM.getPRP(p).textColor;
         e.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] "

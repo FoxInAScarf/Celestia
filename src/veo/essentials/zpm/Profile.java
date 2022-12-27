@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class Profile extends ZFile {
 
-    OfflinePlayer p;
+    public OfflinePlayer p;
 
     public Profile(File f) {
 

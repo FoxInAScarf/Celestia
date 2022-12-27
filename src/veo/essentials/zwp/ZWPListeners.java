@@ -15,6 +15,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffect;
 import veo.Main;
+import veo.essentials.zpm.ZPM;
+import veo.essentials.zpm.profiles.PlayerGameProfile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +89,15 @@ public class ZWPListeners implements Listener {
                 trapdoors.add(Material.WARPED_TRAPDOOR);
                 trapdoors.add(Material.DAYLIGHT_DETECTOR);
                 trapdoors.add(Material.LEVER);
+                trapdoors.add(Material.ANVIL);
+                trapdoors.add(Material.CHIPPED_ANVIL);
+                trapdoors.add(Material.DAMAGED_ANVIL);
+                trapdoors.add(Material.LOOM);
+                trapdoors.add(Material.GRINDSTONE);
+                trapdoors.add(Material.CRAFTING_TABLE);
+                trapdoors.add(Material.SMOKER);
+                trapdoors.add(Material.BLAST_FURNACE);
+                trapdoors.add(Material.FURNACE);
 
             }
             if (trapdoors.contains(cb)) {
@@ -171,6 +182,10 @@ public class ZWPListeners implements Listener {
 
         if (p.getLocation().getY() < -64) {
 
+            PlayerGameProfile pgp = ZPM.getPGP(p);
+            pgp.deaths++;
+            pgp.killStreak = 0;
+            pgp.saveF();
             p.teleport(ZWP.respawn);
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(20);
@@ -227,6 +242,38 @@ public class ZWPListeners implements Listener {
             e.setCancelled(true);
 
         }
+
+    }
+
+    @EventHandler
+    public void onPlayerKillPlayer(PlayerDeathEvent e) {
+
+        Player killed = e.getEntity(),
+                killer = (e.getEntity().getKiller() != null) ? e.getEntity().getKiller() : null;
+
+        PlayerGameProfile killedPGP = ZPM.getPGP(killed);
+        if (killedPGP == null) {
+
+            System.out.println("ERROR: WHAT THE FUCK ZRAPHY???? (nonexistent player profile despite player joining, did you reload while players were on?)");
+            return;
+
+        }
+        killedPGP.deaths++;
+        killedPGP.killStreak = 0;
+        killedPGP.saveF();
+        if (killer == null) return;
+
+        PlayerGameProfile killerPGP = ZPM.getPGP(killer);
+        if (killerPGP == null) {
+
+            System.out.println("ERROR: WHAT THE FUCK ZRAPHY???? (nonexistent player profile despite player joining, did you reload while players were on?)");
+            return;
+
+        }
+        killerPGP.kills++;
+        killerPGP.killStreak++;
+        killerPGP.saveF();
+
 
     }
 

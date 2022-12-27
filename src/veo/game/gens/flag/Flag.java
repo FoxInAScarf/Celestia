@@ -17,6 +17,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.EulerAngle;
 import veo.Main;
+import veo.essentials.zpm.ZPM;
+import veo.essentials.zpm.profiles.PlayerGameProfile;
 import veo.game.gens.GenManager;
 
 import java.util.HashMap;
@@ -50,6 +52,16 @@ public class Flag {
     public void claim(Player p) {
 
         owner = p;
+        PlayerGameProfile pgp = ZPM.getPGP(p);
+        if (pgp == null) {
+
+            System.out.println("ERROR: WHAT THE FUCK ZRAPHY???? (nonexistent player profile despite player joining, did you reload while players were on?)");
+            return;
+
+        }
+        pgp.flagsClaimed++;
+        pgp.saveF();
+
         Main.sendMessage(p, ChatColor.GREEN + "You claimed the island of "
                 + name, false);
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 3);

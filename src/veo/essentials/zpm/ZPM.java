@@ -1,13 +1,11 @@
 package veo.essentials.zpm;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
-import veo.essentials.zpm.profiles.PlayerChatProfile;
-import veo.essentials.zpm.profiles.PlayerGameProfile;
-import veo.essentials.zpm.profiles.PlayerRankProfile;
-import veo.essentials.zpm.profiles.PlayerSocialProfile;
+import veo.essentials.zpm.profiles.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ZPM implements Listener {
+public class ZPM {
 
     public static String pcpFolder, prpFolder, pspFolder, pgpFolder;
 
@@ -26,7 +24,7 @@ public class ZPM implements Listener {
 
     private static String folder;
 
-    public static void init(JavaPlugin main) {
+    public static void init() {
 
         folder = Main.mainFolder.getAbsolutePath() + "/ZPM";
         if (!new File(folder).exists()) new File(folder).mkdir();
@@ -35,6 +33,9 @@ public class ZPM implements Listener {
         initRankProfile();
         initSocialProfile();
         initGameProfile();
+
+        Bukkit.getPluginManager().registerEvents(new Listeners(), Main.getInstance());
+        Main.getInstance().getCommand("troubleshoot").setExecutor(new TroubleShootCommand());
 
         //Bukkit.getPluginManager().registerEvents(this, main);
 
@@ -81,6 +82,8 @@ public class ZPM implements Listener {
 
         for (File f : Objects.requireNonNull(ff.listFiles()))
             pgp.add(new PlayerGameProfile(f));
+
+        PGPManager.initTime();
 
     }
 

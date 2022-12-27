@@ -42,7 +42,7 @@ public class Main extends JavaPlugin {
             if (e.getScoreboardTags().contains("removable")) e.remove();
 
         ZItemManager.init();
-        ZPM.init(this);
+        ZPM.init();
         ZWP.init(this);
         ZCM.init(this);
         GenManager.init(this);
