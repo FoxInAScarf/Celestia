@@ -29,6 +29,7 @@ public class Generator {
         this.drop = m;
         this.m = ZItemManager.getItem(m);
         if (this.m == null) this.m = new ItemStack(Material.getMaterial(m.toUpperCase()));
+        this.m.setAmount(1);
         this.h = h;
         //this.l = new Location(l.getWorld(), Math.floor(l.getX()) + 0.5, l.getY(), Math.floor(l.getZ()) + 0.5);
         this.l = l;
@@ -111,8 +112,10 @@ public class Generator {
 
             if (sendItem) {
 
+                ItemStack it = m.clone();
+                it.setAmount(1);
                 Item i = l.getWorld().dropItemNaturally(new Location(l.getWorld(),
-                                l.getX(), l.getY() + 2, l.getZ()), m);
+                                l.getX(), l.getY() + 2, l.getZ()), it);
                 i.teleport(new Location(l.getWorld(), s.getLocation().getX(),
                         s.getLocation().getY() + 1.8, s.getLocation().getZ()));
                 i.setVelocity(new Vector(0, 0, 0));

@@ -92,6 +92,9 @@ public class Listeners implements Listener {
                     case 5:
                         e.getPlayer().sendMessage((String) n.value);
 
+                    case 6:
+                        Bukkit.getServer().dispatchCommand(e.getPlayer(), (String) n.value);
+
                 }
 
     }

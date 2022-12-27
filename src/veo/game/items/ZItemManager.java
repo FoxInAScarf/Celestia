@@ -38,7 +38,13 @@ public class ZItemManager {
 
     public static ItemStack getItem(String name) {
 
-        for (ZItem i : items) if (i.name.equalsIgnoreCase(name)) return i.item;
+        for (ZItem i : items) if (i.name.equalsIgnoreCase(name)) {
+
+            ItemStack it = i.item.clone();
+            it.setAmount(1);
+            return it;
+
+        }
         Material m = Material.getMaterial(name.toUpperCase());
         return m == null ? null : new ItemStack(m);
 

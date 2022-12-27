@@ -63,13 +63,13 @@ public class ZItem extends ZFile {
                         return;
                     }
 
-                    int lvl = 0;
+                    int lvl = 1;
                     try {lvl = Integer.parseInt(se[1]); }
                     catch (Exception ignored) {
                         error(3.2);
                         return;
                     }
-                    e.add(new ZEnchantment(se[0], Integer.parseInt(se[1])));
+                    e.add(new ZEnchantment(se[0], lvl));
 
                     if (i != lines.size() - 2) i++;
                     else break;
@@ -408,6 +408,7 @@ public class ZItem extends ZFile {
         }
 
         item.setItemMeta(meta);
+        item.setAmount(1);
         System.out.println("[ZItemReader]: Successfully imported '" + name + "'!");
 
     }

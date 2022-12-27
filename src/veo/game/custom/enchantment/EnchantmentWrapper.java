@@ -13,7 +13,7 @@ public class EnchantmentWrapper extends Enchantment {
 
     public EnchantmentWrapper(String name, int maxLvl) {
 
-        super(new NamespacedKey(Main.getInstance(), NamespacedKey.MINECRAFT));
+        super(NamespacedKey.minecraft(name.toLowerCase()));
 
         this.name = name;
         this.maxLvl = maxLvl;
@@ -57,6 +57,6 @@ public class EnchantmentWrapper extends Enchantment {
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return false;
+        return true;
     }
 }

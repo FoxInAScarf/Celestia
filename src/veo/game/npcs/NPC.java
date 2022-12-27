@@ -139,6 +139,14 @@ public class NPC extends ZFile {
                 value = data.get("value");
 
             }
+
+            case "commandByPlayer" -> {
+
+                actionType = 6;
+                value = data.get("value");
+
+            }
+
             case "text" -> {
 
                 actionType = 5;

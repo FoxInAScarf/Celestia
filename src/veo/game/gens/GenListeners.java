@@ -54,25 +54,23 @@ public class GenListeners implements Listener {
                 }
 
                 // conduct checkings for flag cap
-                if (f.owner != null) {
 
-                    int counter = 0;
-                    for (Flag fl : FlagManager.flags)
-                        if (fl.owner.getPlayer().equals(e.getPlayer())) counter++;
+                int counter = 0;
+                for (Flag fl : FlagManager.flags)
+                    if (fl.owner != null && fl.owner.getUniqueId().equals(e.getPlayer().getUniqueId())) counter++;
+                //System.out.println(e.getPlayer().getName() + " has " + counter + " claims!");
 
-                    if (counter > 2) {
+                if (counter >= 2) {
 
-                        Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
-                        return;
-
-                    }
+                    Main.sendMessage(e.getPlayer(), ChatColor.RED + "You can only claim 2 flags at once!", true);
+                    return;
 
                 }
 
                 if (f.owner == null) f.claim(e.getPlayer());
                 else {
 
-                    if (f.owner.equals(e.getPlayer())) {
+                    if (f.owner.getUniqueId().equals(e.getPlayer().getUniqueId())) {
 
                         Main.sendMessage(f.owner.getPlayer(), ChatColor.RED + "You've already" +
                                 " claimed this island. Try claiming another one!", true);
