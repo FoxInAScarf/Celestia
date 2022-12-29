@@ -28,6 +28,8 @@ public class CustomEnchantments {
 
     public static void register() {
 
+        Listeners.startCooldownLoop();
+
         boolean registeredFrostbite = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(FROSTBITE);
         if (!registeredFrostbite) registerEnchantments(FROSTBITE);
 

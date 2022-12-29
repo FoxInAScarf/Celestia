@@ -192,6 +192,16 @@ public class ZWPListeners implements Listener {
             for (PotionEffect pe : p.getActivePotionEffects())
                 p.removePotionEffect(pe.getType());
 
+            Player killer = KickoffInstance.getKiller(p);
+            if (killer != null) {
+
+                PlayerGameProfile kPgp = ZPM.getPGP(killer);
+                kPgp.killStreak++;
+                kPgp.kills++;
+                kPgp.saveF();
+
+            }
+
         }
 
         if (!distanceMap.containsKey(p)) {
@@ -220,8 +230,20 @@ public class ZWPListeners implements Listener {
 
     }
 
+    public static List<KickoffInstance> kickoffInstanceList = new ArrayList<>();
+
     @EventHandler
     public void onFight(EntityDamageByEntityEvent e) {
+
+        if (!(e.getEntity() instanceof Player victim) || !(e.getDamager() instanceof Player damager)) return;
+
+        if (isPlayerInProtectedArea((Player) e.getDamager())) {
+
+            Main.sendMessage((Player) e.getDamager(), ChatColor.RED + "Oops! Can't fight here!", true);
+            e.setCancelled(true);
+            return;
+
+        }
 
         if (e.getEntity().getType().equals(EntityType.ARMOR_STAND) || e.getEntity().getType().equals(EntityType.PAINTING)
                 || e.getEntity().getType().equals(EntityType.ITEM_FRAME))
@@ -232,16 +254,25 @@ public class ZWPListeners implements Listener {
                             e.getEntity().getLocation().clone().add(0.5, 1.2, 0.5),
                             5, 0, 0, 0, 0);
                     e.setCancelled(true);
+                    return;
 
                 }
 
-        if (e.getEntity().getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius ||
-                e.getDamager().getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius) {
+        kickoffInstanceList.add(new KickoffInstance(victim, damager).start());
 
-            Main.sendMessage((Player) e.getDamager(), ChatColor.RED + "Oops! Can't fight here!", true);
-            e.setCancelled(true);
+    }
 
-        }
+    @EventHandler
+    public void onPlayerDamage(EntityDamageEvent e) {
+
+        if (e.getEntity() instanceof Player p && isPlayerInProtectedArea(p)) e.setCancelled(true);
+
+    }
+
+    public static boolean isPlayerInProtectedArea(Player p) {
+
+        return p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius ||
+                p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius;
 
     }
 
