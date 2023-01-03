@@ -39,3 +39,6 @@ commands:
   troubleshoot:
     aliases: []
     description: IDK
+  stats:
+    aliases: []
+    description: Shows statistics of a desired player.

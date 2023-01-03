@@ -19,6 +19,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import veo.Main;
 import veo.essentials.zwp.ZWPListeners;
+import veo.game.custom.enchantment.misc.RayAbility;
+import veo.game.custom.enchantment.misc.WaveAbility;
 import veo.game.items.ZItemManager;
 
 import java.util.*;
@@ -73,10 +75,6 @@ public class Listeners implements Listener {
 
     }
 
-    static HashMap<Player, Integer> waveCooldown = new HashMap<>();
-    static HashMap<Player, Integer> rayCooldown = new HashMap<>();
-    int task1, task2;
-
     @EventHandler
     public void onRightClickEvent(PlayerInteractEvent e) {
 
@@ -96,160 +94,14 @@ public class Listeners implements Listener {
 
         }
 
-        /*
-         *
-         *
-         * WAVE
-         *
-         *
-         * */
-
         if (p.isSneaking()) {
 
-            if (waveCooldown.containsKey(p)) {
-
-                Main.sendMessage(p, ChatColor.RED + "You're on cooldown! You have to wait " + waveCooldown.get(p) + " seconds!", true);
-                return;
-
-            }
-
-            for (Entity en : p.getNearbyEntities(6, 6, 6)) {
-
-                if (!(en instanceof Player cp)) continue;
-                cp.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1.0F, 12.0F);
-
-            }
-            p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1.0F, 12.0F);
-            AtomicReference<Double> iteration = new AtomicReference<>(0.0);
-            task1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-
-                if (iteration.get() >= 5) Bukkit.getScheduler().cancelTask(task1);
-
-                for (Entity en : p.getNearbyEntities(6, 6, 6)) if (en instanceof Player c) {
-
-                    if (p.getUniqueId().equals(c.getUniqueId())) continue;
-                    if (c.getLocation().distance(p.getLocation()) <= iteration.get()) {
-
-                        c.damage(6);
-                        double factor = 0.5, xVel = (p.getLocation().getX() - c.getLocation().getX()) * factor,
-                                yVel = 0.1 * factor,
-                                zVel = (p.getLocation().getZ() - c.getLocation().getZ()) * factor;
-                        // "im such a gay furboy i wanna suck cock UwU" - JovannMC
-                        c.setVelocity(new Vector(-xVel, yVel, -zVel));
-                        c.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2, false));
-                        c.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 30 * 20, 3, false));
-
-                    }
-
-                }
-
-                drawCircle(0, 360, p.getLocation().clone().add(0, 1, 0), iteration.get());
-                iteration.set(iteration.get() + 0.5);
-
-            }, 0L, 1L);
-
-            waveCooldown.put(p, 20);
+            new WaveAbility(p);
             return;
 
         }
+        new RayAbility(p);
 
-        /*
-        *
-        *
-        * RAY
-        *
-        *
-        * */
-
-        if (rayCooldown.containsKey(p)) {
-
-            Main.sendMessage(p, ChatColor.RED + "You're on cooldown! You have to wait " + rayCooldown.get(p) + " seconds!", true);
-            return;
-
-        }
-
-        for (Entity en : p.getNearbyEntities(6, 6, 6)) {
-
-            if (!(en instanceof Player cp)) continue;
-            cp.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1.0F, 12.0F);
-
-        }
-        p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1.0F, 12.0F);
-        AtomicReference<Double> iteration = new AtomicReference<>(0.0);
-        task2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-
-            if (iteration.get() >= 5) Bukkit.getScheduler().cancelTask(task2);
-
-            for (Entity en : p.getNearbyEntities(6, 6, 6)) if (en instanceof Player c) {
-
-                if (p.getUniqueId().equals(c.getUniqueId())) continue;
-                double daa = Math.toDegrees(Math.atan2(en.getLocation().getX() - p.getLocation().getX(), en.getLocation().getZ() - p.getLocation().getZ()));
-                if (c.getLocation().distance(p.getLocation()) <= iteration.get() && (daa >= -p.getLocation().getYaw() - 20 && daa <= -p.getLocation().getYaw() + 20)) {
-
-                    c.damage(16);
-                    c.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2, false));
-                    c.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 30 * 20, 3, false));
-
-                }
-
-            }
-
-            drawCircle(-p.getLocation().getYaw() - 20, -p.getLocation().getYaw() + 20, p.getLocation().clone().add(0, 1, 0), iteration.get());
-            iteration.set(iteration.get() + 0.5);
-
-        }, 0L, 1L);
-
-        rayCooldown.put(p, 8);
-
-
-    }
-
-    public static void startCooldownLoop() {
-
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-
-            Iterator<Map.Entry<Player, Integer>> waveIterator = waveCooldown.entrySet().iterator(),
-                    rayIterator = rayCooldown.entrySet().iterator();
-
-            while (waveIterator.hasNext()) {
-
-                Map.Entry<Player, Integer> e = waveIterator.next();
-                if (e.getValue() == 0) {
-
-                    waveIterator.remove();
-                    continue;
-
-                }
-                waveCooldown.put(e.getKey(), e.getValue() - 1);
-
-            }
-
-            while (rayIterator.hasNext()) {
-
-                Map.Entry<Player, Integer> e = rayIterator.next();
-                if (e.getValue() == 0) {
-
-                    rayIterator.remove();
-                    continue;
-
-                }
-                rayCooldown.put(e.getKey(), e.getValue() - 1);
-
-            }
-
-        }, 0L, 20L);
-
-    }
-
-    private void drawCircle(double from, double to, Location l, double r) {
-
-        for (double theta = from; theta <= to; theta += 1) {
-
-            double sin = Math.sin(Math.toRadians(theta)) * r, cos = Math.cos(Math.toRadians(theta)) * r;
-            l.getWorld().spawnParticle(Particle.BLOCK_CRACK, new Location(l.getWorld(), l.getX() + sin, l.getY(), l.getZ() + cos),
-                    1, 0.01, 0.01, 0.01, Material.YELLOW_CONCRETE_POWDER.createBlockData());
-
-        }
 
     }
 

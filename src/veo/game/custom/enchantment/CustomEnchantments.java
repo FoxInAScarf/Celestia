@@ -1,6 +1,7 @@
 package veo.game.custom.enchantment;
 
 import org.bukkit.enchantments.Enchantment;
+import veo.game.custom.enchantment.misc.CruxAbilityManager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class CustomEnchantments {
 
     public static void register() {
 
-        Listeners.startCooldownLoop();
+        CruxAbilityManager.startCooldownLoop();
 
         boolean registeredFrostbite = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(FROSTBITE);
         if (!registeredFrostbite) registerEnchantments(FROSTBITE);

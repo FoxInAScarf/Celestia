@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
 import veo.essentials.zpm.profiles.*;
+import veo.essentials.zpm.stats.StatsManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class ZPM {
 
         Bukkit.getPluginManager().registerEvents(new Listeners(), Main.getInstance());
         Main.getInstance().getCommand("troubleshoot").setExecutor(new TroubleShootCommand());
+
+        StatsManager.init();
 
         //Bukkit.getPluginManager().registerEvents(this, main);
 
@@ -153,6 +156,14 @@ public class ZPM {
 
         for (PlayerGameProfile pr : pgp)
             if (pr.getPlayer().getUniqueId().equals(p.getUniqueId())) return pr;
+        return null;
+
+    }
+
+    public static PlayerGameProfile getPGPfromUUID(UUID uuid) {
+
+        for (PlayerGameProfile pr : pgp)
+            if (pr.getPlayer().getUniqueId().equals(uuid)) return pr;
         return null;
 
     }
