@@ -15,7 +15,7 @@ public class ZCM {
     static ZFile bw;
     static List<String> blockedwords = new ArrayList<>();
 
-    public static void init(JavaPlugin main) {
+    public static void init() {
 
         String folder = Main.mainFolder.getAbsolutePath() + "/ZCM";
         if (!new File(folder).exists()) new File(folder).mkdir();
@@ -24,11 +24,11 @@ public class ZCM {
         for (String l : bw.lines)
             blockedwords.addAll(Arrays.asList(l.split(";")));
 
-        main.getCommand("chat").setExecutor(new ZCMCommands.ChatCommand());
-        main.getCommand("block").setExecutor(new ZCMCommands.BlockCommand());
-        main.getCommand("unblock").setExecutor(new ZCMCommands.UnblockCommand());
+        Main.getInstance().getCommand("chat").setExecutor(new ZCMCommands.ChatCommand());
+        Main.getInstance().getCommand("block").setExecutor(new ZCMCommands.BlockCommand());
+        Main.getInstance().getCommand("unblock").setExecutor(new ZCMCommands.UnblockCommand());
 
-        Bukkit.getPluginManager().registerEvents(new ZCMListeners(), main);
+        Bukkit.getPluginManager().registerEvents(new ZCMListeners(), Main.getInstance());
 
     }
 

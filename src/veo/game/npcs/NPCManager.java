@@ -38,9 +38,9 @@ public class NPCManager {
 
             n.as1.remove();
             n.as2.remove();
-            for (Entity e : n.l.getWorld().getEntities())
-                if (e.getScoreboardTags().contains("removable") && e.getType().equals(EntityType.ARMOR_STAND))
-                    e.remove();
+            /*for (Entity e : n.l.getWorld().getEntities())
+                if (e.getScoreboardTags().contains("removable-" + Main.removableTag) && e.getType().equals(EntityType.ARMOR_STAND))
+                    e.remove();*/
 
             PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(n.npc.ae());
             for (Player p : Bukkit.getOnlinePlayers()) ((CraftPlayer) p).getHandle().b.a(packet);

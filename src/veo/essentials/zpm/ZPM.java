@@ -163,7 +163,7 @@ public class ZPM {
     public static PlayerGameProfile getPGPfromUUID(UUID uuid) {
 
         for (PlayerGameProfile pr : pgp)
-            if (pr.getPlayer().getUniqueId().equals(uuid)) return pr;
+            if (pr.p.getUniqueId().equals(uuid)) return pr;
         return null;
 
     }

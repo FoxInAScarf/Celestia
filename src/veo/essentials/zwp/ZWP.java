@@ -22,7 +22,7 @@ public class ZWP {
     static int pvpProtectionRadius;
     public static List<Block> allowedContainers = new ArrayList<>();
 
-    public static void init(JavaPlugin main) {
+    public static void init() {
 
         folder = Main.mainFolder.getAbsolutePath() + "/ZWP";
         if (!new File(folder).exists()) new File(folder).mkdir();
@@ -79,9 +79,9 @@ public class ZWP {
 
         }
 
-        Bukkit.getPluginManager().registerEvents(new ZWPListeners(), main);
-        main.getCommand("zwp").setExecutor(new ZWPCommand());
-        main.getCommand("spawn").setExecutor(new SpawnCommand());
+        Bukkit.getPluginManager().registerEvents(new ZWPListeners(), Main.getInstance());
+        Main.getInstance().getCommand("zwp").setExecutor(new ZWPCommand());
+        Main.getInstance().getCommand("spawn").setExecutor(new SpawnCommand());
 
     }
 

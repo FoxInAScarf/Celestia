@@ -21,7 +21,7 @@ public class GenManager {
     public static boolean running = true;
 
 
-    public static void init(JavaPlugin main) {
+    public static void init() {
 
         String folder = Main.mainFolder.getAbsolutePath() + "/Gens";
         if (!new File(folder).exists()) new File(folder).mkdir();
@@ -41,15 +41,15 @@ public class GenManager {
 
         FlagManager.init(new File(folder));
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
             if (running)
                 for (Generator g : gens) g.run();
 
         }, 0L, 1L);
 
-        Bukkit.getPluginManager().registerEvents(new GenListeners(), main);
-        main.getCommand("gens").setExecutor(new GenCommand());
+        Bukkit.getPluginManager().registerEvents(new GenListeners(), Main.getInstance());
+        Main.getInstance().getCommand("gens").setExecutor(new GenCommand());
 
         /*Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 

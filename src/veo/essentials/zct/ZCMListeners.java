@@ -72,8 +72,7 @@ public class ZCMListeners implements Listener {
                         + receiver.getName() + mColor);
 
                 if (!ZPM.getPCP(receiver).blockedPlayers.contains(sender))
-                receiver.playSound(receiver.getLocation(),
-                        Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                    receiver.playSound(receiver.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 
             }
 

@@ -2,6 +2,7 @@ package veo.essentials.zpm.profiles;
 
 import org.bukkit.entity.Player;
 import veo.essentials.zpm.Profile;
+import veo.essentials.zpm.stats.Listeners;
 
 import java.io.File;
 
@@ -33,6 +34,7 @@ public class PlayerGameProfile extends Profile {
 
     public PlayerGameProfile reset() {
 
+        Listeners.onUpdate(this);
         lines.clear();
 
         clear();
@@ -50,6 +52,8 @@ public class PlayerGameProfile extends Profile {
 
     public void saveF() {
 
+
+        Listeners.onUpdate(this);
         lines.clear();
 
         clear();

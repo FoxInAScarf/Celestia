@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import veo.Main;
 import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
 import veo.game.items.ZItem;
@@ -55,7 +56,7 @@ public class Generator {
             s.setMarker(true);
             s.setGravity(false);
             s.setHelmet(new ItemStack(h));
-            s.addScoreboardTag("removable");
+            s.addScoreboardTag("removable-" + Main.removableTag);
             s.addScoreboardTag(name + "GenItem");
 
         }
@@ -74,7 +75,7 @@ public class Generator {
             n.setInvisible(true);
             n.setMarker(true);
             n.setGravity(false);
-            n.addScoreboardTag("removable");
+            n.addScoreboardTag("removable-" + Main.removableTag);
             n.addScoreboardTag(name + "GenName");
 
         }

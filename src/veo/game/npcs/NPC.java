@@ -213,7 +213,7 @@ public class NPC extends ZFile {
             as1.setInvisible(true);
             as1.setCustomName(displaySubname);
             as1.setCustomNameVisible(true);
-            as1.addScoreboardTag("removable");
+            as1.addScoreboardTag("removable-" + Main.removableTag);
             as1.addScoreboardTag(name + "AS1");
 
         }
@@ -235,7 +235,7 @@ public class NPC extends ZFile {
             as2.setInvisible(true);
             as2.setCustomName(displayName);
             as2.setCustomNameVisible(true);
-            as2.addScoreboardTag("removable");
+            as2.addScoreboardTag("removable-" + Main.removableTag);
             as2.addScoreboardTag(name + "AS2");
 
         }
@@ -262,7 +262,7 @@ public class NPC extends ZFile {
             hitbox1.setInvisible(true);
             hitbox1.setAI(false);
             hitbox1.setSilent(true);
-            hitbox1.addScoreboardTag("removable");
+            hitbox1.addScoreboardTag("removable-" + Main.removableTag);
             hitbox1.addScoreboardTag(name + "Hitbox1");
             hitbox1.setSize(2);
             hitbox1.setCollidable(false);
@@ -300,7 +300,7 @@ public class NPC extends ZFile {
             hitbox2.setInvisible(true);
             hitbox2.setAI(false);
             hitbox2.setSilent(true);
-            hitbox2.addScoreboardTag("removable");
+            hitbox2.addScoreboardTag("removable-" + Main.removableTag);
             hitbox2.addScoreboardTag(name + "Hitbox2");
             hitbox2.setSize(2);
             hitbox2.setCollidable(false);

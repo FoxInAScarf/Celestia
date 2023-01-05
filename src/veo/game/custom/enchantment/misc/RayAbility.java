@@ -42,7 +42,7 @@ public class RayAbility {
                 double daa = Math.toDegrees(Math.atan2(en.getLocation().getX() - p.getLocation().getX(), en.getLocation().getZ() - p.getLocation().getZ()));
                 if (c.getLocation().distance(p.getLocation()) <= iteration.get() && (daa >= -p.getLocation().getYaw() - 20 && daa <= -p.getLocation().getYaw() + 20)) {
 
-                    c.damage(8);
+                    c.damage(10);
                     c.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2, false));
                     c.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 30 * 20, 3, false));
 

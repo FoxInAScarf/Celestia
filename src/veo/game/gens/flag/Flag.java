@@ -76,7 +76,7 @@ public class Flag {
         stands.get("statue").setMarker(true);
         stands.get("statue").setBasePlate(false);
         stands.get("statue").setGravity(false);
-        stands.get("statue").addScoreboardTag("removable");
+        stands.get("statue").addScoreboardTag("removable-" + Main.removableTag);
         // give style to the lil' guy
         {
 
@@ -126,7 +126,7 @@ public class Flag {
         stands.get("hasClaimed").setGravity(false);
         stands.get("hasClaimed").setCustomName(ChatColor.RED + p.getName() + " has claimed this island!");
         stands.get("hasClaimed").setCustomNameVisible(true);
-        stands.get("hasClaimed").addScoreboardTag("removable");
+        stands.get("hasClaimed").addScoreboardTag("removable-" + Main.removableTag);
 
         stands.put("crouchHere", (ArmorStand) p.getWorld().spawnEntity(
                 new Location(head.getWorld(), head.getX() + 0.5, head.getY() + 2, head.getZ() + 0.5),
@@ -136,7 +136,7 @@ public class Flag {
         stands.get("crouchHere").setGravity(false);
         stands.get("crouchHere").setCustomName(ChatColor.GREEN + "Crouch here to tear the flag down.");
         stands.get("crouchHere").setCustomNameVisible(true);
-        stands.get("crouchHere").addScoreboardTag("removable");
+        stands.get("crouchHere").addScoreboardTag("removable-" + Main.removableTag);
 
         ((CraftPlayer) p).getHandle().b.a(new PacketPlayOutEntityDestroy(stands.get("hasClaimed").getEntityId()));
         ((CraftPlayer) p).getHandle().b.a(new PacketPlayOutEntityDestroy(stands.get("crouchHere").getEntityId()));
@@ -149,7 +149,7 @@ public class Flag {
         stands.get("youClaimed").setGravity(false);
         stands.get("youClaimed").setCustomName(ChatColor.GREEN + "You've claimed this island!");
         stands.get("youClaimed").setCustomNameVisible(true);
-        stands.get("youClaimed").addScoreboardTag("removable");
+        stands.get("youClaimed").addScoreboardTag("removable-" + Main.removableTag);
 
         for (Player pl : Bukkit.getOnlinePlayers()) {
 
@@ -186,7 +186,7 @@ public class Flag {
         stands.get("clickHere").setGravity(false);
         stands.get("clickHere").setCustomName(ChatColor.GREEN + "Click here to claim this island!");
         stands.get("clickHere").setCustomNameVisible(true);
-        stands.get("clickHere").addScoreboardTag("removable");
+        stands.get("clickHere").addScoreboardTag("removable-" + Main.removableTag);
 
         // shittiest line(s) of code I've ever written in my entire life
         long t = 0L;

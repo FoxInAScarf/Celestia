@@ -1,7 +1,7 @@
 package veo.essentials.zpm.stats;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,7 +39,7 @@ public class StatsCommand implements CommandExecutor {
                 return false;
 
             }
-            Main.sendMessage(p, "Statistics of " + ofp.getName() + ": ", false);
+            Main.sendMessage(p, "Statistics of " + ChatColor.of("#73dfff") + ofp.getName() + ChatColor.RESET + ": ", false);
             p.sendMessage(StatsManager.getFormattedStats(pgp.kills, pgp.killStreak, pgp.deaths, pgp.flagsClaimed, pgp.timePlayed));
 
             return false;

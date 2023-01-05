@@ -4,7 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import veo.Main;
 
 import java.util.HashMap;
@@ -64,5 +67,35 @@ public class CruxAbilityManager {
         }
 
     }
+
+    /*static double calcDamage(double total, Player p) {
+
+        total = 0;
+
+        ItemStack helmet = p.getInventory().getArmorContents()[0];
+        if (helmet != null) {
+
+            ItemMeta meta = helmet.getItemMeta();
+            if (meta == null) {
+
+                switch (helmet.getType()) {
+
+                    case Material.IRON_HELMET ->
+                    case Material. ->
+
+                }
+
+            } else {
+
+                total += helmet.getItemMeta().getAttributeModifiers(Attribute.GENERIC_ARMOR).toArray()[0];
+
+            }
+
+        }
+        p.getInventory().getArmorContents()[1]
+        p.getInventory().getArmorContents()[2]
+        p.getInventory().getArmorContents()[3]
+
+    }*/
 
 }

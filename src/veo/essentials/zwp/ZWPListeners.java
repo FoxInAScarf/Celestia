@@ -17,6 +17,8 @@ import org.bukkit.potion.PotionEffect;
 import veo.Main;
 import veo.essentials.zpm.ZPM;
 import veo.essentials.zpm.profiles.PlayerGameProfile;
+import veo.game.gens.flag.Flag;
+import veo.game.gens.flag.FlagManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,6 +203,8 @@ public class ZWPListeners implements Listener {
                 kPgp.saveF();
 
             }
+
+            for (Flag f : FlagManager.flags) if (f.owner != null && f.owner.getUniqueId().equals(p.getUniqueId())) f.unclaim();
 
         }
 
