@@ -42,3 +42,9 @@ commands:
   stats:
     aliases: []
     description: Shows statistics of a desired player.
+  hologram:
+    aliases: []
+    description: I'm gay.
+  launchpad:
+    aliases: []
+    description: Why are you gae?

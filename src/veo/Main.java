@@ -10,6 +10,8 @@ import veo.essentials.zct.ZCM;
 import veo.essentials.zfm.ZFile;
 import veo.essentials.zpm.ZPM;
 import veo.essentials.zwp.ZWP;
+import veo.game.custom.holograms.HologramManager;
+import veo.game.custom.launchpad.LaunchpadManager;
 import veo.game.gens.GenManager;
 import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
@@ -64,6 +66,8 @@ public class Main extends JavaPlugin {
         GenManager.init();
         ShopManager.init();
         NPCManager.init();
+        HologramManager.init();
+        LaunchpadManager.init();
 
         removableTags.addLine(removableTag);
 

@@ -19,14 +19,13 @@ public class GenCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 
-        if (!(s instanceof Player)) {
+        if (!(s instanceof Player p)) {
 
             System.out.println("[" + Main.name.toUpperCase()
                     + "-ERROR]: Only players can run this command!");
             return false;
 
         }
-        Player p = (Player) s;
 
         if (!p.isOp()) {
 
