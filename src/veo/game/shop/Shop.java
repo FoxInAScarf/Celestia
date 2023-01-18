@@ -15,7 +15,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class Shop extends ZFile {
+public class Shop extends ZFile implements Cloneable {
 
     String name, displayName;
     List<Recipe> recipes = new ArrayList<>();
@@ -251,6 +251,14 @@ public class Shop extends ZFile {
                 end = page * 4 - 1;
         if (end >= recipes.size() - 1) return new int[]{begin, recipes.size() - 1};
         return new int[]{begin, end};
+
+    }
+
+    @Override
+    public Shop clone() {
+
+        try { return (Shop) super.clone(); }
+        catch (CloneNotSupportedException e) { throw new AssertionError();}
 
     }
 

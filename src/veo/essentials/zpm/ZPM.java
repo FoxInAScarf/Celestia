@@ -154,8 +154,10 @@ public class ZPM {
 
     public static PlayerGameProfile getPGP(Player p) {
 
+        //for (PlayerGameProfile pr : pgp) System.out.println(pgp.size() + " - " + pr.getPlayer().getUniqueId());
+
         for (PlayerGameProfile pr : pgp)
-            if (pr.getPlayer().getUniqueId().equals(p.getUniqueId())) return pr;
+            if (pr.getPlayer().getUniqueId().toString().equals(p.getUniqueId().toString())) return pr;
         return null;
 
     }

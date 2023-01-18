@@ -13,6 +13,8 @@ import veo.game.gens.flag.FlagManager;
 import veo.game.items.ZItem;
 import veo.game.items.ZItemManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Generator {
@@ -61,9 +63,9 @@ public class Generator {
 
         }
 
-        int nc = 0;
+        /*int nc = 0;
         if (l.getWorld() != null) for (Entity e : l.getWorld().getEntities())
-            if (e.getScoreboardTags().contains(name + "GenName")) nc++;
+            if (e.getScoreboardTags().contains(name + "GenName")) nc++;*/
 
         if (sc < 1) {
 
@@ -105,21 +107,22 @@ public class Generator {
         tl.setYaw(tl.getYaw() + 5);
         s.teleport(tl);
 
-        int nearbyPlayers = 0;
+        List<Player> nearbyPlayers = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers())
-            if (p.getLocation().distance(s.getLocation()) <= 4) nearbyPlayers++;
+            if (p.getLocation().distance(s.getLocation()) <= 4) nearbyPlayers.add(p);
 
-        if (nearbyPlayers > 0) {
+        if (nearbyPlayers.size() > 0) {
 
             if (sendItem) {
 
                 ItemStack it = m.clone();
                 it.setAmount(1);
-                Item i = l.getWorld().dropItemNaturally(new Location(l.getWorld(),
+                /*Item i = l.getWorld().dropItemNaturally(new Location(l.getWorld(),
                                 l.getX(), l.getY() + 2, l.getZ()), it);
                 i.teleport(new Location(l.getWorld(), s.getLocation().getX(),
                         s.getLocation().getY() + 1.8, s.getLocation().getZ()));
-                i.setVelocity(new Vector(0, 0, 0));
+                i.setVelocity(new Vector(0, 0, 0));*/
+                for (Player p : nearbyPlayers) p.getInventory().addItem(it);
 
             }
 

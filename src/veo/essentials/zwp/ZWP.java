@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 import veo.Main;
 import veo.essentials.zfm.ZFile;
+import veo.essentials.zwp.areas.AreaManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ZWP {
 
     public static boolean running = true;
-    static String folder;
+    public static String folder;
     static ZFile ac, wd;
     static Location respawn, pvpProtectionCentre;
     static int pvpProtectionRadius;
@@ -55,7 +56,7 @@ public class ZWP {
                         (float) Double.parseDouble(ssa[5]));
 
             }
-            if (ss[0].equals("pvpProtection")) {
+            /*if (ss[0].equals("pvpProtection")) {
 
                 String[] ssa = ss[1].split("@");
                 pvpProtectionCentre = new Location(Bukkit.getWorld(ssa[0]),
@@ -64,9 +65,10 @@ public class ZWP {
                         Integer.parseInt(ssa[3]));
                 pvpProtectionRadius = Integer.parseInt(ssa[4]);
 
-            }
+            }*/
 
         }
+        AreaManager.init();
 
         for (World w : Bukkit.getWorlds()) {
 

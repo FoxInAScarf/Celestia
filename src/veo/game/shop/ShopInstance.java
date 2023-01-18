@@ -13,7 +13,7 @@ public class ShopInstance {
 
     public ShopInstance(Player owner, Shop shop) {
 
-        this.shop = shop;
+        this.shop = shop.clone();
         this.owner = owner;
 
     }

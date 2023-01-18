@@ -37,9 +37,17 @@ public class ZCMListeners implements Listener {
 
         for (Player receiver : Bukkit.getOnlinePlayers()) {
 
+            PlayerRankProfile Sprp = ZPM.getPRP(sender);
+            if (Sprp == null) {
+
+                System.out.println("PRP of " + sender.getName() + " equals null.");
+                return;
+                
+            }
+            
             String message = e.getMessage(),
-                    rank = ZPM.getPRP(sender).rankName;
-            ChatColor mColor = ZPM.getPRP(sender).textColor;
+                    rank = Sprp.rankName;
+            ChatColor mColor = Sprp.textColor;
             String name = mColor + sender.getName();
 
             /*if (sender.isOp()) {
@@ -60,7 +68,7 @@ public class ZCMListeners implements Listener {
 
                 message = outPrefix + rank + ChatColor.DARK_GRAY + "" + ChatColor.BOLD
                         + " | " + ChatColor.RESET + name + ChatColor.RESET + "" + ChatColor.GRAY
-                        + " -> " + mColor + message;
+                        + ": " + mColor + message;
                 receiver.sendMessage(message);
                 continue;
 
@@ -90,7 +98,7 @@ public class ZCMListeners implements Listener {
                 inPrefix = ChatColor.GREEN + "→ ";
             message = inPrefix + rank + ChatColor.DARK_GRAY + "" + ChatColor.BOLD
                 + " | " + ChatColor.RESET + name + ChatColor.RESET + "" + ChatColor.GRAY
-                    + " -> " + mColor + message;
+                    + ": " + mColor + message;
 
             if (ZPM.getPCP(receiver).isChatEnabled)
                 if (ZPM.getPCP(receiver).blockedPlayers.contains(sender)) {
@@ -118,7 +126,7 @@ public class ZCMListeners implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
-
+        
         ChatColor c = ChatColor.GRAY;
         if (e.getPlayer().isOp()) c = ChatColor.RED;
 

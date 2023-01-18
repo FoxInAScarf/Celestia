@@ -17,6 +17,26 @@ public class Listeners implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
+        addScoreboardTo(e.getPlayer());
+
+    }
+
+    public static void onUpdate(PlayerGameProfile pgp) {
+
+        String[] stats = StatsManager.getFormattedStats(0, pgp.killStreak, 0/*deaths is never displayed on sidebar*/, pgp.flagsClaimed, pgp.timePlayed).split("\n");
+
+        if (pgp.p.getPlayer() != null && pgp.p.getPlayer().getScoreboard().getTeam("playtime") == null) addScoreboardTo(pgp.p.getPlayer());
+        //for (Player p : Bukkit.getOnlinePlayers()) addScoreboardTo(p);
+
+        pgp.p.getPlayer().getScoreboard().getTeam("playtime").setPrefix(stats[5]);
+        pgp.p.getPlayer().getScoreboard().getTeam("flagsClaimed").setPrefix(stats[4]);
+        pgp.p.getPlayer().getScoreboard().getTeam("killStreak").setPrefix(stats[2]);
+        pgp.p.getPlayer().getScoreboard().getTeam("kd").setPrefix(ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "K/D: " + ChatColor.of("#73dfff") + pgp.kills + ChatColor.of("#aceafc") + "/" + ChatColor.of("#73dfff") + pgp.deaths);
+
+    }
+
+    public static void addScoreboardTo(Player p) {
+
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 
         Objective obj = board.registerNewObjective("sidebar", "dummy");
@@ -54,7 +74,7 @@ public class Listeners implements Listener {
         Score space1 = obj.getScore(" ");
         space1.setScore(5);
 
-        PlayerGameProfile pgp = ZPM.getPGP(e.getPlayer());
+        PlayerGameProfile pgp = ZPM.getPGP(p);
         if (pgp == null) {
 
             System.out.println("Zraphy... what the fuck did you do again?");
@@ -97,14 +117,14 @@ public class Listeners implements Listener {
         rank.setScore(12);*/
         Team rank = board.registerNewTeam("rank");
         rank.addEntry(ChatColor.GREEN.toString());
-        rank.setPrefix(ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Rank: " + ChatColor.of("#73dfff") + ZPM.getPRP(e.getPlayer()).rankName);
+        rank.setPrefix(ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Rank: " + ChatColor.of("#73dfff") + ZPM.getPRP(p).rankName);
         obj.getScore(ChatColor.GREEN.toString()).setScore(12);
 
         /*Score name = obj.getScore("• " + ChatColor.of("#73dfff") + "Name: " + ChatColor.RESET + e.getPlayer().getName());
         name.setScore(13);*/
         Team name = board.registerNewTeam("name");
         name.addEntry(ChatColor.GOLD.toString());
-        name.setPrefix(ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Name: " + ChatColor.of("#73dfff") + e.getPlayer().getName());
+        name.setPrefix(ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Name: " + ChatColor.of("#73dfff") + p.getName());
         obj.getScore(ChatColor.GOLD.toString()).setScore(13);
 
         /*Score player = obj.getScore(ChatColor.of("#73dfff") + "ᴘʟᴀʏᴇʀ");
@@ -117,20 +137,7 @@ public class Listeners implements Listener {
         Score space3 = obj.getScore("   ");
         space3.setScore(15);
 
-        e.getPlayer().setScoreboard(board);
-
-    }
-
-    public static void onUpdate(PlayerGameProfile pgp) {
-
-        String[] stats = StatsManager.getFormattedStats(0, pgp.killStreak, 0/*deaths is never displayed on sidebar*/, pgp.flagsClaimed, pgp.timePlayed).split("\n");
-
-        //if (pgp.p.getPlayer().getScoreboard() == null) return;
-
-        pgp.p.getPlayer().getScoreboard().getTeam("playtime").setPrefix(stats[5]);
-        pgp.p.getPlayer().getScoreboard().getTeam("flagsClaimed").setPrefix(stats[4]);
-        pgp.p.getPlayer().getScoreboard().getTeam("killStreak").setPrefix(stats[2]);
-        pgp.p.getPlayer().getScoreboard().getTeam("kd").setPrefix(ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "K/D: " + ChatColor.of("#73dfff") + pgp.kills + ChatColor.of("#aceafc") + "/" + ChatColor.of("#73dfff") + pgp.deaths);
+        p.setScoreboard(board);
 
     }
 

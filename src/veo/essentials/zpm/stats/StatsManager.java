@@ -20,7 +20,7 @@ public class StatsManager {
                 "\n" + ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Killstreak: " + ChatColor.of("#73dfff") + killStreak +
                 "\n" + ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Deaths: " + ChatColor.of("#73dfff") + deaths +
                 "\n" + ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Flags claimed: " + ChatColor.of("#73dfff") + flagsClaimed +
-                "\n" + ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Time played: " + ChatColor.of("#73dfff") + hours + ChatColor.of("#aceafc") + ":" + ChatColor.of("#73dfff") + mins + "\n";
+                "\n" + ChatColor.of("#73dfff") + "• " + ChatColor.of("#aceafc") + "Time played: " + ChatColor.of("#73dfff") + hours + "h " + mins + "m" + "\n";
 
     }
 

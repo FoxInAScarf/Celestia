@@ -35,6 +35,7 @@ public class Listeners implements Listener {
 
         if (p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) return;
         if (!p.getInventory().getItemInMainHand().hasItemMeta()) return;
+        if (ZWPListeners.isPlayerInProtectedArea(p)) return;
 
         List<String> enchants = getEnchants(p.getInventory().getItemInMainHand());
 

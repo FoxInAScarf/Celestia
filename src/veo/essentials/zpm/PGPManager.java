@@ -1,5 +1,6 @@
 package veo.essentials.zpm;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +24,7 @@ public class PGPManager {
                 }
                 pgp.timePlayed++;
                 pgp.saveF();
+                if (pgp.timePlayed == 30) Main.sendMessage(p, ChatColor.GREEN + "Your grace period is over! From now on you're vulnerable.", false);
 
             }
 

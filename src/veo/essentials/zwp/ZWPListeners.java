@@ -17,12 +17,14 @@ import org.bukkit.potion.PotionEffect;
 import veo.Main;
 import veo.essentials.zpm.ZPM;
 import veo.essentials.zpm.profiles.PlayerGameProfile;
+import veo.essentials.zwp.areas.AreaManager;
 import veo.game.gens.flag.Flag;
 import veo.game.gens.flag.FlagManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ZWPListeners implements Listener {
 
@@ -175,7 +177,8 @@ public class ZWPListeners implements Listener {
     }
 
 
-    HashMap<Player, Double> distanceMap = new HashMap<>();
+    //HashMap<Player, Double> distanceMap = new HashMap<>();
+    HashMap<Player, Boolean> protectionMap = new HashMap<>();
 
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
@@ -184,10 +187,11 @@ public class ZWPListeners implements Listener {
 
         if (p.getLocation().getY() < -64) {
 
-            PlayerGameProfile pgp = ZPM.getPGP(p);
+            /*PlayerGameProfile pgp = ZPM.getPGP(p);
             pgp.deaths++;
             pgp.killStreak = 0;
-            pgp.saveF();
+            pgp.saveF();*/
+            killPlayer(p);
             p.teleport(ZWP.respawn);
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(20);
@@ -204,11 +208,11 @@ public class ZWPListeners implements Listener {
 
             }
 
-            for (Flag f : FlagManager.flags) if (f.owner != null && f.owner.getUniqueId().equals(p.getUniqueId())) f.unclaim();
+            //for (Flag f : FlagManager.flags) if (f.owner != null && f.owner.getUniqueId().equals(p.getUniqueId())) f.unclaim();
 
         }
 
-        if (!distanceMap.containsKey(p)) {
+        /*if (!distanceMap.containsKey(p)) {
 
             distanceMap.put(p, p.getLocation().distance(ZWP.pvpProtectionCentre));
             return;
@@ -227,10 +231,28 @@ public class ZWPListeners implements Listener {
             p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "PVP disabled!",
                     ChatColor.GREEN + ":)", 5, 40, 5);
 
+        }*/
+        if (!protectionMap.containsKey(p)) {
+
+            protectionMap.put(p, true);
+            return;
+
+        }
+        if (!isPlayerInProtectedArea(p) && protectionMap.get(p)) {
+
+            p.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "Warning!", ChatColor.RED + "PVP is enabled in this area.", 5, 40, 5);
+            protectionMap.put(p, false);
+
+        }
+        if (isPlayerInProtectedArea(p) && !protectionMap.get(p)) {
+
+            p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "PVP disabled!", ChatColor.GREEN + ":)", 5, 40, 5);
+            protectionMap.put(p, true);
+
         }
 
 
-        distanceMap.put(p, p.getLocation().distance(ZWP.pvpProtectionCentre));
+        //distanceMap.put(p, p.getLocation().distance(ZWP.pvpProtectionCentre));
 
     }
 
@@ -244,6 +266,23 @@ public class ZWPListeners implements Listener {
         if (isPlayerInProtectedArea((Player) e.getDamager())) {
 
             Main.sendMessage((Player) e.getDamager(), ChatColor.RED + "Oops! Can't fight here!", true);
+            e.setCancelled(true);
+            return;
+
+        }
+        PlayerGameProfile Vpgp = ZPM.getPGP(victim), Dpgp = ZPM.getPGP(damager);
+        if (Vpgp.timePlayed < 30) {
+
+            Main.sendMessage((Player) e.getDamager(), ChatColor.RED + victim.getName() + " is a new player. They still have "
+                    + (30 - Vpgp.timePlayed) + " minutes of their grace period.", true);
+            e.setCancelled(true);
+            return;
+
+        }
+        if (Dpgp.timePlayed < 30) {
+
+            Main.sendMessage((Player) e.getDamager(), ChatColor.RED + "You're in your grace period, in this period nobody can attack you however you can't attack anybody either. " +
+                    "Your grace period will expire in " + (30 - Dpgp.timePlayed) + " minutes.", true);
             e.setCancelled(true);
             return;
 
@@ -275,8 +314,9 @@ public class ZWPListeners implements Listener {
 
     public static boolean isPlayerInProtectedArea(Player p) {
 
-        return p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius ||
-                p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius;
+        /*return p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius ||
+                p.getLocation().distance(ZWP.pvpProtectionCentre) < ZWP.pvpProtectionRadius;*/
+        return AreaManager.isPlayerInArea(0, p);
 
     }
 
@@ -286,16 +326,7 @@ public class ZWPListeners implements Listener {
         Player killed = e.getEntity(),
                 killer = (e.getEntity().getKiller() != null) ? e.getEntity().getKiller() : null;
 
-        PlayerGameProfile killedPGP = ZPM.getPGP(killed);
-        if (killedPGP == null) {
-
-            System.out.println("ERROR: WHAT THE FUCK ZRAPHY???? (nonexistent player profile despite player joining, did you reload while players were on?)");
-            return;
-
-        }
-        killedPGP.deaths++;
-        killedPGP.killStreak = 0;
-        killedPGP.saveF();
+        killPlayer(killed);
         if (killer == null) return;
 
         PlayerGameProfile killerPGP = ZPM.getPGP(killer);
@@ -319,5 +350,21 @@ public class ZWPListeners implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) { e.getPlayer().teleport(ZWP.respawn); }
+
+    public void killPlayer(Player p) {
+
+        PlayerGameProfile killedPGP = ZPM.getPGP(p);
+        if (killedPGP == null) {
+
+            System.out.println("ERROR: WHAT THE FUCK ZRAPHY???? (nonexistent player profile despite player joining, did you reload while players were on?)");
+            return;
+
+        }
+        killedPGP.deaths++;
+        killedPGP.killStreak = 0;
+        killedPGP.saveF();
+        for (Flag f : FlagManager.flags) if (f.owner != null && f.owner.getUniqueId().equals(p.getUniqueId())) f.unclaim();
+
+    }
 
 }

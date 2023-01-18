@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class PlayerRankProfile extends Profile {
 
-    public static boolean isAdmin = false;
-    public static String rankName = ChatColor.GRAY + "Default";
-    public static ChatColor textColor = ChatColor.GRAY;
+    public boolean isAdmin = false;
+    public String rankName = ChatColor.GRAY + "Default";
+    public ChatColor textColor = ChatColor.GRAY;
 
     public PlayerRankProfile(File f) {
 

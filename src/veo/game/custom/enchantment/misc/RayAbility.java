@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import veo.Main;
+import veo.essentials.zpm.ZPM;
+import veo.essentials.zpm.profiles.PlayerGameProfile;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,6 +44,14 @@ public class RayAbility {
                 double daa = Math.toDegrees(Math.atan2(en.getLocation().getX() - p.getLocation().getX(), en.getLocation().getZ() - p.getLocation().getZ()));
                 if (c.getLocation().distance(p.getLocation()) <= iteration.get() && (daa >= -p.getLocation().getYaw() - 20 && daa <= -p.getLocation().getYaw() + 20)) {
 
+                    PlayerGameProfile pgp = ZPM.getPGP(c);
+                    if (pgp.timePlayed < 30) {
+
+                        Main.sendMessage(p, ChatColor.RED + c.getName() + " is a new player. They still have "
+                                + (30 - pgp.timePlayed) + " minutes of their grace period.", true);
+                        continue;
+
+                    }
                     c.damage(10);
                     c.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2, false));
                     c.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 30 * 20, 3, false));

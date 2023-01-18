@@ -9,6 +9,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import veo.Main;
+import veo.essentials.zpm.ZPM;
+import veo.essentials.zpm.profiles.PlayerGameProfile;
 
 import javax.xml.stream.Location;
 import java.util.concurrent.atomic.AtomicReference;
@@ -43,6 +45,14 @@ public class WaveAbility {
                 if (p.getUniqueId().equals(c.getUniqueId())) continue;
                 if (c.getLocation().distance(p.getLocation()) <= iteration.get()) {
 
+                    PlayerGameProfile pgp = ZPM.getPGP(c);
+                    if (pgp.timePlayed < 30) {
+
+                        Main.sendMessage(p, ChatColor.RED + c.getName() + " is a new player. They still have "
+                                + (30 - pgp.timePlayed) + " minutes of their grace period.", true);
+                        continue;
+
+                    }
                     c.damage(5);
                     double factor = 0.5, xVel = (p.getLocation().getX() - c.getLocation().getX()) * factor,
                             yVel = 0.1 * factor,

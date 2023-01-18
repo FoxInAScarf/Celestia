@@ -25,21 +25,16 @@ public class StatsCommand implements CommandExecutor {
 
         if (args.length >= 1) {
 
-            OfflinePlayer ofp = Bukkit.getOfflinePlayer(args[0]);
-            if (ofp.hasPlayedBefore()) {
-
-                Main.sendMessage(p, ChatColor.RED + "This player hasn't played on this server yet.", true);
-                return true;
-
-            }
-            PlayerGameProfile pgp = ZPM.getPGPfromUUID(ofp.getUniqueId());
+            PlayerGameProfile pgp = null;
+            for (PlayerGameProfile pgpc : ZPM.pgp) if (pgpc.p.getName().equals(args[0])) pgp = pgpc;
             if (pgp == null) {
 
                 System.out.println("Zraphy you fucked up again!");
+                Main.sendMessage(p, ChatColor.RED + "This player hasn't played on this server yet.", true);
                 return false;
 
             }
-            Main.sendMessage(p, "Statistics of " + ChatColor.of("#73dfff") + ofp.getName() + ChatColor.RESET + ": ", false);
+            Main.sendMessage(p, "Statistics of " + ChatColor.of("#73dfff") + args[0] + ChatColor.RESET + ": ", false);
             p.sendMessage(StatsManager.getFormattedStats(pgp.kills, pgp.killStreak, pgp.deaths, pgp.flagsClaimed, pgp.timePlayed));
 
             return false;

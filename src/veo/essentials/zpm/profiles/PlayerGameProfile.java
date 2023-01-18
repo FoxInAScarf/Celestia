@@ -8,7 +8,7 @@ import java.io.File;
 
 public class PlayerGameProfile extends Profile {
 
-    public int kills, deaths, killStreak, timePlayed, flagsClaimed;
+    public int kills = 0, deaths = 0, killStreak = 0, timePlayed = 0, flagsClaimed = 0;
 
     public PlayerGameProfile(File f) {
 
@@ -34,7 +34,7 @@ public class PlayerGameProfile extends Profile {
 
     public PlayerGameProfile reset() {
 
-        Listeners.onUpdate(this);
+        //Listeners.onUpdate(this);
         lines.clear();
 
         clear();
